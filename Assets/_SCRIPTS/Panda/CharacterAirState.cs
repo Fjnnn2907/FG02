@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Windows;
 
 public class CharacterAirState : CharacterState
 {
@@ -27,5 +26,10 @@ public class CharacterAirState : CharacterState
 
         if (character.IsGroundCheck())
             stateMachine.ChangeState(character.idleState);
+
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            stateMachine.ChangeState(character.jumpSpinState);
+        }
     }
 }

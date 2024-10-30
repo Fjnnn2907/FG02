@@ -29,5 +29,7 @@ public class CharacterGroundState : CharacterState
         if (Input.GetKeyDown(KeyCode.Space) && character.IsGroundCheck())
             stateMachine.ChangeState(character.jumpState);
 
+        if (Input.GetKeyDown(KeyCode.J) && character.IsGroundCheck())
+            stateMachine.ChangeState(character.attackState);
     }
 }

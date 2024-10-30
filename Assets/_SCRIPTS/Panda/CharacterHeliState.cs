@@ -2,17 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterAttackState : CharacterState
+public class CharacterHeliState : CharacterState
 {
-    public CharacterAttackState(Character character, CharacterStateMachine stateMachine, string animBoolName) : base(character, stateMachine, animBoolName)
+    public CharacterHeliState(Character character, CharacterStateMachine stateMachine, string animBoolName) : base(character, stateMachine, animBoolName)
     {
     }
 
     public override void Enter()
     {
         base.Enter();
-        
-        character.SetZeroVelocity();
+        startTimer = 1f;
     }
 
     public override void Exit()
@@ -23,8 +22,8 @@ public class CharacterAttackState : CharacterState
     public override void Update()
     {
         base.Update();
-
-        if(triggerCall)
+        
+        if(startTimer <= 0)
             stateMachine.ChangeState(character.idleState);
     }
 }

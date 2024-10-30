@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Windows;
 
 public class CharacterJumpState : CharacterState
 {
@@ -30,5 +29,9 @@ public class CharacterJumpState : CharacterState
 
         if (character.rb.velocity.y < 0)
             stateMachine.ChangeState(character.airState);
+
+        if (Input.GetKeyDown(KeyCode.U))
+            stateMachine.ChangeState(character.jumpSpinState);
+        
     }
 }

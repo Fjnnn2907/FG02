@@ -16,6 +16,8 @@ public class Character : MonoBehaviour
     public CharacterAttackState attackState { get; private set; }
     public CharacterJumpState jumpState { get; private set; }
     public CharacterAirState airState { get; private set; }
+    public CharacterJumpSpinState jumpSpinState {  get; private set; }
+    public CharacterHeliState heliState { get; private set; }
     #endregion
     public float speed = 10;
 
@@ -52,6 +54,8 @@ public class Character : MonoBehaviour
         attackState = new(this, stateMachine, "Attack");
         jumpState = new(this, stateMachine, "Jump");
         airState = new(this, stateMachine, "Jump");
+        jumpSpinState = new(this, stateMachine, "JumpSpin");
+        heliState = new(this, stateMachine, "Heli");
     }
     protected virtual void Start()
     {
@@ -67,6 +71,8 @@ public class Character : MonoBehaviour
     {
         CheckInput();
     }
+    public void AnimationTrigger() => stateMachine.currentState.AminationTrigger();
+
     public void CheckAttack() => stateMachine.currentState.AminationTrigger();
     public void CheckInput()
     {
