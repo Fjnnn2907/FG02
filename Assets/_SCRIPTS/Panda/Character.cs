@@ -18,6 +18,7 @@ public class Character : MonoBehaviour
     public CharacterAirState airState { get; private set; }
     public CharacterJumpSpinState jumpSpinState {  get; private set; }
     public CharacterHeliState heliState { get; private set; }
+    public CharacterChangeState changeState { get; private set; }
     #endregion
     public float speed = 10;
 
@@ -45,6 +46,8 @@ public class Character : MonoBehaviour
     [SerializeField] protected Transform groundCheck;
     [SerializeField] protected float groundCheckDistance;
     [SerializeField] protected LayerMask whatIsGround;
+    public bool isVer2 = false;
+    public float ver2Timer;
 
     protected virtual void Awake()
     {
@@ -56,6 +59,8 @@ public class Character : MonoBehaviour
         airState = new(this, stateMachine, "Jump");
         jumpSpinState = new(this, stateMachine, "JumpSpin");
         heliState = new(this, stateMachine, "Heli");
+        changeState = new(this, stateMachine, "ChangeState");
+
     }
     protected virtual void Start()
     {
@@ -66,6 +71,10 @@ public class Character : MonoBehaviour
     protected virtual void Update()
     {
         stateMachine.currentState.Update();
+
+        ChangeState();
+
+
     }
     private void FixedUpdate()
     {
@@ -74,6 +83,27 @@ public class Character : MonoBehaviour
     public void AnimationTrigger() => stateMachine.currentState.AminationTrigger();
 
     public void CheckAttack() => stateMachine.currentState.AminationTrigger();
+    public void ChangeVer2()
+    {
+        isVer2 = true;
+    }
+    private void ChangeState()
+    {
+        if (isVer2)
+        {
+            anim.SetLayerWeight(anim.GetLayerIndex("Ver1"), 0);
+            anim.SetLayerWeight(anim.GetLayerIndex("Ver2"), 1);
+            ver2Timer -= Time.deltaTime;
+            if (ver2Timer <= 0)
+                isVer2 = false;
+        }
+        else
+        {
+            ver2Timer = 10;
+            anim.SetLayerWeight(anim.GetLayerIndex("Ver1"), 1);
+            anim.SetLayerWeight(anim.GetLayerIndex("Ver2"), 0);
+        }
+    }
     public void CheckInput()
     {
         if (Input.GetKey(KeyCode.A))

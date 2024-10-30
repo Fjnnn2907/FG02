@@ -868,6 +868,8 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
+  isVer2: 0
+  ver2Timer: 10
 --- !u!4 &880980200
 Transform:
   m_ObjectHideFlags: 0
