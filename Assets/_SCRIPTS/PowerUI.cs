@@ -8,8 +8,8 @@ public class PowerUI : MonoBehaviour
     [SerializeField] private Character character;
     public Image PowerImage;
 
-    //private void Update()
-    //{
-    //    PowerImage.fillAmount = Mathf(1 - (character.ver2Timer / 10));
-    //}
+    private void Update()
+    {
+        PowerImage.fillAmount = Mathf.Clamp01(1 - (character.ver2Timer / 10));
+    }
 }

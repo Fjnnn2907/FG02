@@ -13,6 +13,7 @@ public class CharacterAttackState : CharacterState
         base.Enter();
         
         character.SetZeroVelocity();
+        SoundManager.instance.PlaySFX(SoundManager.instance.Attack);
     }
 
     public override void Exit()
@@ -24,7 +25,7 @@ public class CharacterAttackState : CharacterState
     {
         base.Update();
 
-        if(triggerCall)
+        if (triggerCall)
             stateMachine.ChangeState(character.idleState);
     }
 }

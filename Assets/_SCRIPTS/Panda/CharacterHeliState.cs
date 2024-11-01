@@ -12,6 +12,7 @@ public class CharacterHeliState : CharacterState
     {
         base.Enter();
         startTimer = 1f;
+        CameraShake.instance.ShakeCamera(.5f, 1f);
     }
 
     public override void Exit()
@@ -25,5 +26,7 @@ public class CharacterHeliState : CharacterState
         
         if(startTimer <= 0)
             stateMachine.ChangeState(character.idleState);
+
+
     }
 }

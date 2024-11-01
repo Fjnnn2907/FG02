@@ -13,6 +13,7 @@ public class CharacterChangeState : CharacterState
         base.Enter();
 
         startTimer = 1.2f;
+        character.SetZeroVelocity();
     }
 
     public override void Exit()
