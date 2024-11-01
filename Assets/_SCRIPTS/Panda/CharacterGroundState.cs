@@ -34,5 +34,8 @@ public class CharacterGroundState : CharacterState
 
         if (Input.GetKeyDown(KeyCode.H) && character.IsGroundCheck())
             stateMachine.ChangeState(character.changeState);
+
+        if (Input.GetKeyDown(KeyCode.L) && character.IsGroundCheck())
+            stateMachine.ChangeState(character.rollState);
     }
 }

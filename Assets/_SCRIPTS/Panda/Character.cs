@@ -19,6 +19,7 @@ public class Character : MonoBehaviour
     public CharacterJumpSpinState jumpSpinState {  get; private set; }
     public CharacterHeliState heliState { get; private set; }
     public CharacterChangeState changeState { get; private set; }
+    public CharacterRollState rollState { get; private set; }
     #endregion
     public float speed = 10;
 
@@ -42,6 +43,7 @@ public class Character : MonoBehaviour
     private bool isDead = false;
     private bool isHit = false;
     private SpriteRenderer sr;
+    public GameObject effectVer2;
     [Header("Collider")]
     [SerializeField] protected Transform groundCheck;
     [SerializeField] protected float groundCheckDistance;
@@ -60,6 +62,7 @@ public class Character : MonoBehaviour
         jumpSpinState = new(this, stateMachine, "JumpSpin");
         heliState = new(this, stateMachine, "Heli");
         changeState = new(this, stateMachine, "ChangeState");
+        rollState = new(this, stateMachine, "Roll");
 
     }
     protected virtual void Start()
@@ -93,6 +96,8 @@ public class Character : MonoBehaviour
         {
             anim.SetLayerWeight(anim.GetLayerIndex("Ver1"), 0);
             anim.SetLayerWeight(anim.GetLayerIndex("Ver2"), 1);
+            effectVer2.SetActive(true);
+            Ver2Stat();
             ver2Timer -= Time.deltaTime;
             if (ver2Timer <= 0)
                 isVer2 = false;
@@ -102,7 +107,21 @@ public class Character : MonoBehaviour
             ver2Timer = 10;
             anim.SetLayerWeight(anim.GetLayerIndex("Ver1"), 1);
             anim.SetLayerWeight(anim.GetLayerIndex("Ver2"), 0);
+            effectVer2.SetActive(false);
+            Ver1Stat();
         }
+    }
+    public void Ver2Stat()
+    {
+        speed = 7;
+        jumpFore = 700;
+        anim.speed = 1.2f;
+    }
+    public void Ver1Stat()
+    {
+        speed = 5;
+        jumpFore = 500;
+        anim.speed = 1;
     }
     public void CheckInput()
     {
