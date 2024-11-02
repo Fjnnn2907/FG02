@@ -25,7 +25,10 @@ public class CharacterRollState : CharacterState
 
         character.SetVelocity(10 * character.facing,character.rb.velocity.y);
 
-        if(startTimer <= 0)
+        if (character.isVer2)
+            character.SetVelocity(15 * character.facing, character.rb.velocity.y);
+
+        if (startTimer <= 0)
             stateMachine.ChangeState(character.idleState);
     }
 }

@@ -11,14 +11,16 @@ public class CharacterAttackState : CharacterState
     public override void Enter()
     {
         base.Enter();
-        
+        character.rb.drag = 20;
         character.SetZeroVelocity();
-        SoundManager.instance.PlaySFX(SoundManager.instance.Attack);
+        //SoundManager.instance.PlaySFX(SoundManager.instance.Attack);
     }
 
     public override void Exit()
     {
         base.Exit();
+
+        character.rb.drag = 0;
     }
 
     public override void Update()

@@ -24,6 +24,8 @@ public class CharacterJumpSpinState : CharacterState
     {
         base.Update();
         character.SetVelocity(0, -5);
+        if(character.isVer2)
+            character.SetVelocity(0, -10);
         if (character.IsGroundCheck())
             stateMachine.ChangeState(character.heliState);
     }

@@ -50,6 +50,7 @@ public class Character : MonoBehaviour
     [SerializeField] protected LayerMask whatIsGround;
     public bool isVer2 = false;
     public float ver2Timer;
+    public Vector2 boxSize;
 
     protected virtual void Awake()
     {
@@ -114,13 +115,13 @@ public class Character : MonoBehaviour
     public void Ver2Stat()
     {
         speed = 7;
-        jumpFore = 700;
+        jumpFore = 900;
         anim.speed = 1.2f;
     }
     public void Ver1Stat()
     {
         speed = 5;
-        jumpFore = 500;
+        jumpFore = 700;
         anim.speed = 1;
     }
     public void CheckInput()
@@ -134,12 +135,12 @@ public class Character : MonoBehaviour
     }
     public virtual void OnDrawGizmos()
     {
-        Gizmos.DrawLine(groundCheck.position, new Vector3(groundCheck.position.x, groundCheck.position.y - groundCheckDistance));
+        Gizmos.DrawWireCube(groundCheck.position + Vector3.down * groundCheckDistance / 2, boxSize);
+        //Gizmos.DrawLine(groundCheck.position, new Vector3(groundCheck.position.x, groundCheck.position.y - groundCheckDistance));
         //Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance, wallCheck.position.y));
         //Gizmos.DrawWireSphere(attackCheck.position, radiusAttack);
     }
-    public bool IsGroundCheck() => Physics2D.Raycast(groundCheck.position,
-    Vector2.down, groundCheckDistance, whatIsGround);
+    public bool IsGroundCheck() => Physics2D.BoxCast(groundCheck.position, boxSize, 0f, Vector2.down, groundCheckDistance, whatIsGround);
     public void SetVelocity(float xVelocity, float yVelocity)
     {
         rb.velocity = new Vector2(xVelocity, yVelocity);
