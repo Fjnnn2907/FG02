@@ -36,9 +36,9 @@ public class SoundManager : MonoBehaviour
             musicSource.Play();
         }
     }
-    public void PlaySFX(AudioClip clip)
+    public void PlaySFX(string name)
     {
-        Sound s = Array.Find(fxSounds, x => x.name == clip.name);
+        Sound s = Array.Find(fxSounds, x => x.name == name);
         if(s == null)
             Debug.Log("Not Sound Effect");
         else

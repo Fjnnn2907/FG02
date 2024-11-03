@@ -13,7 +13,7 @@ public class CharacterAttackState : CharacterState
         base.Enter();
         character.rb.drag = 20;
         character.SetZeroVelocity();
-        //SoundManager.instance.PlaySFX(SoundManager.instance.Attack);
+        SoundManager.instance.PlaySFX("Attack");
     }
 
     public override void Exit()
@@ -27,7 +27,8 @@ public class CharacterAttackState : CharacterState
     {
         base.Update();
 
-        if (triggerCall)
+        if (triggerCall)        
             stateMachine.ChangeState(character.idleState);
+        
     }
 }

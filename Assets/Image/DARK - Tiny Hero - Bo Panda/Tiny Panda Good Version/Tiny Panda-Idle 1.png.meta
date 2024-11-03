@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 18ad901d17773c9489e48b6e3a6aa67c
+guid: 6f23c71f0df266145aa4e3ab0f5d955a
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -93,11 +93,24 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Tiny Panda-Idle_0
+      name: Tiny Panda-Idle 1_0
       rect:
         serializedVersion: 2
         x: 0
@@ -111,14 +124,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 18cb1f610ca633f4e89efa8b67a0e79e
-      internalID: -782980147
+      spriteID: cb16bd50f3631d940a2dd3ba3bb0f647
+      internalID: 739441144
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tiny Panda-Idle_1
+      name: Tiny Panda-Idle 1_1
       rect:
         serializedVersion: 2
         x: 103
@@ -132,14 +145,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c2899a2274e9ac043b72dc32a391b7dc
-      internalID: 148552870
+      spriteID: 4bc4953ca824ec34d8054c830713da86
+      internalID: -1996509585
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tiny Panda-Idle_2
+      name: Tiny Panda-Idle 1_2
       rect:
         serializedVersion: 2
         x: 206
@@ -153,14 +166,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 20dacb5b4dbede0459a491223ce667ae
-      internalID: 593329860
+      spriteID: f6920331112ea4c4f891bc3436cbdf3a
+      internalID: -1831498590
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tiny Panda-Idle_3
+      name: Tiny Panda-Idle 1_3
       rect:
         serializedVersion: 2
         x: 309
@@ -174,14 +187,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 36e2c84249614e240a8a7de01614ed0a
-      internalID: 1865444874
+      spriteID: 86c4470ea21b5dd44b5f9264e425b749
+      internalID: -1197697864
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tiny Panda-Idle_4
+      name: Tiny Panda-Idle 1_4
       rect:
         serializedVersion: 2
         x: 412
@@ -195,14 +208,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8751152db1709fe438b64099656b5b17
-      internalID: -1980862334
+      spriteID: 3c6bfa535d2173645960dc08cb191d4f
+      internalID: 1505022767
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tiny Panda-Idle_5
+      name: Tiny Panda-Idle 1_5
       rect:
         serializedVersion: 2
         x: 515
@@ -216,14 +229,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b5254972b0a6385429492e6c378b6ddc
-      internalID: 1204583661
+      spriteID: 475555ab64b371143b01438f5c5db737
+      internalID: 760229808
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tiny Panda-Idle_6
+      name: Tiny Panda-Idle 1_6
       rect:
         serializedVersion: 2
         x: 618
@@ -237,14 +250,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9d8d1a662785c084bb67227e81979115
-      internalID: -682423064
+      spriteID: cc0a9d4c0b9e0f64aad2f082a3e1dda3
+      internalID: 1971290724
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tiny Panda-Idle_7
+      name: Tiny Panda-Idle 1_7
       rect:
         serializedVersion: 2
         x: 721
@@ -258,14 +271,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: adcd5c98cc4544a46843b06dc7b83b31
-      internalID: 1589089468
+      spriteID: 2667865dffddb9d46b1e174bb4c5625b
+      internalID: 484831936
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tiny Panda-Idle_8
+      name: Tiny Panda-Idle 1_8
       rect:
         serializedVersion: 2
         x: 824
@@ -279,8 +292,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f94bfe71dbab5914480df784782303e1
-      internalID: -1708514771
+      spriteID: e79931e61de1f2846a3c246989e532e9
+      internalID: 308020625
       vertices: []
       indices: 
       edges: []
@@ -296,15 +309,15 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Tiny Panda-Idle_0: -782980147
-      Tiny Panda-Idle_1: 148552870
-      Tiny Panda-Idle_2: 593329860
-      Tiny Panda-Idle_3: 1865444874
-      Tiny Panda-Idle_4: -1980862334
-      Tiny Panda-Idle_5: 1204583661
-      Tiny Panda-Idle_6: -682423064
-      Tiny Panda-Idle_7: 1589089468
-      Tiny Panda-Idle_8: -1708514771
+      Tiny Panda-Idle 1_0: 739441144
+      Tiny Panda-Idle 1_1: -1996509585
+      Tiny Panda-Idle 1_2: -1831498590
+      Tiny Panda-Idle 1_3: -1197697864
+      Tiny Panda-Idle 1_4: 1505022767
+      Tiny Panda-Idle 1_5: 760229808
+      Tiny Panda-Idle 1_6: 1971290724
+      Tiny Panda-Idle 1_7: 484831936
+      Tiny Panda-Idle 1_8: 308020625
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
