@@ -20,6 +20,7 @@ public class Character : MonoBehaviour
     public CharacterHeliState heliState { get; private set; }
     public CharacterChangeState changeState { get; private set; }
     public CharacterRollState rollState { get; private set; }
+    public CharacterJabState jabState { get; private set; }
     #endregion
     public float speed = 10;
 
@@ -64,6 +65,7 @@ public class Character : MonoBehaviour
         heliState = new(this, stateMachine, "Heli");
         changeState = new(this, stateMachine, "ChangeState");
         rollState = new(this, stateMachine, "Roll");
+        jabState = new(this, stateMachine, "Jab");
 
     }
     protected virtual void Start()
@@ -86,7 +88,6 @@ public class Character : MonoBehaviour
     }
     public void AnimationTrigger() => stateMachine.currentState.AminationTrigger();
 
-    public void CheckAttack() => stateMachine.currentState.AminationTrigger();
     public void ChangeVer2()
     {
         isVer2 = true;

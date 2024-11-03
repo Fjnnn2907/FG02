@@ -9,11 +9,11 @@ public class EvenTriggerAnim : MonoBehaviour
     {
         character.AnimationTrigger();
     }
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    if (collision.CompareTag("Enemy"))
-    //    {
-    //        collision.GetComponent
-    //    }
-    //}
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Enemy"))
+        {
+            collision.GetComponent<Enemy>().Damge();
+        }
+    }
 }
