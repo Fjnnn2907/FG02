@@ -22,6 +22,8 @@ public class Character : MonoBehaviour
     public CharacterRollState rollState { get; private set; }
     public CharacterJabState jabState { get; private set; }
     #endregion
+    public EmtityFx emtityFx { get; private set; }
+
     public float speed = 10;
 
     protected bool isRight = true;
@@ -73,6 +75,7 @@ public class Character : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
         stateMachine.StartState(idleState);
+        emtityFx = GetComponentInChildren<EmtityFx>();
     }
     protected virtual void Update()
     {
@@ -124,6 +127,10 @@ public class Character : MonoBehaviour
         speed = 5;
         jumpFore = 700;
         anim.speed = 1;
+    }
+    public void Damgege()
+    {
+        emtityFx.StartCoroutine("HitFlashFx");
     }
     public void CheckInput()
     {

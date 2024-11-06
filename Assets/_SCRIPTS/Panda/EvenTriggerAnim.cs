@@ -13,7 +13,7 @@ public class EvenTriggerAnim : MonoBehaviour
     {
         if (collision.CompareTag("Enemy"))
         {
-            collision.GetComponent<Enemy>().Damge();
+            collision.GetComponent<Enemy>().Damge(1);
         }
     }
 }
