@@ -11882,7 +11882,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 3.5
   m_Material: {fileID: 6200000, guid: 94b5b6fbdee36134cb4151361c632603, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
@@ -11906,7 +11906,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd95d83cbae2dd64c9df77930c4372f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  speed: 2
   groundCheck: {fileID: 184797564}
   groundCheckDistance: 0.02
   whatIsGround:
@@ -11922,12 +11922,12 @@ MonoBehaviour:
   wallCheckDistance: 0.48
   KnockDir: {x: 0, y: 0}
   KnockTimer: 0
-  speedBattle: 5
+  speedBattle: 2
   maxHP: 0
-  lastTimeAttacked: 0
-  attackCoolDown: 0
-  battleTime: 0
+  attackCoolDown: 1
+  battleTime: 2
   attackDistace: 1.75
+  lastTimeAttacked: 0
 --- !u!1 &2024167869
 GameObject:
   m_ObjectHideFlags: 0

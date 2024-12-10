@@ -21,10 +21,10 @@ public class Enemy : Entity
     private int HP;
 
     [Header("Attack")]
-    [HideInInspector]public float lastTimeAttacked;
     public float attackCoolDown;
     public float battleTime;
     public float attackDistace;
+    [HideInInspector]public float lastTimeAttacked;
 
     #region Compoments
     public EmtityFx emtityFx { get; private set; }

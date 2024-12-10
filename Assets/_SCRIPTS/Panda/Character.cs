@@ -117,20 +117,18 @@ public class Character : Entity
     #region Input
     public void CheckInput()
     {
-        //if (Input.GetKey(KeyCode.A))
-        //    xInput = -1;
-        //else if (Input.GetKey(KeyCode.D))
-        //    xInput = 1;
-        //else
-        //    xInput = 0;
-        xInput = Input.GetAxisRaw("Horizontal");
+        if (Input.GetKey(KeyCode.A))
+            xInput = -1;
+        else if (Input.GetKey(KeyCode.D))
+            xInput = 1;
+        else
+            xInput = 0;
     }
     #endregion
     #region Velocity
     public void SetAddForce(float xVelocity, float yVelocity)
     {
         rb.AddForce(new Vector2(xVelocity, yVelocity));
-        FlipCtrl(xVelocity);
     }
     #endregion
    

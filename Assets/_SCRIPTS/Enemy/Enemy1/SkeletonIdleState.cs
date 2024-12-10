@@ -5,6 +5,8 @@ using UnityEngine;
 public class SkeletonIdleState : EnemyState
 {
     Skeleton enemy1;
+
+    Transform Player;
     public SkeletonIdleState(Enemy enemy, Skeleton enemy1, EnemyStateMachine stateMachine, string isBoolName) : base(enemy, stateMachine, isBoolName)
     {
         this.enemy1 = enemy1;
@@ -15,7 +17,9 @@ public class SkeletonIdleState : EnemyState
         base.Enter();
 
         startTimer = Random.Range(1, 3);
-        enemy1.SetZeroVelocity();
+       
+
+        Player = GameObject.Find("Tiny Panda").GetComponent<Transform>();
     }
 
     public override void Exit()
@@ -26,13 +30,13 @@ public class SkeletonIdleState : EnemyState
     public override void Update()
     {
         base.Update();
-        if (startTimer <= 0)
-        {
-            enemy1.Flip();
-            enemy1.stateMachine.ChangeState(enemy1.moveState);
 
-            if (enemy1.IsPlayerCheck())
-                enemy1.stateMachine.ChangeState(enemy1.battleState);
-        }
+        enemy1.SetZeroVelocity();
+
+        if (startTimer <= 0)
+            enemy1.stateMachine.ChangeState(enemy1.moveState);         
+
+        if (enemy1.IsPlayerCheck() || Vector2.Distance(enemy1.transform.position, Player.position) < 2)
+            enemy1.stateMachine.ChangeState(enemy1.battleState);
     }
 }

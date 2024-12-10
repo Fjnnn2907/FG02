@@ -8,7 +8,6 @@ public class SkeletonBattleState : EnemyState
 
     private Transform player;
     public int moveDir;
-    public float moveSpeed;
     public SkeletonBattleState(Enemy enemy, Skeleton enemy1, EnemyStateMachine stateMachine, string isBoolName) : base(enemy, stateMachine, isBoolName)
     {
         this.enemy1 = enemy1;
@@ -24,6 +23,8 @@ public class SkeletonBattleState : EnemyState
     public override void Exit()
     {
         base.Exit();
+
+        enemy1.lastTimeAttacked = 0;
     }
 
     public override void Update()
@@ -32,12 +33,21 @@ public class SkeletonBattleState : EnemyState
 
         if (enemy1.IsPlayerCheck())
         {
-            if (enemy1.IsPlayerCheck().distance <= enemy1.attackDistace)
+            startTimer = enemy1.battleTime;
+
+            if (enemy1.IsPlayerCheck().distance <= enemy1.radiusAttack)
             {
-                Debug.Log("Attack");
-                enemy1.SetZeroVelocity();
-                return;
+                if (CanAttack())
+                {
+                    stateMachine.ChangeState(enemy1.attackState);
+                    return;
+                }           
             }
+        }
+        else
+        {
+            if(startTimer <= 0 || Vector2.Distance(enemy1.transform.position,player.position) > 7)
+                stateMachine.ChangeState(enemy1.idleState);
         }
 
         if (player.position.x > enemy1.transform.position.x)

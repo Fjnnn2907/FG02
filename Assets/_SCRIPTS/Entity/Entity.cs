@@ -46,7 +46,7 @@ public class Entity : MonoBehaviour
     }
     public virtual void SetZeroVelocity()
     {
-        rb.velocity = Vector2.zero;
+        rb.velocity = new Vector2(0,rb.velocity.y);
     }
     #endregion
     #region Flip
