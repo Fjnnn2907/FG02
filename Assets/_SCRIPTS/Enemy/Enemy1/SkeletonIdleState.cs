@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy1IdleState : EnemyState
+public class SkeletonIdleState : EnemyState
 {
-    Enemy1 enemy1;
-    public Enemy1IdleState(Enemy enemy, Enemy1 enemy1, EnemyStateMachine stateMachine, string isBoolName) : base(enemy, stateMachine, isBoolName)
+    Skeleton enemy1;
+    public SkeletonIdleState(Enemy enemy, Skeleton enemy1, EnemyStateMachine stateMachine, string isBoolName) : base(enemy, stateMachine, isBoolName)
     {
         this.enemy1 = enemy1;
     }
@@ -30,6 +30,9 @@ public class Enemy1IdleState : EnemyState
         {
             enemy1.Flip();
             enemy1.stateMachine.ChangeState(enemy1.moveState);
+
+            if (enemy1.IsPlayerCheck())
+                enemy1.stateMachine.ChangeState(enemy1.battleState);
         }
     }
 }

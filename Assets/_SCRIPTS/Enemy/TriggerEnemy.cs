@@ -19,7 +19,7 @@ public class TriggerEnemy : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Enemy1 component not found in parent.");
+            Debug.LogWarning("Sekeleton component not found in parent.");
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)

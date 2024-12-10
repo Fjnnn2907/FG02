@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy1 : Enemy
+public class Skeleton : Enemy
 {
-    public Enemy1IdleState idleState {  get; private set; }
-    public Enemy1MoveState moveState { get; private set; }
-    public Enemy1AttackState attackState { get; private set; }
-    public Enemy1BattleState battleState { get; private set; }
+    public SkeletonIdleState idleState {  get; private set; }
+    public SkeletonMoveState moveState { get; private set; }
+    public SkeletonAttackState attackState { get; private set; }
+    public SkeletonBattleState battleState { get; private set; }
     protected override void Awake()
     {
         base.Awake();

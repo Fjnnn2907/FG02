@@ -2,53 +2,49 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : Entity
 {
     [Header("Collider")]
     public Transform attackCheck;
     public float radiusAttack;
-    [SerializeField] protected Transform groundCheck;
-    [SerializeField] protected float groundCheckDistance;
     [SerializeField] protected LayerMask WhatIsPlayer;
     [SerializeField] protected Transform wallCheck;
     [SerializeField] protected float wallCheckDistance;
-    [SerializeField] protected LayerMask whatIsGround;
     [Header("Knock Back")]
     public Vector2 KnockDir;
     public float KnockTimer;
     private bool isKnock;
 
-    protected bool isRight = true;
-    public int facing { get; private set; } = 1;
     [Header("Stat")]
-    public float speed;
+    public float speedBattle = 5f;
     public int maxHP;
     private int HP;
+
+    [Header("Attack")]
     [HideInInspector]public float lastTimeAttacked;
     public float attackCoolDown;
     public float battleTime;
-    public float distanceAttack;
-    #region Compoments
-    public Animator anim { get; private set; }
-    public Rigidbody2D rb { get; private set; }
+    public float attackDistace;
 
+    #region Compoments
     public EmtityFx emtityFx { get; private set; }
     public EnemyState enemy { get; private set; }
     public EnemyStateMachine stateMachine { get; private set; }
     #endregion
-    protected virtual void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         stateMachine = new();
     }
-    protected virtual void Start()
+    protected override void Start()
     {
-        anim = GetComponentInChildren<Animator>();
-        rb = GetComponent<Rigidbody2D>();
+        base.Start();
         emtityFx = GetComponentInChildren<EmtityFx>();
         HP = maxHP;
     }
-    protected virtual void Update()
+    protected override void Update()
     {
+        base.Update();
         stateMachine.currentState.Update();
     }
 
@@ -67,49 +63,19 @@ public class Enemy : MonoBehaviour
         yield return new WaitForSeconds(KnockTimer);
         isKnock = false;
     }
-    public bool IsGroundCheck() => Physics2D.Raycast(groundCheck.position,
-        Vector2.down, groundCheckDistance, whatIsGround);
-
     public bool IsWallCheck() => Physics2D.Raycast(wallCheck.position,
         Vector2.right * facing, wallCheckDistance, whatIsGround);
 
-    public RaycastHit2D IsPlayerCheck() => Physics2D.Raycast(attackCheck.position,
-        Vector2.right * facing, radiusAttack, WhatIsPlayer);
+    public RaycastHit2D IsPlayerCheck() => Physics2D.Raycast(wallCheck.position,
+        Vector2.right * facing, attackDistace, WhatIsPlayer);
 
     public void AnimationTrigger() => stateMachine.currentState.AminationTrigger();
 
-    public virtual void OnDrawGizmos()
+    public override void OnDrawGizmos()
     {
-        Gizmos.DrawLine(groundCheck.position, new Vector3(groundCheck.position.x, groundCheck.position.y - groundCheckDistance));
-        Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance, wallCheck.position.y));
-        Gizmos.DrawWireSphere(attackCheck.position, radiusAttack);
+        base.OnDrawGizmos();
+        Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance * facing, wallCheck.position.y));
+        Gizmos.DrawLine(transform.position, new Vector3(transform.position.x + attackDistace * facing, transform.position.y));
     }
 
-    public void SetVelocity(float xVelocity, float yVelocity)
-    {
-        //if (isKnock)
-        //    return;
-
-        rb.velocity = new Vector2(xVelocity, yVelocity);
-        FlipCtr(xVelocity);
-    }
-    public void SetZeroVelocity()
-    {
-        rb.velocity = Vector2.zero;
-  
-    }
-    #region Flip
-    public void Flip()
-    {
-        facing *= -1;
-        isRight = !isRight;
-        transform.Rotate(0, 180, 0);
-    }
-
-    public void FlipCtr(float _x)
-    {
-        if (_x > 0 && !isRight) Flip();
-        else if (_x < 0 && isRight) Flip();
-    }
-    #endregion
 }

@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy1AttackState : EnemyState
+public class SkeletonAttackState : EnemyState
 {
-    Enemy1 enemy1;
-    public Enemy1AttackState(Enemy enemy, Enemy1 enemy1, EnemyStateMachine stateMachine, string isBoolName) : base(enemy, stateMachine, isBoolName)
+    Skeleton enemy1;
+    public SkeletonAttackState(Enemy enemy, Skeleton enemy1, EnemyStateMachine stateMachine, string isBoolName) : base(enemy, stateMachine, isBoolName)
     {
         this.enemy1 = enemy1;   
     }

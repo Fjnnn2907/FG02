@@ -27,7 +27,7 @@ public class CharacterJumpState : CharacterState
         character.SetVelocity(character.xInput * character.speed, character.rb.velocity.y);
 
 
-        if (character.rb.velocity.y < 0)
+        if (character.rb.velocity.y <= 0)
             stateMachine.ChangeState(character.airState);
 
         if (Input.GetKeyDown(KeyCode.U))

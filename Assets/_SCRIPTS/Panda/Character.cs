@@ -7,7 +7,7 @@ public class Character : Entity
 {
     #region State
     public CharacterState character { get; private set; }
-
+    public CharacterStateMachine stateMachine { get; private set; }
 
     public CharacterIdleState idleState { get; private set; }
     public CharacterRunState runState { get; private set; }
@@ -22,7 +22,7 @@ public class Character : Entity
     #endregion
     public EmtityFx emtityFx { get; private set; }
     public float jumpFore = 12;
-    
+    public float xInput { get; set; }
     [Header("Attack")]
     public Vector2[] attackMovement;
     private bool isHited;
@@ -39,6 +39,7 @@ public class Character : Entity
     protected override void Awake()
     {
         base.Awake();
+        stateMachine = new();
         idleState = new(this, stateMachine, "Idle");
         runState = new(this, stateMachine, "Run");
         attackState = new(this, stateMachine, "Attack");
@@ -54,13 +55,14 @@ public class Character : Entity
     protected override void Start()
     {
         base.Start();
+
         stateMachine.StartState(idleState);
         emtityFx = GetComponentInChildren<EmtityFx>();
     }
     protected override void Update()
     {
         base.Update();
-
+        stateMachine.currentState.Update();
         ChangeState();
     }
     private void FixedUpdate()
@@ -71,6 +73,8 @@ public class Character : Entity
     {
         emtityFx.StartCoroutine("HitFlashFx");
     }
+    public virtual void AnimationTrigger() => stateMachine.currentState.AminationTrigger();
+
     #region ChangeStateVer
     public void ChangeVer2()
     {
@@ -113,12 +117,13 @@ public class Character : Entity
     #region Input
     public void CheckInput()
     {
-        if (Input.GetKey(KeyCode.A))
-            xInput = -1;
-        else if (Input.GetKey(KeyCode.D))
-            xInput = 1;
-        else
-            xInput = 0;
+        //if (Input.GetKey(KeyCode.A))
+        //    xInput = -1;
+        //else if (Input.GetKey(KeyCode.D))
+        //    xInput = 1;
+        //else
+        //    xInput = 0;
+        xInput = Input.GetAxisRaw("Horizontal");
     }
     #endregion
     #region Velocity

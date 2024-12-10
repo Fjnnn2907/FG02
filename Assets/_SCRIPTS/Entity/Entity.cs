@@ -6,7 +6,6 @@ using UnityEngine;
 public class Entity : MonoBehaviour
 {
     #region State
-    public CharacterStateMachine stateMachine { get; private set; }
     public Animator anim { get; private set; }
     public Rigidbody2D rb { get; private set; }
     #endregion
@@ -14,7 +13,6 @@ public class Entity : MonoBehaviour
 
     protected bool isRight = true;
     public int facing { get; private set; } = 1;
-    public float xInput { get; set; }
     [Header("Collider")]
     [SerializeField] protected Transform groundCheck;
     [SerializeField] protected float groundCheckDistance;
@@ -24,7 +22,7 @@ public class Entity : MonoBehaviour
 
     protected virtual void Awake()
     {
-        stateMachine = new();
+        
     }
     protected virtual void Start()
     {
@@ -33,9 +31,7 @@ public class Entity : MonoBehaviour
     }
     protected virtual void Update()
     {
-        stateMachine.currentState.Update();
     }
-    public virtual void AnimationTrigger() => stateMachine.currentState.AminationTrigger();
     public virtual bool IsGroundCheck() => Physics2D.BoxCast(groundCheck.position, boxSize, 0f, Vector2.down, groundCheckDistance, whatIsGround);
     public virtual void OnDrawGizmos()
     {
