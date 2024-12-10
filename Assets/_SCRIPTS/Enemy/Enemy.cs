@@ -10,10 +10,6 @@ public class Enemy : Entity
     [SerializeField] protected LayerMask WhatIsPlayer;
     [SerializeField] protected Transform wallCheck;
     [SerializeField] protected float wallCheckDistance;
-    [Header("Knock Back")]
-    public Vector2 KnockDir;
-    public float KnockTimer;
-    private bool isKnock;
 
     [Header("Stat")]
     public float speedBattle = 5f;
@@ -44,14 +40,6 @@ public class Enemy : Entity
     {
         base.Update();
         stateMachine.currentState.Update();
-    }
-
-    public IEnumerator KnockBack()
-    {
-        isKnock = true;
-        rb.velocity = new Vector3(KnockDir.x * -facing, KnockDir.y);
-        yield return new WaitForSeconds(KnockTimer);
-        isKnock = false;
     }
     public bool IsWallCheck() => Physics2D.Raycast(wallCheck.position,
         Vector2.right * facing, wallCheckDistance, whatIsGround);

@@ -8845,6 +8845,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   boxSize: {x: 0.5, y: 0.2}
+  KnockDir: {x: 3, y: 3}
+  KnockTimer: 0.07
   jumpFore: 500
   attackMovement:
   - {x: 1.5, y: 0}
@@ -11974,6 +11976,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   boxSize: {x: 0.11, y: 0.17}
+  KnockDir: {x: 3, y: 3}
+  KnockTimer: 0.07
   attackCheck: {fileID: 1169869706}
   radiusAttack: 1.75
   WhatIsPlayer:
@@ -11981,8 +11985,6 @@ MonoBehaviour:
     m_Bits: 128
   wallCheck: {fileID: 282646050}
   wallCheckDistance: 0.48
-  KnockDir: {x: 0, y: 0}
-  KnockTimer: 0
   speedBattle: 2
   maxHP: 0
   attackCoolDown: 1

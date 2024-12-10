@@ -20,6 +20,10 @@ public class Entity : MonoBehaviour
     [SerializeField] protected LayerMask whatIsGround;
     public Vector2 boxSize;
     
+    [Header("Knock Back")]
+    public Vector2 KnockDir = new Vector2(7,12);
+    public float KnockTimer = .07f;
+    protected bool isKnocked;
 
     protected virtual void Awake()
     {
@@ -34,12 +38,20 @@ public class Entity : MonoBehaviour
     protected virtual void Update()
     {
     }
-    
+    #region Battle
     public virtual void Damege()
     {
         fx.StartCoroutine("HitFlashFx");
+        StartCoroutine("KnockBack");
     }
-
+    protected virtual IEnumerator KnockBack()
+    {
+        isKnocked = true;
+        rb.velocity = new Vector2(KnockDir.x * -facing, KnockDir.y);
+        yield return new WaitForSeconds(KnockTimer);
+        isKnocked = false;
+    }
+    #endregion
     public virtual bool IsGroundCheck() => Physics2D.BoxCast(groundCheck.position, boxSize, 0f, Vector2.down, groundCheckDistance, whatIsGround);
     public virtual void OnDrawGizmos()
     {
@@ -48,12 +60,15 @@ public class Entity : MonoBehaviour
     #region Velocity
     public virtual void SetVelocity(float xVelocity, float yVelocity)
     {
+        if(isKnocked) return;
+
         rb.velocity = new Vector2(xVelocity, yVelocity);
 
         FlipCtrl(xVelocity);
     }
     public virtual void SetZeroVelocity()
     {
+        if (isKnocked) return;
         rb.velocity = new Vector2(0,rb.velocity.y);
     }
     #endregion
