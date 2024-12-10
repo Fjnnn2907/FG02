@@ -5563,7 +5563,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 184797564}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Ground Check
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5951,7 +5951,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 282646050}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Wall Check
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6357,7 +6357,8 @@ GameObject:
   - component: {fileID: 480278836}
   - component: {fileID: 480278835}
   - component: {fileID: 480278837}
-  m_Layer: 0
+  - component: {fileID: 480278838}
+  m_Layer: 8
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6464,6 +6465,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa2cd121623bd9f468342d3012320e8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!61 &480278838
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 480278833}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.7798176, y: -0.7307728}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.5, y: 2}
+    newSize: {x: 1.5, y: 2}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.9021702, y: 0.5384544}
+  m_EdgeRadius: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -8745,6 +8791,7 @@ GameObject:
   - component: {fileID: 880980199}
   - component: {fileID: 880980198}
   - component: {fileID: 880980201}
+  - component: {fileID: 880980202}
   m_Layer: 7
   m_Name: Tiny Panda
   m_TagString: Player
@@ -8868,6 +8915,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.69441015, y: 0.9372072}
   m_EdgeRadius: 0
+--- !u!114 &880980202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 880980196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f4419dd7a9eeb446a94b6a50f27a064, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HitMaterial: {fileID: 2100000, guid: b821d04685fa0634795e0ea45e4cb531, type: 2}
 --- !u!1 &918919706
 GameObject:
   m_ObjectHideFlags: 0
@@ -9206,7 +9266,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1169869706}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Attack Check
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11806,9 +11866,10 @@ GameObject:
   - component: {fileID: 1999795198}
   - component: {fileID: 1999795197}
   - component: {fileID: 1999795199}
-  m_Layer: 0
+  - component: {fileID: 1999795200}
+  m_Layer: 8
   m_Name: Skeleton
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11847,7 +11908,7 @@ CapsuleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 384
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -11928,6 +11989,19 @@ MonoBehaviour:
   battleTime: 2
   attackDistace: 1.75
   lastTimeAttacked: 0
+--- !u!114 &1999795200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1999795194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f4419dd7a9eeb446a94b6a50f27a064, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HitMaterial: {fileID: 2100000, guid: b821d04685fa0634795e0ea45e4cb531, type: 2}
 --- !u!1 &2024167869
 GameObject:
   m_ObjectHideFlags: 0
