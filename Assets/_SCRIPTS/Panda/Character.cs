@@ -20,6 +20,7 @@ public class Character : Entity
     #endregion
     public float jumpFore = 12;
     public float xInput { get; set; }
+    public SkillManager skillManager { get; private set; }
     [Header("Attack")]
     public Vector2[] attackMovement;
     private bool isHited;
@@ -54,7 +55,7 @@ public class Character : Entity
     protected override void Start()
     {
         base.Start();
-
+        skillManager = SkillManager.instance;
         stateMachine.StartState(idleState);
     }
     protected override void Update()

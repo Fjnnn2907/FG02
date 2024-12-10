@@ -6,6 +6,9 @@ public class PlayerManager : MonoBehaviour
     public Character character;
     private void Awake()
     {
+        if(instance != null)
+            Debug.LogWarning("Erro Singleton" + instance.name);
+        else
         instance = this;
     }
 }
