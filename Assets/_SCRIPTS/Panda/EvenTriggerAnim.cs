@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
 
 public class EvenTriggerAnim : MonoBehaviour
 {
@@ -9,12 +8,12 @@ public class EvenTriggerAnim : MonoBehaviour
     {
         character.AnimationTrigger();
     }
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    if (collision.CompareTag("Enemy"))
-    //    {
-    //        if (collision.GetComponent<Enemy>() == null) return;
-    //        collision.GetComponent<Enemy>().Damege();
-    //    }
-    //}
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Enemy"))
+        {
+            if (collision.GetComponent<Enemy>() == null) return;
+            collision.GetComponent<Enemy>().Damege();
+        }
+    }
 }

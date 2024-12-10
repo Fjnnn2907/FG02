@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SkeletonIdleState : EnemyState
 {
     Skeleton enemy;
 
-    Transform Player;
+    Transform character;
     public SkeletonIdleState(Enemy enemyBase, Skeleton enemy, EnemyStateMachine stateMachine, string isBoolName) : base(enemyBase, stateMachine, isBoolName)
     {
         this.enemy = enemy;
@@ -19,7 +17,7 @@ public class SkeletonIdleState : EnemyState
         startTimer = Random.Range(1, 3);
        
 
-        Player = GameObject.Find("Tiny Panda").GetComponent<Transform>();
+        character = PlayerManager.instance.character.transform;
     }
 
     public override void Exit()
@@ -36,7 +34,7 @@ public class SkeletonIdleState : EnemyState
         if (startTimer <= 0)
             enemy.stateMachine.ChangeState(enemy.moveState);         
 
-        if (enemy.IsPlayerCheck() || Vector2.Distance(enemy.transform.position, Player.position) < 2)
+        if (enemy.IsPlayerCheck() || Vector2.Distance(enemy.transform.position, character.position) < 2)
             enemy.stateMachine.ChangeState(enemy.battleState);
     }
 }

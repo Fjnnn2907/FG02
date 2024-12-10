@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SkeletonBattleState : EnemyState
 {
     Skeleton enemy;
 
-    private Transform player;
+    private Transform character;
     public int moveDir;
     public SkeletonBattleState(Enemy enemyBase, Skeleton enemy, EnemyStateMachine stateMachine, string isBoolName) : base(enemyBase, stateMachine, isBoolName)
     {
@@ -17,7 +15,7 @@ public class SkeletonBattleState : EnemyState
     {
         base.Enter();
 
-        player = GameObject.Find("Tiny Panda").GetComponent<Transform>();
+        character = PlayerManager.instance.character.transform;
     }
 
     public override void Exit()
@@ -46,13 +44,13 @@ public class SkeletonBattleState : EnemyState
         }
         else
         {
-            if(startTimer <= 0 || Vector2.Distance(enemy.transform.position,player.position) > 7)
+            if(startTimer <= 0 || Vector2.Distance(enemy.transform.position,character.position) > 7)
                 stateMachine.ChangeState(enemy.idleState);
         }
 
-        if (player.position.x > enemy.transform.position.x)
+        if (character.position.x > enemy.transform.position.x)
             moveDir = 1;
-        else if(player.position.x < enemy.transform.position.x)
+        else if(character.position.x < enemy.transform.position.x)
             moveDir = -1;
 
         enemy.SetVelocity(enemy.speed * moveDir,enemy.rb.velocity.y);
