@@ -4,22 +4,22 @@ using UnityEngine;
 
 public class EnemyState
 {
-    public Enemy enemy;
+    public Enemy enemyBase;
     public EnemyStateMachine stateMachine;
 
     public string isBoolName;
     public bool isCalled;
     public float startTimer;
 
-    public EnemyState(Enemy enemy, EnemyStateMachine stateMachine, string isBoolName)
+    public EnemyState(Enemy enemyBase, EnemyStateMachine stateMachine, string isBoolName)
     {
-        this.enemy = enemy;
+        this.enemyBase = enemyBase;
         this.stateMachine = stateMachine;
         this.isBoolName = isBoolName;
     }
     public virtual void Enter()
     {
-        enemy.anim.SetBool(isBoolName,true);
+        enemyBase.anim.SetBool(isBoolName,true);
         isCalled = false;
     }
     public virtual void Update()
@@ -28,7 +28,7 @@ public class EnemyState
     }
     public virtual void Exit()
     {
-        enemy.anim.SetBool(isBoolName, false);
+        enemyBase.anim.SetBool(isBoolName, false);
     }
     public void AminationTrigger()
     {

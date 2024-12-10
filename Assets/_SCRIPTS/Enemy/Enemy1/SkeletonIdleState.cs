@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class SkeletonIdleState : EnemyState
 {
-    Skeleton enemy1;
+    Skeleton enemy;
 
     Transform Player;
-    public SkeletonIdleState(Enemy enemy, Skeleton enemy1, EnemyStateMachine stateMachine, string isBoolName) : base(enemy, stateMachine, isBoolName)
+    public SkeletonIdleState(Enemy enemyBase, Skeleton enemy, EnemyStateMachine stateMachine, string isBoolName) : base(enemyBase, stateMachine, isBoolName)
     {
-        this.enemy1 = enemy1;
+        this.enemy = enemy;
     }
 
     public override void Enter()
@@ -31,12 +31,12 @@ public class SkeletonIdleState : EnemyState
     {
         base.Update();
 
-        enemy1.SetZeroVelocity();
+        enemy.SetZeroVelocity();
 
         if (startTimer <= 0)
-            enemy1.stateMachine.ChangeState(enemy1.moveState);         
+            enemy.stateMachine.ChangeState(enemy.moveState);         
 
-        if (enemy1.IsPlayerCheck() || Vector2.Distance(enemy1.transform.position, Player.position) < 2)
-            enemy1.stateMachine.ChangeState(enemy1.battleState);
+        if (enemy.IsPlayerCheck() || Vector2.Distance(enemy.transform.position, Player.position) < 2)
+            enemy.stateMachine.ChangeState(enemy.battleState);
     }
 }

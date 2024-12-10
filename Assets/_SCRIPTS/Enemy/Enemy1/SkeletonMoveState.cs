@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class SkeletonMoveState : EnemyState
 {
-    Skeleton enemy1;
+    Skeleton enemy;
 
     Transform Player;
-    public SkeletonMoveState(Enemy enemy, Skeleton enemy1, EnemyStateMachine stateMachine, string isBoolName) : base(enemy, stateMachine, isBoolName)
+    public SkeletonMoveState(Enemy enemyBase, Skeleton enemy, EnemyStateMachine stateMachine, string isBoolName) : base(enemyBase, stateMachine, isBoolName)
     {
-        this.enemy1 = enemy1;
+        this.enemy = enemy;
     }
 
     public override void Enter()
@@ -28,15 +28,15 @@ public class SkeletonMoveState : EnemyState
     {
         base.Update();
 
-        enemy1.SetVelocity(enemy1.facing * enemy1.speed,enemy1.rb.velocity.y);
+        enemy.SetVelocity(enemy.facing * enemy.speed,enemy.rb.velocity.y);
 
-        if (enemy1.IsWallCheck() || !enemy1.IsGroundCheck())
+        if (enemy.IsWallCheck() || !enemy.IsGroundCheck())
         {
-            enemy1.Flip();
-            enemy1.stateMachine.ChangeState(enemy1.idleState);
+            enemy.Flip();
+            enemy.stateMachine.ChangeState(enemy.idleState);
         }
 
-        if(enemy1.IsPlayerCheck() || Vector2.Distance(enemy1.transform.position, Player.position) < 2)
-            enemy1.stateMachine.ChangeState(enemy1.battleState);
+        if(enemy.IsPlayerCheck() || Vector2.Distance(enemy.transform.position, Player.position) < 2)
+            enemy.stateMachine.ChangeState(enemy.battleState);
     }
 }

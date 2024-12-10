@@ -21,7 +21,11 @@ public class Enemy : Entity
     public float battleTime;
     public float attackDistace;
     [HideInInspector]public float lastTimeAttacked;
-
+    [Header("Stun")]
+    public float stunTime;
+    public Vector2 stunDir;
+    protected bool canBeStuned;
+    [SerializeField] protected GameObject counterImage;
     #region Compoments
     public EnemyState enemy { get; private set; }
     public EnemyStateMachine stateMachine { get; private set; }
@@ -41,6 +45,7 @@ public class Enemy : Entity
         base.Update();
         stateMachine.currentState.Update();
     }
+    #region check
     public bool IsWallCheck() => Physics2D.Raycast(wallCheck.position,
         Vector2.right * facing, wallCheckDistance, whatIsGround);
 
@@ -48,6 +53,26 @@ public class Enemy : Entity
         Vector2.right * facing, attackDistace, WhatIsPlayer);
 
     public void AnimationTrigger() => stateMachine.currentState.AminationTrigger();
+    public virtual void OpenCounterAttack()
+    {
+        canBeStuned = true;
+        counterImage.SetActive(true);
+    }
+    public virtual void CloseCounterAttack()
+    {
+        canBeStuned = false;
+        counterImage.SetActive(false);
+    }
+    public virtual bool CanBeStuned()
+    {
+        if (canBeStuned)
+        {
+            CloseCounterAttack();
+            return true;
+        }
+        return false;
+    }
+    #endregion
 
     public override void OnDrawGizmos()
     {

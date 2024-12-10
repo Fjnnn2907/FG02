@@ -43,5 +43,8 @@ public class CharacterGroundState : CharacterState
 
         if (Input.GetKeyDown(KeyCode.I) && character.IsGroundCheck())
             stateMachine.ChangeState(character.jabState);
+
+        //if (Input.GetKeyDown(KeyCode.Q) && character.IsGroundCheck())
+        //    stateMachine.ChangeState(character.counterAttackState);
     }
 }

@@ -19,13 +19,15 @@ public class Character : Entity
     public CharacterChangeState changeState { get; private set; }
     public CharacterRollState rollState { get; private set; }
     public CharacterJabState jabState { get; private set; }
+    public CharacterCounterAttackState counterAttackState { get; private set; }
     #endregion
     public float jumpFore = 12;
     public float xInput { get; set; }
     [Header("Attack")]
     public Vector2[] attackMovement;
     private bool isHited;
-    
+    public float counterAttackTime =2f;
+
     [Header("Stat")]
     public int health;
     public int maxHealth;
@@ -49,6 +51,7 @@ public class Character : Entity
         changeState = new(this, stateMachine, "ChangeState");
         rollState = new(this, stateMachine, "Roll");
         jabState = new(this, stateMachine, "Jab");
+        counterAttackState = new(this, stateMachine, "CounterAttack");
 
     }
     protected override void Start()

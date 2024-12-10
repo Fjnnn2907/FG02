@@ -29,4 +29,12 @@ public class TriggerEnemy : MonoBehaviour
             collision.GetComponent<Character>().Damege();
         }
     }
+    protected void OpenCounterAttack()
+    {
+        enemy.OpenCounterAttack();
+    }
+    protected void CloseCounterAttack()
+    {
+        enemy.CloseCounterAttack();
+    }
 }

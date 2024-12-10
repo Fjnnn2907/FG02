@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class SkeletonBattleState : EnemyState
 {
-    Skeleton enemy1;
+    Skeleton enemy;
 
     private Transform player;
     public int moveDir;
-    public SkeletonBattleState(Enemy enemy, Skeleton enemy1, EnemyStateMachine stateMachine, string isBoolName) : base(enemy, stateMachine, isBoolName)
+    public SkeletonBattleState(Enemy enemyBase, Skeleton enemy, EnemyStateMachine stateMachine, string isBoolName) : base(enemyBase, stateMachine, isBoolName)
     {
-        this.enemy1 = enemy1;
+        this.enemy = enemy;
     }
 
     public override void Enter()
@@ -24,44 +24,44 @@ public class SkeletonBattleState : EnemyState
     {
         base.Exit();
 
-        enemy1.lastTimeAttacked = 0;
+        enemy.lastTimeAttacked = 0;
     }
 
     public override void Update()
     {
         base.Update();
 
-        if (enemy1.IsPlayerCheck())
+        if (enemy.IsPlayerCheck())
         {
-            startTimer = enemy1.battleTime;
+            startTimer = enemy.battleTime;
 
-            if (enemy1.IsPlayerCheck().distance <= enemy1.radiusAttack)
+            if (enemy.IsPlayerCheck().distance <= enemy.radiusAttack)
             {
                 if (CanAttack())
                 {
-                    stateMachine.ChangeState(enemy1.attackState);
+                    stateMachine.ChangeState(enemy.attackState);
                     return;
                 }           
             }
         }
         else
         {
-            if(startTimer <= 0 || Vector2.Distance(enemy1.transform.position,player.position) > 7)
-                stateMachine.ChangeState(enemy1.idleState);
+            if(startTimer <= 0 || Vector2.Distance(enemy.transform.position,player.position) > 7)
+                stateMachine.ChangeState(enemy.idleState);
         }
 
-        if (player.position.x > enemy1.transform.position.x)
+        if (player.position.x > enemy.transform.position.x)
             moveDir = 1;
-        else if(player.position.x < enemy1.transform.position.x)
+        else if(player.position.x < enemy.transform.position.x)
             moveDir = -1;
 
-        enemy1.SetVelocity(enemy1.speed * moveDir,enemy1.rb.velocity.y);
+        enemy.SetVelocity(enemy.speed * moveDir,enemy.rb.velocity.y);
     }
     private bool CanAttack()
     {
-        if (Time.time >= enemy.lastTimeAttacked + enemy.attackCoolDown)
+        if (Time.time >= enemyBase.lastTimeAttacked + enemyBase.attackCoolDown)
         {
-            enemy.lastTimeAttacked = Time.time;
+            enemyBase.lastTimeAttacked = Time.time;
             return true;
         }
         return false;
