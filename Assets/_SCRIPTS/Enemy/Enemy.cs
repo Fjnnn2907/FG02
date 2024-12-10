@@ -96,7 +96,9 @@ public class Enemy : MonoBehaviour
     public void SetZeroVelocity()
     {
         rb.velocity = Vector2.zero;
+  
     }
+    #region Flip
     public void Flip()
     {
         facing *= -1;
@@ -109,4 +111,5 @@ public class Enemy : MonoBehaviour
         if (_x > 0 && !isRight) Flip();
         else if (_x < 0 && isRight) Flip();
     }
+    #endregion
 }

@@ -3,61 +3,42 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public class Character : Entity
 {
     #region State
     public CharacterState character { get; private set; }
-    public CharacterStateMachine stateMachine { get; private set; }
-    public Animator anim { get; private set; }
-    public Rigidbody2D rb { get; private set; }
+
 
     public CharacterIdleState idleState { get; private set; }
     public CharacterRunState runState { get; private set; }
     public CharacterAttackState attackState { get; private set; }
     public CharacterJumpState jumpState { get; private set; }
     public CharacterAirState airState { get; private set; }
-    public CharacterJumpSpinState jumpSpinState {  get; private set; }
+    public CharacterJumpSpinState jumpSpinState { get; private set; }
     public CharacterHeliState heliState { get; private set; }
     public CharacterChangeState changeState { get; private set; }
     public CharacterRollState rollState { get; private set; }
     public CharacterJabState jabState { get; private set; }
     #endregion
     public EmtityFx emtityFx { get; private set; }
-
-    public float speed = 10;
-
-    protected bool isRight = true;
-    public int facing { get; private set; } = 1;
-
-    public float xInput { get; set; }
-    public bool isGrounded { get; set; }
-
     public float jumpFore = 12;
+    
     [Header("Attack")]
-    public Transform attackCheck;
-    public float attackDistance;
-    public LayerMask whatIsEnemy;
     public Vector2[] attackMovement;
     private bool isHited;
+    
     [Header("Stat")]
     public int health;
     public int maxHealth;
-    public Transform spawnPoint;
-    private bool isDead = false;
-    private bool isHit = false;
     private SpriteRenderer sr;
     public GameObject effectVer2;
-    [Header("Collider")]
-    [SerializeField] protected Transform groundCheck;
-    [SerializeField] protected float groundCheckDistance;
-    [SerializeField] protected LayerMask whatIsGround;
-    public bool isVer2 = false;
-    public float ver2Timer;
-    public Vector2 boxSize;
-
-    protected virtual void Awake()
+    #region Ver2
+    public bool isVer2 { get; set; } = false;
+    public float ver2Timer { get;set; }
+    #endregion
+    protected override void Awake()
     {
-        stateMachine = new();
+        base.Awake();
         idleState = new(this, stateMachine, "Idle");
         runState = new(this, stateMachine, "Run");
         attackState = new(this, stateMachine, "Attack");
@@ -70,27 +51,27 @@ public class Character : MonoBehaviour
         jabState = new(this, stateMachine, "Jab");
 
     }
-    protected virtual void Start()
+    protected override void Start()
     {
-        anim = GetComponentInChildren<Animator>();
-        rb = GetComponent<Rigidbody2D>();
+        base.Start();
         stateMachine.StartState(idleState);
         emtityFx = GetComponentInChildren<EmtityFx>();
     }
-    protected virtual void Update()
+    protected override void Update()
     {
-        stateMachine.currentState.Update();
+        base.Update();
 
         ChangeState();
-
-
     }
     private void FixedUpdate()
     {
         CheckInput();
     }
-    public void AnimationTrigger() => stateMachine.currentState.AminationTrigger();
-
+    public void Damgege()
+    {
+        emtityFx.StartCoroutine("HitFlashFx");
+    }
+    #region ChangeStateVer
     public void ChangeVer2()
     {
         isVer2 = true;
@@ -128,10 +109,8 @@ public class Character : MonoBehaviour
         jumpFore = 700;
         anim.speed = 1;
     }
-    public void Damgege()
-    {
-        emtityFx.StartCoroutine("HitFlashFx");
-    }
+    #endregion
+    #region Input
     public void CheckInput()
     {
         if (Input.GetKey(KeyCode.A))
@@ -141,38 +120,13 @@ public class Character : MonoBehaviour
         else
             xInput = 0;
     }
-    public virtual void OnDrawGizmos()
-    {
-        Gizmos.DrawWireCube(groundCheck.position + Vector3.down * groundCheckDistance / 2, boxSize);
-        //Gizmos.DrawLine(groundCheck.position, new Vector3(groundCheck.position.x, groundCheck.position.y - groundCheckDistance));
-        //Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance, wallCheck.position.y));
-        //Gizmos.DrawWireSphere(attackCheck.position, radiusAttack);
-    }
-    public bool IsGroundCheck() => Physics2D.BoxCast(groundCheck.position, boxSize, 0f, Vector2.down, groundCheckDistance, whatIsGround);
-    public void SetVelocity(float xVelocity, float yVelocity)
-    {
-        rb.velocity = new Vector2(xVelocity, yVelocity);
-
-        FlipCtrl(xVelocity);
-    }
+    #endregion
+    #region Velocity
     public void SetAddForce(float xVelocity, float yVelocity)
     {
         rb.AddForce(new Vector2(xVelocity, yVelocity));
         FlipCtrl(xVelocity);
     }
-    public void SetZeroVelocity()
-    {
-        rb.velocity = Vector2.zero;
-    }
-    public void Flip()
-    {
-        facing *= -1;
-        isRight = !isRight;
-        transform.Rotate(0, 180, 0);
-    }
-    public void FlipCtrl(float x)
-    {
-        if (x > 0 && !isRight) Flip();
-        else if (x < 0 && isRight) Flip();
-    }
+    #endregion
+   
 }

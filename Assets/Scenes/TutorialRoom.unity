@@ -6468,7 +6468,6 @@ GameObject:
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   - component: {fileID: 519420033}
-  - component: {fileID: 519420034}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -6584,21 +6583,6 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &519420034
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 519420028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5b246175b469664295dc3323a1d2c2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 880980200}
-  smoothSpeed: 1
-  offset: {x: 0, y: 3, z: -10}
 --- !u!1 &561292250
 GameObject:
   m_ObjectHideFlags: 0
@@ -8831,25 +8815,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  jumpFore: 500
-  attackCheck: {fileID: 0}
-  attackDistance: 0
-  whatIsEnemy:
-    serializedVersion: 2
-    m_Bits: 0
-  attackMovement: []
-  health: 0
-  maxHealth: 0
-  spawnPoint: {fileID: 0}
-  effectVer2: {fileID: 117075990}
   groundCheck: {fileID: 1729555959}
   groundCheckDistance: 0.3
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
-  isVer2: 0
-  ver2Timer: 10
   boxSize: {x: 0.5, y: 0.2}
+  jumpFore: 500
+  attackMovement:
+  - {x: 1.5, y: 0}
+  - {x: 3, y: 0}
+  health: 0
+  maxHealth: 0
+  effectVer2: {fileID: 117075990}
 --- !u!4 &880980200
 Transform:
   m_ObjectHideFlags: 0
@@ -11405,7 +11383,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1920826124
 Transform:
   m_ObjectHideFlags: 0
@@ -11598,10 +11576,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\"Xin ch\xE0o! T\xF4i l\xE0 NPC c\u1EE7a khu v\u1EF1c n\xE0y.\""
+  m_text: "xin ch\xE0o \u1EDF v "
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e7c58b9155ad3db4f88d594a883e6ecb, type: 2}
-  m_sharedMaterial: {fileID: -4523437599079117612, guid: e7c58b9155ad3db4f88d594a883e6ecb, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8e6287bd068fb0e40819f072ddafec88, type: 2}
+  m_sharedMaterial: {fileID: 2621188288139342086, guid: 8e6287bd068fb0e40819f072ddafec88, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -11631,7 +11609,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
