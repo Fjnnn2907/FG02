@@ -26,7 +26,7 @@ public class TriggerEnemy : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            collision.GetComponent<Character>().Damgege();
+            collision.GetComponent<Character>().Damege();
         }
     }
 }

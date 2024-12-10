@@ -8,9 +8,10 @@ public class Entity : MonoBehaviour
     #region State
     public Animator anim { get; private set; }
     public Rigidbody2D rb { get; private set; }
+    public EntityFX fx { get; private set; }
     #endregion
+    
     public float speed = 10;
-
     protected bool isRight = true;
     public int facing { get; private set; } = 1;
     [Header("Collider")]
@@ -28,10 +29,17 @@ public class Entity : MonoBehaviour
     {
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        fx = GetComponent<EntityFX>();
     }
     protected virtual void Update()
     {
     }
+    
+    public virtual void Damege()
+    {
+        fx.StartCoroutine("HitFlashFx");
+    }
+
     public virtual bool IsGroundCheck() => Physics2D.BoxCast(groundCheck.position, boxSize, 0f, Vector2.down, groundCheckDistance, whatIsGround);
     public virtual void OnDrawGizmos()
     {

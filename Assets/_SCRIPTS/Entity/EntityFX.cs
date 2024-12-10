@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EmtityFx : MonoBehaviour
+public class EntityFX : MonoBehaviour
 {
     private SpriteRenderer sr;
 
@@ -12,7 +12,7 @@ public class EmtityFx : MonoBehaviour
 
     private void Start()
     {
-        sr = GetComponent<SpriteRenderer>();
+        sr = GetComponentInChildren<SpriteRenderer>();
         OriginalMaterial = sr.material;
     }
     private IEnumerator HitFlashFx()

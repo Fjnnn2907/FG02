@@ -20,7 +20,6 @@ public class Character : Entity
     public CharacterRollState rollState { get; private set; }
     public CharacterJabState jabState { get; private set; }
     #endregion
-    public EmtityFx emtityFx { get; private set; }
     public float jumpFore = 12;
     public float xInput { get; set; }
     [Header("Attack")]
@@ -57,7 +56,6 @@ public class Character : Entity
         base.Start();
 
         stateMachine.StartState(idleState);
-        emtityFx = GetComponentInChildren<EmtityFx>();
     }
     protected override void Update()
     {
@@ -68,10 +66,6 @@ public class Character : Entity
     private void FixedUpdate()
     {
         CheckInput();
-    }
-    public void Damgege()
-    {
-        emtityFx.StartCoroutine("HitFlashFx");
     }
     public virtual void AnimationTrigger() => stateMachine.currentState.AminationTrigger();
 

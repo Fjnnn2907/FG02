@@ -27,7 +27,6 @@ public class Enemy : Entity
     [HideInInspector]public float lastTimeAttacked;
 
     #region Compoments
-    public EmtityFx emtityFx { get; private set; }
     public EnemyState enemy { get; private set; }
     public EnemyStateMachine stateMachine { get; private set; }
     #endregion
@@ -39,7 +38,6 @@ public class Enemy : Entity
     protected override void Start()
     {
         base.Start();
-        emtityFx = GetComponentInChildren<EmtityFx>();
         HP = maxHP;
     }
     protected override void Update()
@@ -48,14 +46,6 @@ public class Enemy : Entity
         stateMachine.currentState.Update();
     }
 
-    public void Damge(int damege)
-    {
-        HP -= damege;
-        Debug.Log("hit " + gameObject.name);
-        StartCoroutine(KnockBack());
-        emtityFx.StartCoroutine("HitFlashFx");
-
-    }
     public IEnumerator KnockBack()
     {
         isKnock = true;

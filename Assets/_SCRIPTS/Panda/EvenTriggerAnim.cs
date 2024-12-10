@@ -14,7 +14,7 @@ public class EvenTriggerAnim : MonoBehaviour
         if (collision.CompareTag("Enemy"))
         {
             if (collision.GetComponent<Enemy>() == null) return;
-            collision.GetComponent<Enemy>().Damge(1);
+            collision.GetComponent<Enemy>().Damege();
         }
     }
 }
