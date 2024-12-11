@@ -83,7 +83,8 @@ public class Character : Entity
     }
     public void CleanSword()
     {
-        Destroy(sword); 
+        stateMachine.ChangeState(catchSwordState);
+        Destroy(sword);      
     }
     #endregion
     #region ChangeStateVer

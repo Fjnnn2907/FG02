@@ -11,7 +11,6 @@ public class CharacterAimSwordState : CharacterState
     {
         base.Enter();
 
-        character.SetZeroVelocity();
 
         character.skill.swordSkill.DotsActive(true);
     }
@@ -24,8 +23,16 @@ public class CharacterAimSwordState : CharacterState
     public override void Update()
     {
         base.Update();
-
-        if(Input.GetKeyUp(KeyCode.Mouse1))
+        character.SetZeroVelocity();
+        if (Input.GetKeyUp(KeyCode.Mouse1))
             stateMachine.ChangeState(character.idleState);
+        Debug.Log(character.facing);
+
+        Vector2 mousePos = Camera.main.ViewportToScreenPoint(Input.mousePosition);
+
+        if (character.transform.position.x > mousePos.x && character.facing == 1)
+            character.Flip();
+        else if(character.transform.position.x < mousePos.x && character.facing == -1)
+            character.Flip();
     }
 }

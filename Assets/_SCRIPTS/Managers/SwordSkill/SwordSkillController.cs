@@ -39,7 +39,9 @@ public class SwordSkillController : MonoBehaviour
     {
         if (canRotate)
             transform.right = rb.velocity;
-
+        
+        if (Vector2.Distance(transform.position, character.transform.position) > 30)
+            Destroy(gameObject);
 
         if (isReturning)
         {
