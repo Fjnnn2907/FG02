@@ -44,8 +44,9 @@ public class SwordSkill : Skill
     public void CreateSword()
     {
         GameObject newSowrd = Instantiate(swordPrefab,character.transform.position,transform.rotation);
-        newSowrd.GetComponent<SwordSkillController>().SetUpSword(finalDir, swordGravity);
-        
+        newSowrd.GetComponent<SwordSkillController>().SetUpSword(finalDir, swordGravity,character);
+
+        character.NewSword(newSowrd);
         DotsActive(false);
     }
     public Vector2 AnimDirection()

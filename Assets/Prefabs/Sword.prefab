@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1214647613405101424}
   - component: {fileID: 550830546584608654}
   - component: {fileID: 9102141323877289224}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: Sword
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,7 +91,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.07253808, y: -0.0025183298}
@@ -119,6 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6988c01dad5cc2409a2b0cf7654bd17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  returnSpeed: 20
 --- !u!1 &3572305706174871759
 GameObject:
   m_ObjectHideFlags: 0
@@ -130,7 +131,7 @@ GameObject:
   - component: {fileID: 1290397847386931577}
   - component: {fileID: 5394283114411540349}
   - component: {fileID: 5046837065164329123}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}

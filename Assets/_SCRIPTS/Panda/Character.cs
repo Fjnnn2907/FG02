@@ -22,7 +22,10 @@ public class Character : Entity
     #endregion
     public float jumpFore = 12;
     public float xInput { get; set; }
+    #region SKill
     public SkillManager skill { get; private set; }
+    public GameObject sword; //{  get; private set; }  
+        #endregion
     [Header("Attack")]
     public Vector2[] attackMovement;
     private bool isHited;
@@ -73,7 +76,16 @@ public class Character : Entity
         CheckInput();
     }
     public virtual void AnimationTrigger() => stateMachine.currentState.AminationTrigger();
-
+    #region Skill
+    public void NewSword(GameObject _newSword)
+    {
+        sword = _newSword;
+    }
+    public void CleanSword()
+    {
+        Destroy(sword); 
+    }
+    #endregion
     #region ChangeStateVer
     public void ChangeVer2()
     {

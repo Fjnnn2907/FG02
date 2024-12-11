@@ -8985,8 +8985,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cooldown: 1
   swordPrefab: {fileID: 1419234205748249208, guid: 260938696aee1fe4db1fa9470e5dd8aa, type: 3}
-  swordForce: {x: 30, y: 20}
-  swordGravity: 4
+  swordForce: {x: 35, y: 25}
+  swordGravity: 4.5
   munberDots: 20
   spaceBeetwenDots: 0.07
   dotPrefab: {fileID: 3072721561679268227, guid: 57927b01263c4c941a2b40cd254e3f14, type: 3}
@@ -9060,6 +9060,7 @@ MonoBehaviour:
   KnockDir: {x: 3, y: 3}
   KnockTimer: 0.07
   jumpFore: 500
+  sword: {fileID: 0}
   attackMovement:
   - {x: 1.5, y: 0}
   - {x: 3, y: 0}
@@ -12089,7 +12090,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1999795195
 Transform:
   m_ObjectHideFlags: 0

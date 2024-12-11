@@ -45,7 +45,16 @@ public class CharacterGroundState : CharacterState
         //if (Input.GetKeyDown(KeyCode.Q) && character.IsGroundCheck())
         //    stateMachine.ChangeState(character.counterAttackState);
 
-        if (Input.GetKeyDown(KeyCode.Mouse1) && character.IsGroundCheck())
+        if (Input.GetKeyDown(KeyCode.Mouse1) && character.IsGroundCheck() && HeNoSword())
             stateMachine.ChangeState(character.aimSwordState);
+    }
+
+    private bool HeNoSword()
+    {
+        if(!character.sword)
+            return true;
+
+        character.sword.GetComponent<SwordSkillController>().ReturnSword();
+        return false;
     }
 }
