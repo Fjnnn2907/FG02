@@ -110,6 +110,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   returnSpeed: 20
+  isBounsing: 1
+  bounceSpeed: 10
+  amoutOfBounce: 4
+  enemyTarget: []
 --- !u!1 &3572305706174871759
 GameObject:
   m_ObjectHideFlags: 0
@@ -184,7 +188,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1512970035, guid: 56608ad416875c04d8814b2d27b52cee, type: 3}
+  m_Sprite: {fileID: -2004053239, guid: 0008ea52c941e3f4e894a8c0b620087e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

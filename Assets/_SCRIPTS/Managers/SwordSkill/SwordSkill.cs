@@ -1,9 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+public enum SwordTpye
+{
+    Regular,
+    Bounce,
+    Pierce,
+    Spin
+}
 public class SwordSkill : Skill
 {
+    public SwordTpye swordTpye = SwordTpye.Regular;
+    [Header("Bounce")]
+    [SerializeField] private int amoutOfBouce;
+    [SerializeField] private float bouceGravity;
+
+    [Header("Skill")]
     [SerializeField] private GameObject swordPrefab;
     [SerializeField] private Vector2 swordForce;
     [SerializeField] private float swordGravity;
@@ -15,7 +26,7 @@ public class SwordSkill : Skill
     [SerializeField] private float spaceBeetwenDots;
     [SerializeField] private GameObject dotPrefab;
     [SerializeField] private GameObject dotsParent;
-    
+
     private GameObject[] dots;
 
     protected override void Start()
@@ -43,12 +54,20 @@ public class SwordSkill : Skill
     }
     public void CreateSword()
     {
-        GameObject newSowrd = Instantiate(swordPrefab,character.transform.position,Quaternion.identity);
-        newSowrd.GetComponent<SwordSkillController>().SetUpSword(finalDir, swordGravity,character);
+        GameObject newSowrd = Instantiate(swordPrefab, character.transform.position, Quaternion.identity);
+        var newSowrdScript = newSowrd.GetComponent<SwordSkillController>();
+        
+        if(swordTpye == SwordTpye.Bounce)
+        {
+            swordGravity = bouceGravity;
+            newSowrdScript.SetupBouce(true, amoutOfBouce);
+        }
 
+        newSowrdScript.SetUpSword(finalDir, swordGravity, character);
         character.NewSword(newSowrd);
         DotsActive(false);
     }
+    #region AnimSword
     public Vector2 AnimDirection()
     {
         var characterPos = character.transform.position;
@@ -72,7 +91,7 @@ public class SwordSkill : Skill
         dots = new GameObject[munberDots];
         for (int i = 0; i < munberDots; i++)
         {
-            dots[i] = Instantiate(dotPrefab,character.transform.position,Quaternion.identity,dotsParent.transform);
+            dots[i] = Instantiate(dotPrefab, character.transform.position, Quaternion.identity, dotsParent.transform);
             dots[i].SetActive(false);
         }
     }
@@ -85,4 +104,6 @@ public class SwordSkill : Skill
 
         return pos;
     }
+    #endregion
 }
+

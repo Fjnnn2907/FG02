@@ -27,7 +27,7 @@ public class CharacterGroundState : CharacterState
         if (Input.GetKeyDown(KeyCode.Space) && character.IsGroundCheck())
             stateMachine.ChangeState(character.jumpState);
 
-        if (Input.GetKeyDown(KeyCode.J) && character.IsGroundCheck())
+        if (Input.GetKeyDown(KeyCode.Mouse0) && character.IsGroundCheck())
             stateMachine.ChangeState(character.attackState);
 
         if (Input.GetKeyDown(KeyCode.H) && character.IsGroundCheck())
@@ -36,7 +36,7 @@ public class CharacterGroundState : CharacterState
             stateMachine.ChangeState(character.changeState);
         }
         // add singleton Skill
-        if (Input.GetKeyDown(KeyCode.L) && character.IsGroundCheck() && SkillManager.instance.rollSkill.CanUseSkill())
+        if (Input.GetKeyDown(KeyCode.LeftShift) && character.IsGroundCheck() && SkillManager.instance.rollSkill.CanUseSkill())
             stateMachine.ChangeState(character.rollState);
 
         if (Input.GetKeyDown(KeyCode.I) && character.IsGroundCheck())
