@@ -43,7 +43,7 @@ public class SwordSkill : Skill
     }
     public void CreateSword()
     {
-        GameObject newSowrd = Instantiate(swordPrefab,character.transform.position,transform.rotation);
+        GameObject newSowrd = Instantiate(swordPrefab,character.transform.position,Quaternion.identity);
         newSowrd.GetComponent<SwordSkillController>().SetUpSword(finalDir, swordGravity,character);
 
         character.NewSword(newSowrd);

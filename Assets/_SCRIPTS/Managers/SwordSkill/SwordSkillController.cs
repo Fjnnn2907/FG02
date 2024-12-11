@@ -7,7 +7,7 @@ public class SwordSkillController : MonoBehaviour
 {
     private Rigidbody2D rb;
     private Animator anim;
-    private BoxCollider2D collider2d;
+    private CapsuleCollider2D collider2d;
     private Character character;
 
     [SerializeField] private float returnSpeed;
@@ -16,18 +16,16 @@ public class SwordSkillController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        if (rb == null)
-        {
-            Debug.LogError("Rigidbody2D not found on SwordSkillController");
-        }
-        anim = GetComponent<Animator>();
-        collider2d = GetComponent<BoxCollider2D>();
+        anim = GetComponentInChildren<Animator>();
+        collider2d = GetComponent<CapsuleCollider2D>();
     }
     public void SetUpSword(Vector2 _dir, float _gravity, Character _character)
     {
         character = _character; 
         rb.velocity = _dir;
         rb.gravityScale = _gravity;
+
+        anim.SetBool("Active", true);
     }
     public void ReturnSword()
     {
@@ -39,17 +37,21 @@ public class SwordSkillController : MonoBehaviour
     }
     private void Update()
     {
-        if(canRotate)
+        if (canRotate)
             transform.right = rb.velocity;
+
 
         if (isReturning)
         {
+            canRotate = false;
+            Vector2 directionToPlayer = (character.transform.position - transform.position).normalized;
+            transform.right = directionToPlayer;
+
             transform.position = Vector2.MoveTowards
                 (transform.position,character.transform.position,returnSpeed * Time.deltaTime);
-            if(Vector2.Distance(transform.position,character.transform.position) < .5f)
-            {
+            
+            if (Vector2.Distance(transform.position,character.transform.position) < .5f)
                 character.CleanSword();
-            }
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
@@ -60,5 +62,6 @@ public class SwordSkillController : MonoBehaviour
         rb.constraints = RigidbodyConstraints2D.FreezeAll;
 
         transform.parent = collision.transform;
+        anim.SetBool("Active", false);
     }
 }
