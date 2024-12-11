@@ -7,6 +7,7 @@ public class SkillManager : MonoBehaviour
     public static SkillManager instance;
     public RollSkill rollSkill { get; private set;}
     public CloneSkill cloneSkill { get; private set;}
+    public SwordSkill swordSkill { get; private set;}
     #region Singleton
     private void Awake()
     {
@@ -20,5 +21,6 @@ public class SkillManager : MonoBehaviour
     {
         rollSkill = GetComponent<RollSkill>();
         cloneSkill = GetComponent<CloneSkill>();
+        swordSkill = GetComponent<SwordSkill>();
     }
 }

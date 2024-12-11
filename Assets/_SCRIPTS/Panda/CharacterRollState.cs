@@ -10,7 +10,7 @@ public class CharacterRollState : CharacterState
         base.Enter();
         startTimer = .286f;
 
-        character.skillManager.cloneSkill.CreateClone(character.transform);
+        character.skill.cloneSkill.CreateClone(character.transform);
     }
 
     public override void Exit()

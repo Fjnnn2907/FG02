@@ -17,10 +17,12 @@ public class Character : Entity
     public CharacterRollState rollState { get; private set; }
     public CharacterJabState jabState { get; private set; }
     public CharacterCounterAttackState counterAttackState { get; private set; }
+    public CharacterAimSwordState aimSwordState { get; private set; }
+    public CharacterCatchSwordState catchSwordState { get; private set; }
     #endregion
     public float jumpFore = 12;
     public float xInput { get; set; }
-    public SkillManager skillManager { get; private set; }
+    public SkillManager skill { get; private set; }
     [Header("Attack")]
     public Vector2[] attackMovement;
     private bool isHited;
@@ -50,12 +52,14 @@ public class Character : Entity
         rollState = new(this, stateMachine, "Roll");
         jabState = new(this, stateMachine, "Jab");
         counterAttackState = new(this, stateMachine, "CounterAttack");
+        aimSwordState = new(this, stateMachine, "AimSword");
+        catchSwordState = new(this, stateMachine, "CatchSword");
 
     }
     protected override void Start()
     {
         base.Start();
-        skillManager = SkillManager.instance;
+        skill = SkillManager.instance;
         stateMachine.StartState(idleState);
     }
     protected override void Update()

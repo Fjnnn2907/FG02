@@ -16,4 +16,8 @@ public class EvenTriggerAnim : MonoBehaviour
             collision.GetComponent<Enemy>().Damege();
         }
     }
+    public void CreateSword()
+    {
+        SkillManager.instance.swordSkill.CreateSword();
+    }
 }
