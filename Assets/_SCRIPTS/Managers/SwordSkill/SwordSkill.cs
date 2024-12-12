@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public enum SwordTpye
@@ -12,23 +11,32 @@ public class SwordSkill : Skill
 {
     public SwordTpye swordTpye = SwordTpye.Regular;
     [Header("Bounce")]
-    [SerializeField] private int bouceAmout;
-    [SerializeField] private float bouceGravity;
+    [SerializeField] private int bouceAmout = 4;
+    [SerializeField] private float bouceGravity = 1;
+    [SerializeField] private float bounceSpeed = 10;
 
     [Header("Perice")]
-    [SerializeField] private int periceAmout;
-    [SerializeField] private float periceGravity;
+    [SerializeField] private int periceAmout = 2;
+    [SerializeField] private float periceGravity = 1;
 
+    [Header("Spin")]
+    [SerializeField] private float hitCooldown = .35f;
+    [SerializeField] private float maxTravelDistace = 7;
+    [SerializeField] private float spinDuration = 0.75f;
+    [SerializeField] private float spinGravity = 1;
+    
     [Header("Skill")]
     [SerializeField] private GameObject swordPrefab;
-    [SerializeField] private Vector2 swordForce;
-    [SerializeField] private float swordGravity;
+    [SerializeField] private Vector2 swordForce = new Vector2(35, 25);
+    [SerializeField] private float swordGravity = 0.5f;
+    [SerializeField] private float freeTime = 1;
+    [SerializeField] private float returnSpeed = 20;
 
     private Vector2 finalDir;
 
     [Header("Dots")]
-    [SerializeField] private int munberDots;
-    [SerializeField] private float spaceBeetwenDots;
+    [SerializeField] private int munberDots = 20;
+    [SerializeField] private float spaceBeetwenDots = .07f;
     [SerializeField] private GameObject dotPrefab;
     [SerializeField] private GameObject dotsParent;
 
@@ -45,10 +53,12 @@ public class SwordSkill : Skill
 
     private void SetGravity()
     {
-        if(swordTpye == SwordTpye.Bounce)
+        if (swordTpye == SwordTpye.Bounce)
             swordGravity = bouceGravity;
-        else if(swordTpye == SwordTpye.Pierce)
+        else if (swordTpye == SwordTpye.Pierce)
             swordGravity = periceGravity;
+        else if (swordTpye == SwordTpye.Spin)
+            swordGravity = spinGravity;
 
     }
 
@@ -73,13 +83,15 @@ public class SwordSkill : Skill
     {
         GameObject newSowrd = Instantiate(swordPrefab, character.transform.position, Quaternion.identity);
         var newSowrdScript = newSowrd.GetComponent<SwordSkillController>();
-        
-        if(swordTpye == SwordTpye.Bounce)
-            newSowrdScript.SetupBouce(true, bouceAmout);
-        else if(swordTpye == SwordTpye.Pierce)
-            newSowrdScript.SetUpPierce(periceAmout);
 
-        newSowrdScript.SetUpSword(finalDir, swordGravity, character);
+        if (swordTpye == SwordTpye.Bounce)
+            newSowrdScript.SetupBouce(true, bouceAmout, bounceSpeed);
+        else if (swordTpye == SwordTpye.Pierce)
+            newSowrdScript.SetUpPierce(periceAmout);
+        else if (swordTpye == SwordTpye.Spin)
+            newSowrdScript.SetupSpin(true,maxTravelDistace,spinDuration, hitCooldown);
+
+        newSowrdScript.SetUpSword(finalDir, swordGravity, character, freeTime, returnSpeed);
         character.NewSword(newSowrd);
         DotsActive(false);
     }

@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : Entity
@@ -13,6 +15,7 @@ public class Enemy : Entity
     public float speedBattle = 5f;
     public int maxHP;
     private int HP;
+    private float speedTamp;
 
     [Header("Attack")]
     public float attackCoolDown;
@@ -37,6 +40,7 @@ public class Enemy : Entity
     {
         base.Start();
         HP = maxHP;
+        speedTamp = speed;
     }
     protected override void Update()
     {
@@ -71,7 +75,25 @@ public class Enemy : Entity
         return false;
     }
     #endregion
-
+    public virtual void FreezeTime(bool _timeFreeze)
+    {
+        if (_timeFreeze)
+        {
+            anim.speed = 0;
+            speed = 0;  
+        }
+        else
+        {
+            anim.speed = 1;
+            speed = speedTamp;
+        }
+    }
+    public virtual IEnumerator FreezeTimeFor(float _seconds)
+    {
+        FreezeTime(true);
+        yield return new WaitForSeconds(_seconds);
+        FreezeTime(false);
+    }
     public override void OnDrawGizmos()
     {
         base.OnDrawGizmos();
