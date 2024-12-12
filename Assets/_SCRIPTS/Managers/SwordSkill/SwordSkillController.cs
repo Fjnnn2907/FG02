@@ -13,11 +13,13 @@ public class SwordSkillController : MonoBehaviour
     private bool canRotate = true;
 
     [Header("Bouncing")]
-    private bool isBounsing;
     [SerializeField]private float bounceSpeed;
-    private int amoutOfBounce;
+    private bool isBounsing;
+    private int bouceAmout;
     public List<Transform> enemyTarget;
     private int targetIndex;
+    [Header("Pierce")]
+    [SerializeField] private int pierceAmout;
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -29,15 +31,19 @@ public class SwordSkillController : MonoBehaviour
         character = _character;
         rb.velocity = _dir;
         rb.gravityScale = _gravity;
-
-        anim.SetBool("Active", true);
+        if(pierceAmout <= 0)
+            anim.SetBool("Active", true);
     }
     public void SetupBouce(bool _isBoucing, int _amoutOfBouce)
     {
         isBounsing = _isBoucing;
-        amoutOfBounce = _amoutOfBouce;
+        bouceAmout = _amoutOfBouce;
 
         enemyTarget = new List<Transform>();
+    }
+    public void SetUpPierce(int _pierceAmout)
+    {
+        pierceAmout = _pierceAmout;
     }
     public void ReturnSword()
     {
@@ -82,8 +88,8 @@ public class SwordSkillController : MonoBehaviour
             if (Vector2.Distance(transform.position, enemyTarget[targetIndex].position) < .1f)
             {
                 targetIndex++;
-                amoutOfBounce--;
-                if (amoutOfBounce <= 0)
+                bouceAmout--;
+                if (bouceAmout <= 0)
                 {
                     isBounsing = false;
                     isReturning = true;
@@ -99,6 +105,9 @@ public class SwordSkillController : MonoBehaviour
     {
         if (isReturning) return;
         // Bouce
+
+        collision.GetComponent<Enemy>()?.Damege();
+
         if (collision.GetComponent<Enemy>() != null)
         {
             if (isBounsing && enemyTarget.Count <= 0)
@@ -117,6 +126,13 @@ public class SwordSkillController : MonoBehaviour
 
     private void StuckInto(Collider2D collision)
     {
+        if (pierceAmout > 0 && collision.GetComponent<Enemy>() != null)
+        {
+            pierceAmout--;
+            return;
+        }
+
+
         canRotate = false;
         collider2d.enabled = false;
         rb.isKinematic = true;

@@ -9047,11 +9047,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cooldown: 1
   swordTpye: 0
-  amoutOfBouce: 3
-  bouceGravity: 3
+  bouceAmout: 4
+  bouceGravity: 1
+  periceAmout: 2
+  periceGravity: 1
   swordPrefab: {fileID: 1419234205748249208, guid: 260938696aee1fe4db1fa9470e5dd8aa, type: 3}
   swordForce: {x: 35, y: 25}
-  swordGravity: 4.5
+  swordGravity: 0.5
   munberDots: 20
   spaceBeetwenDots: 0.07
   dotPrefab: {fileID: 3072721561679268227, guid: 57927b01263c4c941a2b40cd254e3f14, type: 3}

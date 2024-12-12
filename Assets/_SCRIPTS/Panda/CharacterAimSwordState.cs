@@ -26,7 +26,6 @@ public class CharacterAimSwordState : CharacterState
         character.SetZeroVelocity();
         if (Input.GetKeyUp(KeyCode.Mouse1))
             stateMachine.ChangeState(character.idleState);
-        Debug.Log(character.facing);
 
         Vector2 mousePos = Camera.main.ViewportToScreenPoint(Input.mousePosition);
 

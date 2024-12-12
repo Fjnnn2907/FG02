@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public enum SwordTpye
@@ -11,8 +12,12 @@ public class SwordSkill : Skill
 {
     public SwordTpye swordTpye = SwordTpye.Regular;
     [Header("Bounce")]
-    [SerializeField] private int amoutOfBouce;
+    [SerializeField] private int bouceAmout;
     [SerializeField] private float bouceGravity;
+
+    [Header("Perice")]
+    [SerializeField] private int periceAmout;
+    [SerializeField] private float periceGravity;
 
     [Header("Skill")]
     [SerializeField] private GameObject swordPrefab;
@@ -34,7 +39,19 @@ public class SwordSkill : Skill
         base.Start();
 
         GenerateDots();
+
+        SetGravity();
     }
+
+    private void SetGravity()
+    {
+        if(swordTpye == SwordTpye.Bounce)
+            swordGravity = bouceGravity;
+        else if(swordTpye == SwordTpye.Pierce)
+            swordGravity = periceGravity;
+
+    }
+
     protected override void Update()
     {
 
@@ -58,10 +75,9 @@ public class SwordSkill : Skill
         var newSowrdScript = newSowrd.GetComponent<SwordSkillController>();
         
         if(swordTpye == SwordTpye.Bounce)
-        {
-            swordGravity = bouceGravity;
-            newSowrdScript.SetupBouce(true, amoutOfBouce);
-        }
+            newSowrdScript.SetupBouce(true, bouceAmout);
+        else if(swordTpye == SwordTpye.Pierce)
+            newSowrdScript.SetUpPierce(periceAmout);
 
         newSowrdScript.SetUpSword(finalDir, swordGravity, character);
         character.NewSword(newSowrd);
