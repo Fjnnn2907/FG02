@@ -19,6 +19,7 @@ public class Character : Entity
     public CharacterCounterAttackState counterAttackState { get; private set; }
     public CharacterAimSwordState aimSwordState { get; private set; }
     public CharacterCatchSwordState catchSwordState { get; private set; }
+    public CharacterBackholeState backholeState { get; private set; }
     #endregion
     public float jumpFore = 12;
     public float xInput { get; set; }
@@ -34,7 +35,6 @@ public class Character : Entity
     [Header("Stat")]
     public int health;
     public int maxHealth;
-    private SpriteRenderer sr;
     public GameObject effectVer2;
     #region Ver2
     public bool isVer2 { get; set; } = false;
@@ -57,7 +57,7 @@ public class Character : Entity
         counterAttackState = new(this, stateMachine, "CounterAttack");
         aimSwordState = new(this, stateMachine, "AimSword");
         catchSwordState = new(this, stateMachine, "CatchSword");
-
+        backholeState = new(this, stateMachine, "Jump");
     }
     protected override void Start()
     {
@@ -85,6 +85,10 @@ public class Character : Entity
     {
         stateMachine.ChangeState(catchSwordState);
         Destroy(sword);      
+    }
+    public void ExitBackholeSkill()
+    {
+        stateMachine.ChangeState(airState);
     }
     #endregion
     #region ChangeStateVer

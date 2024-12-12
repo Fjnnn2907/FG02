@@ -9,10 +9,10 @@ public class CloneSkill : Skill
     [SerializeField] private float cloneTime = 1.2f;
     [SerializeField] private bool canAttack;
     // conect to CharacterRollState
-    public void CreateClone(Transform _clonePositon)
+    public void CreateClone(Transform _clonePositon, Vector3 _offset)
     {
         GameObject newClone = Instantiate(cloneSkill);
 
-        newClone.GetComponent<CloneSkillController>().SetUpClone(_clonePositon,cloneTime, canAttack);
+        newClone.GetComponent<CloneSkillController>().SetUpClone(_clonePositon,cloneTime, canAttack, _offset);
     }
 }

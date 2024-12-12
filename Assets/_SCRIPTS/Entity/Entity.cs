@@ -7,6 +7,7 @@ public class Entity : MonoBehaviour
     public Animator anim { get; private set; }
     public Rigidbody2D rb { get; private set; }
     public EntityFX fx { get; private set; }
+    public SpriteRenderer sr { get; private set; }
     #endregion
     
     public float speed = 10;
@@ -32,6 +33,7 @@ public class Entity : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
         fx = GetComponent<EntityFX>();
+        sr = GetComponentInChildren<SpriteRenderer>();
     }
     protected virtual void Update()
     {
@@ -83,4 +85,11 @@ public class Entity : MonoBehaviour
         else if (x < 0 && isRight) Flip();
     }
     #endregion
+    public void TanHinh(bool _isTanHinh)
+    {
+        if(_isTanHinh)
+            sr.color = Color.clear;
+        else
+            sr.color = Color.white;
+    }
 }

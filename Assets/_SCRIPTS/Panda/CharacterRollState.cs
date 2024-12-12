@@ -1,4 +1,6 @@
 
+using UnityEngine;
+
 public class CharacterRollState : CharacterState
 {
     public CharacterRollState(Character character, CharacterStateMachine stateMachine, string animBoolName) : base(character, stateMachine, animBoolName)
@@ -10,7 +12,7 @@ public class CharacterRollState : CharacterState
         base.Enter();
         startTimer = .286f;
 
-        character.skill.cloneSkill.CreateClone(character.transform);
+        character.skill.cloneSkill.CreateClone(character.transform, Vector3.zero);
     }
 
     public override void Exit()

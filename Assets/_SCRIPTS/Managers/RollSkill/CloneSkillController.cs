@@ -27,11 +27,11 @@ public class CloneSkillController : MonoBehaviour
             //TODO: Pool
         }
     }
-    public void SetUpClone(Transform _newTransform, float _cloneTime,bool _canAttack)
+    public void SetUpClone(Transform _newTransform, float _cloneTime,bool _canAttack, Vector3 _offset)
     {
         if(_canAttack)
             anim.SetInteger("CloneSkillNumber",Random.Range(1,3));
-        transform.position = _newTransform.position;
+        transform.position = _newTransform.position + _offset;
         cloneTimer = _cloneTime;
 
         FaceCloneTargetEnemy();

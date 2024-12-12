@@ -47,6 +47,9 @@ public class CharacterGroundState : CharacterState
 
         if (Input.GetKeyDown(KeyCode.Mouse1) && HeNoSword())
             stateMachine.ChangeState(character.aimSwordState);
+
+        if (Input.GetKeyDown(KeyCode.R))
+            stateMachine.ChangeState(character.backholeState);
     }
 
     private bool HeNoSword()
