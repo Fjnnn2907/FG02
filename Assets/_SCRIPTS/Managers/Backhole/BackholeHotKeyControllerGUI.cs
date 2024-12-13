@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class BackholeHotKeyController : MonoBehaviour
+public class BackholeHotKeyControllerGUI : MonoBehaviour
 {
     private SpriteRenderer sr;
     private KeyCode keyCode;

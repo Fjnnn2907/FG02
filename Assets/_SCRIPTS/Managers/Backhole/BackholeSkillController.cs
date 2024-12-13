@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class BackholeSkillController : MonoBehaviour
 {
     [Header("HotKey")]
@@ -14,7 +15,8 @@ public class BackholeSkillController : MonoBehaviour
     private float skrinkSpeed;
     public bool canSkrink;
     private bool canCtrateHotKey = true;
-
+    private float backholeTimer;
+    private bool characterCanDisapear = true;
     private int amoutAttack;
     public float cloneAttackCooldown;
     private float cloneAttackTimer;
@@ -23,38 +25,47 @@ public class BackholeSkillController : MonoBehaviour
     private List<Transform> targetEnemy = new();
     private List<GameObject> createHotKey = new();
 
-    public void SetupBlackhole(float _maxSize, float _growSpeed, float _skrinkSpeed, int _amoutAttack, float _cloneAttackCooldown)
+    public void SetupBlackhole(float _maxSize, float _growSpeed, float _skrinkSpeed, int _amoutAttack, float _cloneAttackCooldown, float _backholeDuration)
     {
         maxSize = _maxSize;
         growSpeed = _growSpeed;
         skrinkSpeed = _skrinkSpeed;
         amoutAttack = _amoutAttack;
         cloneAttackCooldown = _cloneAttackCooldown;
+        backholeTimer = _backholeDuration;
     }
     private void Update()
     {
         cloneAttackTimer -= Time.deltaTime;
+        backholeTimer -= Time.deltaTime;
+
+        if (backholeTimer < 0)
+        {
+            backholeTimer = Mathf.Infinity;
+            if (targetEnemy.Count > 0)
+                CloneAttack();
+            else
+                FinishBackhole();
+        }
+
 
         if (Input.GetKeyUp(KeyCode.R))
         {
-            canAttack = true;
-            DestroyHotKey();
-            canCtrateHotKey = false;
-            PlayerManager.instance.character.TanHinh(true);
+            CloneAttack();
         }
-        if (cloneAttackTimer < 0 && canAttack)
+        if (cloneAttackTimer < 0 && canAttack && amoutAttack > 0)
         {
             cloneAttackTimer = cloneAttackCooldown;
 
-            int radomIndex = Random.Range(0,targetEnemy.Count);
+            int radomIndex = Random.Range(0, targetEnemy.Count);
             float xOffset;
             if (Random.Range(0, 100) > 50)
                 xOffset = 2;
             else
                 xOffset = -2;
-            SkillManager.instance.cloneSkill.CreateClone(targetEnemy[radomIndex], new Vector3(xOffset,0));
+            SkillManager.instance.cloneSkill.CreateClone(targetEnemy[radomIndex], new Vector3(xOffset, 0));
             amoutAttack--;
-            if(amoutAttack <= 0)
+            if (amoutAttack <= 0)
             {
                 Invoke("FinishBackhole", .5f);
             }
@@ -66,13 +77,28 @@ public class BackholeSkillController : MonoBehaviour
         if (canSkrink)
         {
             transform.localScale = Vector2.Lerp(transform.localScale, new Vector2(-1, -1), growSpeed * Time.deltaTime);
-            if(transform.localScale.x <= 0)
+            if (transform.localScale.x <= 0)
                 Destroy(gameObject);
+        }
+    }
+
+    private void CloneAttack()
+    {
+        if (targetEnemy.Count <= 0) return;
+        canAttack = true;
+        DestroyHotKey();
+        canCtrateHotKey = false;
+
+        if (characterCanDisapear)
+        {
+            characterCanDisapear = false;
+            PlayerManager.instance.character.TanHinh(true);
         }
     }
 
     private void FinishBackhole()
     {
+        DestroyHotKey();
         canSkrink = true;
         canAttack = false;
         PlayerManager.instance.character.ExitBackholeSkill();
@@ -104,7 +130,7 @@ public class BackholeSkillController : MonoBehaviour
         var keycode = keycodeList[Random.Range(0, keycodeList.Count)];
         keycodeList.Remove(keycode);
 
-        var newScirptHotKey = newObj.GetComponent<BackholeHotKeyController>();
+        var newScirptHotKey = newObj.GetComponent<BackholeHotKeyControllerGUI>();
 
         newScirptHotKey.SetupHotKey(keycode, collision.transform, this);
     }
@@ -113,7 +139,7 @@ public class BackholeSkillController : MonoBehaviour
     {
         if (createHotKey.Count <= 0) return;
 
-        for(int i = 0; i < createHotKey.Count; i++)
+        for (int i = 0; i < createHotKey.Count; i++)
         {
             Destroy(createHotKey[i]);
         }

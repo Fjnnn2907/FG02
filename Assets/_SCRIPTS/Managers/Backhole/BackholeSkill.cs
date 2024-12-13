@@ -8,7 +8,8 @@ public class BackholeSkill : Skill
     [SerializeField] private float maxSize = 12;
     [SerializeField] private float growSpeed = 3;
     [SerializeField] private float shirnkSpeed = 3;
-    
+    [SerializeField] private float backholeDuration;
+
     [SerializeField] private int amoutAttack = 4;
     [SerializeField] private float cloneCooldown =.3f;
     public override bool CanUseSkill()
@@ -24,7 +25,7 @@ public class BackholeSkill : Skill
 
         var newScriptBackhole = newBackhole.GetComponent<BackholeSkillController>();
 
-        newScriptBackhole.SetupBlackhole(maxSize,growSpeed,shirnkSpeed,amoutAttack,cloneCooldown);
+        newScriptBackhole.SetupBlackhole(maxSize,growSpeed,shirnkSpeed,amoutAttack,cloneCooldown, backholeDuration);
     }
 
     protected override void Start()
