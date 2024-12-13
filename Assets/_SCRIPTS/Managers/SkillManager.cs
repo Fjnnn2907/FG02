@@ -9,6 +9,7 @@ public class SkillManager : MonoBehaviour
     public CloneSkill cloneSkill { get; private set;}
     public SwordSkill swordSkill { get; private set;}
     public BackholeSkill backholiSkill {  get; private set;}
+    public CrytalSkill crytalSkill { get; private set;}
     #region Singleton
     private void Awake()
     {
@@ -24,5 +25,6 @@ public class SkillManager : MonoBehaviour
         cloneSkill = GetComponent<CloneSkill>();
         swordSkill = GetComponent<SwordSkill>();
         backholiSkill = GetComponent<BackholeSkill>();
+        crytalSkill = GetComponent<CrytalSkill>();
     }
 }

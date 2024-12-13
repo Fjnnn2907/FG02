@@ -70,6 +70,9 @@ public class Character : Entity
         base.Update();
         stateMachine.currentState.Update();
         ChangeState();
+
+        if (Input.GetKeyDown(KeyCode.Q))
+            skill.crytalSkill.UseSkill();
     }
     private void FixedUpdate()
     {

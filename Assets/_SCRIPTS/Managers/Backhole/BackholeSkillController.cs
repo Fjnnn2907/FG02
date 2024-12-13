@@ -48,11 +48,11 @@ public class BackholeSkillController : MonoBehaviour
                 FinishBackhole();
         }
 
-
         if (Input.GetKeyUp(KeyCode.R))
         {
             CloneAttack();
         }
+
         if (cloneAttackTimer < 0 && canAttack && amoutAttack > 0)
         {
             cloneAttackTimer = cloneAttackCooldown;
