@@ -8973,6 +8973,8 @@ MonoBehaviour:
   cloneSkill: {fileID: 7828601297888881210, guid: 304bc05b6b1b35647834f7cd6a065e07, type: 3}
   cloneTime: 1.2
   canAttack: 1
+  createCloneOnRollStart: 0
+  createCloneOnRollOver: 0
 --- !u!114 &839125653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9041,10 +9043,11 @@ MonoBehaviour:
   crystalFrefab: {fileID: 7204543988547481369, guid: c978edca53652cd4194fb0f4797779f3, type: 3}
   currentCrystal: {fileID: 0}
   crystalDuraction: 3
-  canExplosive: 1
-  canMoveToEnemy: 1
+  canCloneCrytals: 1
+  canExplosive: 0
+  canMoveToEnemy: 0
   moveSpeed: 5
-  canUseMultiCrytal: 1
+  canUseMultiCrytal: 0
   amoutStacks: 3
   miutiStackCooldown: 3
   crystals:

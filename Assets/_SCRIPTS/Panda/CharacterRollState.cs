@@ -12,12 +12,14 @@ public class CharacterRollState : CharacterState
         base.Enter();
         startTimer = .286f;
 
-        character.skill.cloneSkill.CreateClone(character.transform, Vector3.zero);
+        character.skill.cloneSkill.CreateCloneOnRollBegun();
     }
 
     public override void Exit()
     {
         base.Exit();
+
+        character.skill.cloneSkill.CreateCloneOnRollOver();
     }
 
     public override void Update()

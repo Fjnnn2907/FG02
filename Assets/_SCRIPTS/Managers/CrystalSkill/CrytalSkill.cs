@@ -10,6 +10,9 @@ public class CrytalSkill : Skill
 
     [SerializeField] private float crystalDuraction;
 
+    [Header("Clone Crytals")]
+    [SerializeField] private bool canCloneCrytals;
+
     [Header("Explosive")]
     [SerializeField] private bool canExplosive;
 
@@ -45,7 +48,13 @@ public class CrytalSkill : Skill
 
             currentCrystal.transform.position = characterPos;
 
-            currentCrystal.GetComponent<CrytalSkillController>()?.FinhishCrystal();
+            if(canCloneCrytals)
+            {
+                SkillManager.instance.cloneSkill.CreateClone(currentCrystal.transform, Vector2.zero);
+                Destroy(currentCrystal);
+            }
+            else
+                currentCrystal.GetComponent<CrytalSkillController>()?.FinhishCrystal();
         }
     }
     private bool CanUseMultiCrytal()
