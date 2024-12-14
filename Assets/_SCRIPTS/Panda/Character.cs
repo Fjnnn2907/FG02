@@ -72,7 +72,7 @@ public class Character : Entity
         ChangeState();
 
         if (Input.GetKeyDown(KeyCode.Q))
-            skill.crytalSkill.UseSkill();
+            skill.crytalSkill.CanUseSkill();
     }
     private void FixedUpdate()
     {

@@ -27,13 +27,14 @@ public class CloneSkillController : MonoBehaviour
             //TODO: Pool
         }
     }
-    public void SetUpClone(Transform _newTransform, float _cloneTime,bool _canAttack, Vector3 _offset)
+    public void SetUpClone(Transform _newTransform, float _cloneTime,bool _canAttack, Vector3 _offset,Transform _closetEnemy)
     {
         if(_canAttack)
             anim.SetInteger("CloneSkillNumber",Random.Range(1,3));
         transform.position = _newTransform.position + _offset;
         cloneTimer = _cloneTime;
 
+        targetToEnemy = _closetEnemy;
         FaceCloneTargetEnemy();
     }
     public void TriggerAnimation()
@@ -50,22 +51,7 @@ public class CloneSkillController : MonoBehaviour
     }
     private void FaceCloneTargetEnemy()
     {
-        Collider2D[] collider = Physics2D.OverlapCircleAll(this.transform.position, 25);
-
-        float cloneDistance = Mathf.Infinity;
-        foreach (Collider2D hit in collider)
-        {
-            if(hit.GetComponent<Enemy>() != null)
-            {
-                float distanceToEnemy = Vector2.Distance(transform.position, hit.transform.position);
-                // ke thu gan nhat
-                if(distanceToEnemy < cloneDistance)
-                {
-                    cloneDistance = distanceToEnemy;
-                    targetToEnemy = hit.transform;
-                }
-            }
-        }
+        
 
         if(targetToEnemy != null)
         {

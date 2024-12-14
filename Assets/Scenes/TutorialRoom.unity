@@ -9037,10 +9037,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed16e21cee1ae44b9c568e8d54eff32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cooldown: 5
+  cooldown: 1
   crystalFrefab: {fileID: 7204543988547481369, guid: c978edca53652cd4194fb0f4797779f3, type: 3}
   currentCrystal: {fileID: 0}
   crystalDuraction: 3
+  canExplosive: 1
+  canMoveToEnemy: 1
+  moveSpeed: 5
+  canUseMultiCrytal: 1
+  amoutStacks: 3
+  miutiStackCooldown: 3
+  crystals:
+  - {fileID: 7204543988547481369, guid: c978edca53652cd4194fb0f4797779f3, type: 3}
+  - {fileID: 7204543988547481369, guid: c978edca53652cd4194fb0f4797779f3, type: 3}
+  - {fileID: 7204543988547481369, guid: c978edca53652cd4194fb0f4797779f3, type: 3}
 --- !u!1 &880980196
 GameObject:
   m_ObjectHideFlags: 0
@@ -10117,7 +10127,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7204543988547481369, guid: c978edca53652cd4194fb0f4797779f3, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

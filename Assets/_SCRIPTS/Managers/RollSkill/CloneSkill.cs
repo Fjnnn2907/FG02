@@ -13,6 +13,6 @@ public class CloneSkill : Skill
     {
         GameObject newClone = Instantiate(cloneSkill);
 
-        newClone.GetComponent<CloneSkillController>().SetUpClone(_clonePositon,cloneTime, canAttack, _offset);
+        newClone.GetComponent<CloneSkillController>().SetUpClone(_clonePositon,cloneTime, canAttack, _offset, FindClosetEnemy(cloneSkill.transform));
     }
 }
