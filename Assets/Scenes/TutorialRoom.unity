@@ -9067,6 +9067,7 @@ GameObject:
   - component: {fileID: 880980198}
   - component: {fileID: 880980201}
   - component: {fileID: 880980202}
+  - component: {fileID: 880980203}
   m_Layer: 7
   m_Name: Tiny Panda
   m_TagString: Player
@@ -9208,6 +9209,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HitMaterial: {fileID: 2100000, guid: b821d04685fa0634795e0ea45e4cb531, type: 2}
+--- !u!114 &880980203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 880980196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0bde4c40ed535349ad7cf32fd5b9922, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damege: 10
+  MaxHealth: 100
+  currentHealth: 0
 --- !u!1 &918919706
 GameObject:
   m_ObjectHideFlags: 0
@@ -12208,6 +12224,7 @@ GameObject:
   - component: {fileID: 1999795197}
   - component: {fileID: 1999795199}
   - component: {fileID: 1999795200}
+  - component: {fileID: 1999795201}
   m_Layer: 8
   m_Name: Skeleton
   m_TagString: Enemy
@@ -12346,6 +12363,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HitMaterial: {fileID: 2100000, guid: b821d04685fa0634795e0ea45e4cb531, type: 2}
+--- !u!114 &1999795201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1999795194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0bde4c40ed535349ad7cf32fd5b9922, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damege: 10
+  MaxHealth: 100
+  currentHealth: 0
 --- !u!1 &2024167869
 GameObject:
   m_ObjectHideFlags: 0
