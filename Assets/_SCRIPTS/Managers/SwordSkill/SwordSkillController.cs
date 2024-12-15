@@ -219,7 +219,7 @@ public class SwordSkillController : MonoBehaviour
 
     private void SwordSkillDamege(Enemy enemy)
     {
-        enemy.Damege();
+        enemy.DamageEffect();
         enemy.StartCoroutine("FreezeTimeFor", freezeTime);
     }
 

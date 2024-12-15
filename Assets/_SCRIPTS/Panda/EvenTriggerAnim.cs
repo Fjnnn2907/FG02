@@ -1,4 +1,3 @@
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 
@@ -13,9 +12,8 @@ public class EvenTriggerAnim : MonoBehaviour
     {
         if (collision.CompareTag("Enemy"))
         {
-            if (collision.GetComponent<Enemy>() == null) return;
-            collision.GetComponent<Enemy>().Damege();
-            collision.GetComponent<CharacterStats>().TakeDamge(character.stats.damege);   
+            EnemyStat targetStat = collision.GetComponent<EnemyStat>();
+            character.stats.DoDamage(targetStat);
         }
     }
     public void CreateSword()

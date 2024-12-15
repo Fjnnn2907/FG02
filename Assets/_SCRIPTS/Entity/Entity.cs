@@ -8,7 +8,7 @@ public class Entity : MonoBehaviour
     public Rigidbody2D rb { get; private set; }
     public EntityFX fx { get; private set; }
     public SpriteRenderer sr { get; private set; }
-    public CharacterStats stats { get; private set; }
+    public StatManager stats { get; private set; }
     #endregion
     
     public float speed = 10;
@@ -35,13 +35,13 @@ public class Entity : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         fx = GetComponent<EntityFX>();
         sr = GetComponentInChildren<SpriteRenderer>();
-        stats = GetComponent<CharacterStats>();
+        stats = GetComponent<StatManager>();
     }
     protected virtual void Update()
     {
     }
     #region Battle
-    public virtual void Damege()
+    public virtual void DamageEffect()
     {
         fx.StartCoroutine("HitFlashFx");
         StartCoroutine("KnockBack");
@@ -93,5 +93,9 @@ public class Entity : MonoBehaviour
             sr.color = Color.clear;
         else
             sr.color = Color.white;
+    }
+    public virtual void Deah()
+    {
+
     }
 }

@@ -20,6 +20,7 @@ public class Character : Entity
     public CharacterAimSwordState aimSwordState { get; private set; }
     public CharacterCatchSwordState catchSwordState { get; private set; }
     public CharacterBackholeState backholeState { get; private set; }
+    public CharacterDeahState deahState { get; private set; }
     #endregion
     public float jumpFore = 12;
     public float xInput { get; set; }
@@ -58,6 +59,7 @@ public class Character : Entity
         aimSwordState = new(this, stateMachine, "AimSword");
         catchSwordState = new(this, stateMachine, "CatchSword");
         backholeState = new(this, stateMachine, "Jump");
+        deahState = new(this, stateMachine, "Deah");
     }
     protected override void Start()
     {
@@ -79,6 +81,12 @@ public class Character : Entity
         CheckInput();
     }
     public virtual void AnimationTrigger() => stateMachine.currentState.AminationTrigger();
+    public override void Deah()
+    {
+        base.Deah();
+
+        stateMachine.ChangeState(deahState);
+    }
     #region Skill
     public void NewSword(GameObject _newSword)
     {

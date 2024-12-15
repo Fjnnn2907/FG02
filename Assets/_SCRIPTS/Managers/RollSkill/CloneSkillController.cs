@@ -46,7 +46,7 @@ public class CloneSkillController : MonoBehaviour
         if (collision.CompareTag("Enemy"))
         {
             if (collision.GetComponent<Enemy>() == null) return;
-            collision.GetComponent<Enemy>().Damege();
+            collision.GetComponent<Enemy>().DamageEffect();
         }
     }
     private void FaceCloneTargetEnemy()

@@ -54,7 +54,7 @@ public class CrytalSkillController : MonoBehaviour
         {
             if(hit.GetComponent<Enemy>() != null)
             {
-                hit.GetComponent<Enemy>().Damege();
+                hit.GetComponent<Enemy>().DamageEffect();
             }
         }
     }

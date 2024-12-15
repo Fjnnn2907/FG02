@@ -9218,11 +9218,54 @@ MonoBehaviour:
   m_GameObject: {fileID: 880980196}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0bde4c40ed535349ad7cf32fd5b9922, type: 3}
+  m_Script: {fileID: 11500000, guid: d82e420381d897644ad2a7ae3c7c47f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damege: 10
-  MaxHealth: 100
+  sucManh:
+    baseValue: 0
+    modifiers: 
+  nhanhNhen:
+    baseValue: 0
+    modifiers: 
+  thongMinh:
+    baseValue: 0
+    modifiers: 
+  sucSong:
+    baseValue: 0
+    modifiers: 
+  damage:
+    baseValue: 10
+    modifiers: 
+  tiLeChiMang:
+    baseValue: 0
+    modifiers: 
+  satThuongChimang:
+    baseValue: 0
+    modifiers: 
+  MaxHealth:
+    baseValue: 500
+    modifiers: 
+  giap:
+    baseValue: 0
+    modifiers: 
+  ne:
+    baseValue: 0
+    modifiers: 
+  khangAP:
+    baseValue: 1
+    modifiers: 
+  satThuongLua:
+    baseValue: 0
+    modifiers: 
+  satThuongBang:
+    baseValue: 0
+    modifiers: 
+  satThuongAnhSang:
+    baseValue: 0
+    modifiers: 
+  isBong: 0
+  isDongBang: 0
+  isSotAnhSang: 0
   currentHealth: 0
 --- !u!1 &918919706
 GameObject:
@@ -10146,7 +10189,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7204543988547481369, guid: c978edca53652cd4194fb0f4797779f3, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12372,11 +12415,54 @@ MonoBehaviour:
   m_GameObject: {fileID: 1999795194}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0bde4c40ed535349ad7cf32fd5b9922, type: 3}
+  m_Script: {fileID: 11500000, guid: 2453c7a527ba67f41b93250e06298d08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damege: 10
-  MaxHealth: 100
+  sucManh:
+    baseValue: 0
+    modifiers: 
+  nhanhNhen:
+    baseValue: 0
+    modifiers: 
+  thongMinh:
+    baseValue: 0
+    modifiers: 
+  sucSong:
+    baseValue: 0
+    modifiers: 
+  damage:
+    baseValue: 10
+    modifiers: 
+  tiLeChiMang:
+    baseValue: 99
+    modifiers: 
+  satThuongChimang:
+    baseValue: 10
+    modifiers: 
+  MaxHealth:
+    baseValue: 500
+    modifiers: 
+  giap:
+    baseValue: 0
+    modifiers: 
+  ne:
+    baseValue: 0
+    modifiers: 
+  khangAP:
+    baseValue: 0
+    modifiers: 
+  satThuongLua:
+    baseValue: 5
+    modifiers: 
+  satThuongBang:
+    baseValue: 0
+    modifiers: 
+  satThuongAnhSang:
+    baseValue: 0
+    modifiers: 
+  isBong: 0
+  isDongBang: 0
+  isSotAnhSang: 0
   currentHealth: 0
 --- !u!1 &2024167869
 GameObject:

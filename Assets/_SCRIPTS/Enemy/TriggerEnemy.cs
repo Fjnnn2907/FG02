@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class TriggerEnemy : MonoBehaviour
 {
@@ -26,7 +27,8 @@ public class TriggerEnemy : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            collision.GetComponent<Character>().Damege();
+            CharacterStat targetStat = collision.GetComponent<CharacterStat>();
+            enemy.stats.DoDamage(targetStat);
         }
     }
     protected void OpenCounterAttack()
