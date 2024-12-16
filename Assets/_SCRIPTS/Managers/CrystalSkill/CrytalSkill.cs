@@ -38,7 +38,7 @@ public class CrytalSkill : Skill
 
             var newScriptCrystal = currentCrystal.GetComponent<CrytalSkillController>();
 
-            newScriptCrystal.SetupScrystal(crystalDuraction,canExplosive,canMoveToEnemy,moveSpeed, FindClosetEnemy(currentCrystal.transform));
+            newScriptCrystal.SetupScrystal(crystalDuraction,canExplosive,canMoveToEnemy,moveSpeed, FindClosetEnemy(currentCrystal.transform), character);
         }
         else
         {
@@ -74,7 +74,7 @@ public class CrytalSkill : Skill
 
                 newCrystal.GetComponent<CrytalSkillController>().SetupScrystal
                     (crystalDuraction, canExplosive, canMoveToEnemy, moveSpeed, 
-                    FindClosetEnemy(newCrystal.transform));
+                    FindClosetEnemy(newCrystal.transform),character);
 
                 if (crystals.Count <= 0)
                 {

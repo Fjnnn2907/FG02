@@ -75,6 +75,18 @@ public class Enemy : Entity
         return false;
     }
     #endregion
+    public override void SlowEntity(float _slowPer, float _slowDuration)
+    {
+        speed = speed * (1 - _slowPer);
+        anim.speed = anim.speed * (1 - _slowPer);
+
+        Invoke("ReturnDefautSpeed", _slowDuration);
+    }
+    protected override void ReturnDefautSpeed()
+    {
+        base.ReturnDefautSpeed();
+        speed = speedTamp;
+    }
     public virtual void FreezeTime(bool _timeFreeze)
     {
         if (_timeFreeze)

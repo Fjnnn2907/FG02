@@ -22,8 +22,11 @@ public class Character : Entity
     public CharacterBackholeState backholeState { get; private set; }
     public CharacterDeahState deahState { get; private set; }
     #endregion
-    public float jumpFore = 12;
+    public float jumpFore;
+    public float defautJumpFore;
     public float xInput { get; set; }
+    public float rollSpeed = 10;
+    public float defautRollSpeed;
     #region SKill
     public SkillManager skill { get; private set; }
     public GameObject sword; //{  get; private set; }  
@@ -66,6 +69,10 @@ public class Character : Entity
         base.Start();
         skill = SkillManager.instance;
         stateMachine.StartState(idleState);
+
+        defautSpeed = speed;
+        defautJumpFore = jumpFore;
+        defautRollSpeed = rollSpeed;
     }
     protected override void Update()
     {
@@ -79,6 +86,23 @@ public class Character : Entity
     private void FixedUpdate()
     {
         CheckInput();
+    }
+    public override void SlowEntity(float _slowPer, float _slowDuration)
+    {
+        speed = speed * (1 - _slowPer);
+        rollSpeed = rollSpeed * (1 - _slowPer);
+        jumpFore = jumpFore * (1 - _slowPer);
+        anim.speed = anim.speed * (1 - _slowPer);
+
+        Invoke("ReturnDefautSpeed", _slowDuration);
+    }
+    protected override void ReturnDefautSpeed()
+    {
+        base.ReturnDefautSpeed();
+
+        speed = defautSpeed;
+        rollSpeed = defautRollSpeed;
+        jumpFore = defautJumpFore;
     }
     public virtual void AnimationTrigger() => stateMachine.currentState.AminationTrigger();
     public override void Deah()
@@ -136,9 +160,9 @@ public class Character : Entity
     }
     public void Ver1Stat()
     {
-        speed = 5;
-        jumpFore = 700;
-        anim.speed = 1;
+        //speed = 5;
+        //jumpFore = 700;
+        //anim.speed = 1;
     }
     #endregion
     #region Input

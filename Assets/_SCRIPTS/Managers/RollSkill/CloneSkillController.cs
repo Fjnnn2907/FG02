@@ -5,6 +5,7 @@ using UnityEngine.TextCore.Text;
 
 public class CloneSkillController : MonoBehaviour
 {
+    private Character character;
     private SpriteRenderer sr;
     private Animator anim;
     [SerializeField] private float aColorSpeed = 1;
@@ -27,13 +28,13 @@ public class CloneSkillController : MonoBehaviour
             //TODO: Pool
         }
     }
-    public void SetUpClone(Transform _newTransform, float _cloneTime,bool _canAttack, Vector3 _offset,Transform _closetEnemy)
+    public void SetUpClone(Transform _newTransform, float _cloneTime,bool _canAttack, Vector3 _offset,Transform _closetEnemy, Character _character)
     {
         if(_canAttack)
             anim.SetInteger("CloneSkillNumber",Random.Range(1,3));
         transform.position = _newTransform.position + _offset;
         cloneTimer = _cloneTime;
-
+        character = _character;
         targetToEnemy = _closetEnemy;
         FaceCloneTargetEnemy();
     }
@@ -46,7 +47,8 @@ public class CloneSkillController : MonoBehaviour
         if (collision.CompareTag("Enemy"))
         {
             if (collision.GetComponent<Enemy>() == null) return;
-            collision.GetComponent<Enemy>().DamageEffect();
+
+            character.stats.DoMagicDamage(collision.GetComponent<StatManager>());
         }
     }
     private void FaceCloneTargetEnemy()

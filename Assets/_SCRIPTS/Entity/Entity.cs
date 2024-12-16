@@ -12,6 +12,7 @@ public class Entity : MonoBehaviour
     #endregion
     
     public float speed = 10;
+    public float defautSpeed;
     protected bool isRight = true;
     public int facing { get; private set; } = 1;
     [Header("Collider")]
@@ -40,6 +41,14 @@ public class Entity : MonoBehaviour
     }
     protected virtual void Update()
     {
+    }
+    public virtual void SlowEntity(float _slowPer, float _slowDuration)
+    {
+
+    }
+    protected virtual void ReturnDefautSpeed()
+    {
+        anim.speed = 1;
     }
     #region Battle
     public virtual void DamageEffect()
@@ -91,13 +100,7 @@ public class Entity : MonoBehaviour
         else if (x < 0 && isRight) Flip();
     }
     #endregion
-    public void TanHinh(bool _isTanHinh)
-    {
-        if(_isTanHinh)
-            sr.color = Color.clear;
-        else
-            sr.color = Color.white;
-    }
+
     public virtual void Deah()
     {
 

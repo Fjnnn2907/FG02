@@ -7,6 +7,7 @@ public class CrytalSkillController : MonoBehaviour
     private Animator aim => GetComponent<Animator>();
     private CircleCollider2D cd => GetComponent<CircleCollider2D>();
     private float crystalDuraction;
+    private Character character;
 
     [Header("Explosive")]
     private bool canExplosive;
@@ -17,13 +18,14 @@ public class CrytalSkillController : MonoBehaviour
     private float moveSpeed;
 
     private Transform closetEnemy;
-    public void SetupScrystal(float _crystalDuraction, bool _canExplosive, bool _canMoveToEnemy, float _moveSpeed,Transform _closetEnemy)
+    public void SetupScrystal(float _crystalDuraction, bool _canExplosive, bool _canMoveToEnemy, float _moveSpeed,Transform _closetEnemy, Character _character)
     {
         crystalDuraction = _crystalDuraction;
         canExplosive = _canExplosive;
         canMoveToEnemy = _canMoveToEnemy;
         moveSpeed = _moveSpeed;
         closetEnemy = _closetEnemy;
+        character = _character;
     }
     private void Update()
     {
@@ -54,7 +56,7 @@ public class CrytalSkillController : MonoBehaviour
         {
             if(hit.GetComponent<Enemy>() != null)
             {
-                hit.GetComponent<Enemy>().DamageEffect();
+                character.stats.DoMagicDamage(hit.GetComponent<StatManager>());
             }
         }
     }

@@ -28,7 +28,7 @@ public class CharacterBackholeState : CharacterState
         base.Exit();
 
         character.rb.gravityScale = gravityTamp;
-        character.TanHinh(false);
+        character.fx.TanHinh(false);
     }
 
     public override void Update()

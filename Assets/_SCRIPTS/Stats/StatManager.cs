@@ -43,7 +43,8 @@ public class StatManager : MonoBehaviour
     private float socsatThuongBangTimer;
 
     private float socDienTimer;
-
+    private float thoiGianSetRoi;
+    public GameObject tiaSetPreFab;
     public int currentHealth;
 
     public System.Action onHealthChanged; 
@@ -60,6 +61,7 @@ public class StatManager : MonoBehaviour
         satThuongBongTimer -= Time.deltaTime;
         bangTimer -= Time.deltaTime;
         socDienTimer -= Time.deltaTime;
+        thoiGianSetRoi -= Time.deltaTime;
 
         if (bongTimer < 0)
             isBong = false;
@@ -92,8 +94,8 @@ public class StatManager : MonoBehaviour
 
         totalDamage = CheckTargerArmor(_targetStats, totalDamage);
 
-        //_targetStats.TakeDamage(totalDamage);
-        DoMagicDamage(_targetStats);
+        _targetStats.TakeDamage(totalDamage);
+        //DoMagicDamage(_targetStats);
     }
     public virtual void DoMagicDamage(StatManager _targetStats)
     {
@@ -121,21 +123,21 @@ public class StatManager : MonoBehaviour
             if(Random.value < .35f && _satThuongLua > 0)
             {
                 canThieuRui = true;
-                SuDungNguyenTo(canThieuRui, canDongBang, canSet);
+                SuDungNguyenTo(canThieuRui, canDongBang, canSet, _targetStats);
                 return;
             }
 
             if (Random.value < .35f && _satThuongBang > 0)
             {
                 canDongBang = true;
-                SuDungNguyenTo(canThieuRui, canDongBang, canSet);
+                SuDungNguyenTo(canThieuRui, canDongBang, canSet, _targetStats);
                 return;
             }
 
             if (Random.value < .35f && _satThuongSet > 0)
             {
                 canSet = true;
-                SuDungNguyenTo(canThieuRui, canDongBang, canSet);
+                SuDungNguyenTo(canThieuRui, canDongBang, canSet, _targetStats);
                 return;
             }
 
@@ -144,10 +146,10 @@ public class StatManager : MonoBehaviour
         if (canThieuRui)
             _targetStats.setUpSatThuongBong(Mathf.RoundToInt(_satThuongLua * .2f));
         Debug.Log(Mathf.RoundToInt(_satThuongLua * .2f));
-        _targetStats.SuDungNguyenTo(canThieuRui, canDongBang,canSet); 
+        _targetStats.SuDungNguyenTo(canThieuRui, canDongBang,canSet, _targetStats); 
 
     }
-    public void SuDungNguyenTo(bool _isBong, bool _isDongBang, bool _isSocDien)
+    public void SuDungNguyenTo(bool _isBong, bool _isDongBang, bool _isSocDien, StatManager _targetStats)
     {
         if (isBong || isDongBang || isSocDien)
             return;
@@ -164,6 +166,7 @@ public class StatManager : MonoBehaviour
             isDongBang = true;
             bangTimer = 2;
 
+            GetComponent<Entity>().SlowEntity(.2f,2);
             entityFX.ChillFxFor(2);
         }
 
@@ -175,6 +178,12 @@ public class StatManager : MonoBehaviour
             entityFX.ShockFxFor(2);
         }
 
+    }
+
+    private void TiaSet(StatManager _targetStats)
+    {
+        GameObject PreFab = Instantiate(tiaSetPreFab, transform.position, Quaternion.identity);
+        PreFab.GetComponent<TiaSetController>().SetUpTiaSet(satThuongAnhSang.GetValue(), _targetStats);
     }
 
     private bool CanCrit()
@@ -226,6 +235,9 @@ public class StatManager : MonoBehaviour
     {
         DecreaseHealthBy(_damege);
         Debug.Log(currentHealth);
+
+        GetComponent<Entity>().DamageEffect();
+
         if (currentHealth <= 0)
             Deah();
     }

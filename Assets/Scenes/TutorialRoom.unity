@@ -9254,7 +9254,7 @@ MonoBehaviour:
   cooldown: 5
   cloneSkill: {fileID: 7828601297888881210, guid: 304bc05b6b1b35647834f7cd6a065e07, type: 3}
   cloneTime: 1.2
-  canAttack: 1
+  canAttack: 0
   createCloneOnRollStart: 0
   createCloneOnRollOver: 0
 --- !u!114 &839125653
@@ -9325,9 +9325,9 @@ MonoBehaviour:
   crystalFrefab: {fileID: 7204543988547481369, guid: c978edca53652cd4194fb0f4797779f3, type: 3}
   currentCrystal: {fileID: 0}
   crystalDuraction: 3
-  canCloneCrytals: 1
+  canCloneCrytals: 0
   canExplosive: 0
-  canMoveToEnemy: 0
+  canMoveToEnemy: 1
   moveSpeed: 5
   canUseMultiCrytal: 0
   amoutStacks: 3
@@ -9397,6 +9397,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  defautSpeed: 0
   groundCheck: {fileID: 1729555959}
   groundCheckDistance: 0.3
   whatIsGround:
@@ -9406,7 +9407,10 @@ MonoBehaviour:
   KnockDir: {x: 3, y: 3}
   KnockTimer: 0.07
   jumpFore: 500
-  sword: {fileID: 0}
+  defautJumpFore: 0
+  rollSpeed: 10
+  defautRollSpeed: 10
+  sword: {fileID: 1419234205748249208, guid: 260938696aee1fe4db1fa9470e5dd8aa, type: 3}
   attackMovement:
   - {x: 1.5, y: 0}
   - {x: 3, y: 0}
@@ -9492,11 +9496,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HitMaterial: {fileID: 2100000, guid: b821d04685fa0634795e0ea45e4cb531, type: 2}
-  chillColor: []
+  chillColor:
+  - {r: 0.5254902, g: 0.77254903, b: 0.85490197, a: 1}
+  - {r: 0.6392157, g: 0.89411765, b: 0.9764706, a: 1}
   igniteColor:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  shockColor: []
+  - {r: 1, g: 0.41960785, b: 0.23921569, a: 1}
+  - {r: 1, g: 0.5803922, b: 0.3019608, a: 1}
+  shockColor:
+  - {r: 1, g: 0.7764706, b: 0, a: 1}
+  - {r: 1, g: 0.91764706, b: 0, a: 1}
 --- !u!114 &880980203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9546,15 +9554,16 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   satThuongBang:
-    baseValue: 10
+    baseValue: 0
     modifiers: 
   satThuongAnhSang:
-    baseValue: 0
+    baseValue: 10
     modifiers: 
   isBong: 0
   isDongBang: 0
   isSocDien: 0
   bongTimer: 0
+  tiaSetPreFab: {fileID: 941109274092359212, guid: 10b3ceebcf1718e468f006fffe771ae1, type: 3}
   currentHealth: 0
 --- !u!1 &913209826
 GameObject:
@@ -13160,6 +13169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
+  defautSpeed: 0
   groundCheck: {fileID: 184797564}
   groundCheckDistance: 0.02
   whatIsGround:
@@ -13198,14 +13208,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HitMaterial: {fileID: 2100000, guid: b821d04685fa0634795e0ea45e4cb531, type: 2}
   chillColor:
-  - {r: 0.07450981, g: 0.18431373, b: 0.69411767, a: 1}
-  - {r: 0.3733499, g: 0.45898977, b: 0.85660374, a: 1}
+  - {r: 0.5254902, g: 0.77254903, b: 0.85490197, a: 1}
+  - {r: 0.6392157, g: 0.89411765, b: 0.9764706, a: 1}
   igniteColor:
-  - {r: 0.8039216, g: 0.09803922, b: 0.09803922, a: 1}
-  - {r: 0.7764706, g: 0.34901962, b: 0.34901962, a: 1}
+  - {r: 1, g: 0.41960785, b: 0.23921569, a: 1}
+  - {r: 1, g: 0.5803922, b: 0.3019608, a: 1}
   shockColor:
-  - {r: 0.8901961, g: 0.8745098, b: 0.16078432, a: 1}
-  - {r: 0.654902, g: 0.64705884, b: 0.24313726, a: 1}
+  - {r: 1, g: 0.7764706, b: 0, a: 1}
+  - {r: 1, g: 0.91764706, b: 0, a: 1}
 --- !u!114 &1999795201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13264,6 +13274,7 @@ MonoBehaviour:
   isDongBang: 0
   isSocDien: 0
   bongTimer: 0
+  tiaSetPreFab: {fileID: 941109274092359212, guid: 10b3ceebcf1718e468f006fffe771ae1, type: 3}
   currentHealth: 0
 --- !u!1 &2024167869
 GameObject:

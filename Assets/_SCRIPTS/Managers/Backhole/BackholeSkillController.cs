@@ -92,7 +92,7 @@ public class BackholeSkillController : MonoBehaviour
         if (characterCanDisapear)
         {
             characterCanDisapear = false;
-            PlayerManager.instance.character.TanHinh(true);
+            PlayerManager.instance.character.fx.TanHinh(true);
         }
     }
 

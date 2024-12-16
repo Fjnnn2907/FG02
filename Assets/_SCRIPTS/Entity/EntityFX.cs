@@ -29,6 +29,13 @@ public class EntityFX : MonoBehaviour
         sr.color = currentColor;
         sr.material = OriginalMaterial;
     }
+    public void TanHinh(bool _isTanHinh)
+    {
+        if (_isTanHinh)
+            sr.color = Color.clear;
+        else
+            sr.color = Color.white;
+    }
     private void RedColorBlink()
     {
         if (sr.color != Color.white)
@@ -61,7 +68,7 @@ public class EntityFX : MonoBehaviour
     }
     public void ShockFxFor(float _seconds)
     {
-        InvokeRepeating("ShockColorFx", 0, .3f);
+        InvokeRepeating("ShockColorFx", 0, .15f);
         Invoke("CancelColorChange", _seconds);
     }
     #endregion
@@ -76,7 +83,7 @@ public class EntityFX : MonoBehaviour
     }
     public void ChillFxFor(float _seconds)
     {
-        InvokeRepeating("ChillColorFx", 0, .3f);
+        InvokeRepeating("ChillColorFx", 0, .5f);
         Invoke("CancelColorChange", _seconds);
     }
     #endregion
