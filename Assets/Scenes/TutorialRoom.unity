@@ -9141,7 +9141,7 @@ Transform:
   m_GameObject: {fileID: 880980196}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.19860995, y: 0.27021408, z: 0.23470576}
+  m_LocalPosition: {x: 0.45, y: 1.57, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9149,7 +9149,7 @@ Transform:
   - {fileID: 1729555959}
   - {fileID: 117075991}
   - {fileID: 821144856}
-  m_Father: {fileID: 2027886194}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &880980201
 BoxCollider2D:
@@ -9255,7 +9255,7 @@ MonoBehaviour:
     baseValue: 1
     modifiers: 
   satThuongLua:
-    baseValue: 0
+    baseValue: 20
     modifiers: 
   satThuongBang:
     baseValue: 0
@@ -9265,7 +9265,8 @@ MonoBehaviour:
     modifiers: 
   isBong: 0
   isDongBang: 0
-  isSotAnhSang: 0
+  isSocDien: 0
+  bongTimer: 0
   currentHealth: 0
 --- !u!1 &918919706
 GameObject:
@@ -12452,7 +12453,7 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   satThuongLua:
-    baseValue: 5
+    baseValue: 10
     modifiers: 
   satThuongBang:
     baseValue: 0
@@ -12462,7 +12463,8 @@ MonoBehaviour:
     modifiers: 
   isBong: 0
   isDongBang: 0
-  isSotAnhSang: 0
+  isSocDien: 0
+  bongTimer: 0
   currentHealth: 0
 --- !u!1 &2024167869
 GameObject:
@@ -12570,7 +12572,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 880980200}
   - {fileID: 918919709}
   - {fileID: 1677957472}
   - {fileID: 1263228675}
@@ -12840,3 +12841,4 @@ SceneRoots:
   - {fileID: 2107040664}
   - {fileID: 839125651}
   - {fileID: 1339122411}
+  - {fileID: 880980200}

@@ -28,10 +28,19 @@ public class StatManager : MonoBehaviour
 
     public bool isBong;
     public bool isDongBang;
-    public bool isSotAnhSang;
+    public bool isSocDien;
 
-    
-    
+    private int satThuongBong = 1;
+
+    public float bongTimer;
+    private float bongCoolDown = .3f;
+    private float satThuongBongTimer;
+
+    private float bangTimer;
+    private float bangCoolDown;
+    private float socsatThuongBangTimer;
+
+    private float socDienTimer;
 
     [SerializeField] protected int currentHealth;
 
@@ -40,7 +49,27 @@ public class StatManager : MonoBehaviour
         satThuongChimang.SetDefaultValue(150);
         currentHealth = MaxHealth.GetValue();
     }
+    protected virtual void Update()
+    {
+        bongTimer -= Time.deltaTime;
+        satThuongBongTimer -= Time.deltaTime;
 
+        if (bongTimer < 0)
+            isBong = false;
+
+        if (bangTimer < 0)
+            isDongBang = false;
+
+        if (socDienTimer < 0)
+            isSocDien = false;
+
+        if (satThuongBongTimer < 0 && isBong)
+        {
+            Debug.Log("thieu rui");
+            currentHealth -= satThuongBong;
+            satThuongBongTimer = bongCoolDown;
+        }
+    }
     public virtual void DoDamage(StatManager _targetStats)
     {
         if (CheckTargetAvoidAttack(_targetStats)) return;
@@ -63,24 +92,78 @@ public class StatManager : MonoBehaviour
     {
         int _satThuongLua = satThuongLua.GetValue();
         int _satThuongBang = satThuongBang.GetValue();
-        int _satThuongAnhSang = satThuongAnhSang.GetValue();
+        int _satThuongSet = satThuongAnhSang.GetValue();
 
-        int totalMagicDamage = _satThuongLua + _satThuongBang + _satThuongAnhSang + thongMinh.GetValue();
+        int totalMagicDamage = _satThuongLua + _satThuongBang + _satThuongSet + thongMinh.GetValue();
         totalMagicDamage -= _targetStats.khangAP.GetValue() + (_targetStats.thongMinh.GetValue() * 3);
         totalMagicDamage = Mathf.Clamp(totalMagicDamage, 0, int.MaxValue);
 
         _targetStats.TakeDamage(totalMagicDamage);
         Debug.Log(totalMagicDamage);
-    }
-    public void AppyAilments( bool _isBong, bool _isDongBang, bool _isSotAnhSang)
-    {
-        if(isBong || isDongBang || isSotAnhSang)
+
+
+        if(Mathf.Max(_satThuongLua,_satThuongBang,_satThuongSet) <= 0)
             return;
 
-        isBong = _isBong;
-        isDongBang = _isDongBang;
-        isSotAnhSang = _isSotAnhSang;
+        bool canThieuRui = _satThuongLua > _satThuongBang && _satThuongLua > _satThuongSet;
+        bool canDongBang = _satThuongBang > _satThuongLua && _satThuongBang > _satThuongSet;
+        bool canSet = _satThuongSet > _satThuongLua && _satThuongSet > _satThuongBang;
+
+        while(!canThieuRui && !canDongBang && !canSet)
+        {
+            if(Random.value < .35f && _satThuongLua > 0)
+            {
+                canThieuRui = true;
+                SuDungNguyenTo(canThieuRui, canDongBang, canSet);
+                return;
+            }
+
+            if (Random.value < .35f && _satThuongBang > 0)
+            {
+                canDongBang = true;
+                SuDungNguyenTo(canThieuRui, canDongBang, canSet);
+                return;
+            }
+
+            if (Random.value < .35f && _satThuongSet > 0)
+            {
+                canSet = true;
+                SuDungNguyenTo(canThieuRui, canDongBang, canSet);
+                return;
+            }
+
+        }
+
+        if (canThieuRui)
+            _targetStats.setUpSatThuongBong(Mathf.RoundToInt(_satThuongLua * .2f));
+        Debug.Log(Mathf.RoundToInt(_satThuongLua * .2f));
+        _targetStats.SuDungNguyenTo(canThieuRui, canDongBang,canSet); 
+
     }
+    public void SuDungNguyenTo(bool _isBong, bool _isDongBang, bool _isSocDien)
+    {
+        if (isBong || isDongBang || isSocDien)
+            return;
+
+        if (_isBong)
+        {
+            isBong = true;
+            bongTimer = 2;
+        }
+
+        if (_isDongBang)
+        {
+            isDongBang = true;
+            bangTimer = 2;
+        }
+
+        if (_isSocDien)
+        {
+            isSocDien = true;
+            socDienTimer = 2;
+        }
+    }
+
     private bool CanCrit()
     {
         int totalTileChiMang = tiLeChiMang.GetValue() + nhanhNhen.GetValue();
@@ -100,7 +183,11 @@ public class StatManager : MonoBehaviour
     }
     private int CheckTargerArmor(StatManager _targetStats, int totalDamage)
     {
-        totalDamage -= _targetStats.giap.GetValue();
+        if(_targetStats.isDongBang)
+            totalDamage -= Mathf.RoundToInt(_targetStats.giap.GetValue() * .8f);
+        else
+            totalDamage -= _targetStats.giap.GetValue();
+
         totalDamage = Mathf.Clamp(totalDamage, 0, int.MaxValue);
         return totalDamage;
     }
@@ -109,6 +196,10 @@ public class StatManager : MonoBehaviour
     {
         int totalNe = _targetStats.ne.GetValue() +
                     _targetStats.nhanhNhen.GetValue();
+
+        if (isSocDien)
+            totalNe += 20;
+
 
         if (Random.Range(0, 100) < totalNe)
         {
@@ -125,6 +216,7 @@ public class StatManager : MonoBehaviour
         if (currentHealth <= 0)
             Deah();
     }
+    public void setUpSatThuongBong(int _damege) => satThuongBong = _damege;
 
     protected virtual void Deah()
     {
