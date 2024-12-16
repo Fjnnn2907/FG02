@@ -25,6 +25,7 @@ public class Entity : MonoBehaviour
     public float KnockTimer = .07f;
     protected bool isKnocked;
 
+    public System.Action onFliped;
     protected virtual void Awake()
     {
         
@@ -80,6 +81,9 @@ public class Entity : MonoBehaviour
         facing *= -1;
         isRight = !isRight;
         transform.Rotate(0, 180, 0);
+        
+        if(onFliped != null) 
+            onFliped();
     }
     public void FlipCtrl(float x)
     {

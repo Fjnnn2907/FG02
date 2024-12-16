@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class StatManager : MonoBehaviour
 {
+    private EntityFX entityFX;
+
     [Header("Major stats")]
     public Stat sucManh; // tang dame va chi so chi mang 1%
     public Stat nhanhNhen;// tang ne tranh va chi so chi mang 1%
@@ -42,17 +44,22 @@ public class StatManager : MonoBehaviour
 
     private float socDienTimer;
 
-    [SerializeField] protected int currentHealth;
+    public int currentHealth;
+
+    public System.Action onHealthChanged; 
 
     protected virtual void Start()
     {
         satThuongChimang.SetDefaultValue(150);
-        currentHealth = MaxHealth.GetValue();
+        currentHealth = GetMaxHealthValue();
+        entityFX = GetComponent<EntityFX>();
     }
     protected virtual void Update()
     {
         bongTimer -= Time.deltaTime;
         satThuongBongTimer -= Time.deltaTime;
+        bangTimer -= Time.deltaTime;
+        socDienTimer -= Time.deltaTime;
 
         if (bongTimer < 0)
             isBong = false;
@@ -66,7 +73,7 @@ public class StatManager : MonoBehaviour
         if (satThuongBongTimer < 0 && isBong)
         {
             Debug.Log("thieu rui");
-            currentHealth -= satThuongBong;
+            DecreaseHealthBy(satThuongBong);
             satThuongBongTimer = bongCoolDown;
         }
     }
@@ -149,19 +156,25 @@ public class StatManager : MonoBehaviour
         {
             isBong = true;
             bongTimer = 2;
+            
+            entityFX.IgniteFxFor(2);
         }
-
         if (_isDongBang)
         {
             isDongBang = true;
             bangTimer = 2;
+
+            entityFX.ChillFxFor(2);
         }
 
         if (_isSocDien)
         {
             isSocDien = true;
             socDienTimer = 2;
+
+            entityFX.ShockFxFor(2);
         }
+
     }
 
     private bool CanCrit()
@@ -211,15 +224,27 @@ public class StatManager : MonoBehaviour
 
     public virtual void TakeDamage(int _damege)
     {
-        currentHealth -= _damege;
+        DecreaseHealthBy(_damege);
         Debug.Log(currentHealth);
         if (currentHealth <= 0)
             Deah();
+    }
+    protected virtual void DecreaseHealthBy(int _damege)
+    {
+        currentHealth -= _damege;
+
+        if (onHealthChanged != null)
+            onHealthChanged();
     }
     public void setUpSatThuongBong(int _damege) => satThuongBong = _damege;
 
     protected virtual void Deah()
     {
         
+    }
+    
+    public int GetMaxHealthValue()
+    {
+        return MaxHealth.GetValue() + sucSong.GetValue() * 5;
     }
 }
