@@ -38,6 +38,8 @@ public class CrytalSkillController : MonoBehaviour
 
         if (canMoveToEnemy)
         {
+            if (closetEnemy == null) return;
+
             transform.position = Vector2.MoveTowards(transform.position,closetEnemy.position,moveSpeed * Time.deltaTime);
 
             if (Vector2.Distance(transform.position, closetEnemy.position) < 1)

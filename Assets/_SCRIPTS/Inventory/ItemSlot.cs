@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
-public class ItemSlot : MonoBehaviour
+public class ItemSlot : MonoBehaviour, IPointerDownHandler
 {
     [SerializeField] private Image itemIcon;
     [SerializeField] private TextMeshProUGUI itemText;
@@ -26,5 +27,11 @@ public class ItemSlot : MonoBehaviour
                 itemText.text = "";
             }
         }
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if(item.itemData.itemType == ItemTpye.Equipment)
+            Inventory.instance.EquipItem(item.itemData);
     }
 }

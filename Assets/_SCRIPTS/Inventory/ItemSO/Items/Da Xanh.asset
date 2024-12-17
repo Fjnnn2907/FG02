@@ -10,7 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 35092aeb1f99cdc4b832a7b756e8151d, type: 3}
-  m_Name: AoGiap
+  m_Name: Da Xanh
   m_EditorClassIdentifier: 
-  itemName: AoGiap
-  icon: {fileID: 21300000, guid: 377db09b7db3cf6438bc75b4f7418d9b, type: 3}
+  itemType: 0
+  itemName: Da Xanh
+  icon: {fileID: 21300000, guid: e035eaac493a31944a316569677577a7, type: 3}

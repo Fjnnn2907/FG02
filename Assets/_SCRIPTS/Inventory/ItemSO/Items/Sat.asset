@@ -10,7 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 35092aeb1f99cdc4b832a7b756e8151d, type: 3}
-  m_Name: QuanGiap
+  m_Name: Sat
   m_EditorClassIdentifier: 
-  itemName: AoGiap
-  icon: {fileID: 21300000, guid: b54fa0d407d4bec4ba2e239435381548, type: 3}
+  itemType: 0
+  itemName: Sat
+  icon: {fileID: 21300000, guid: 6271f8cfe765ad841a8bb2d37fe44dc9, type: 3}
