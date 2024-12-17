@@ -4,21 +4,18 @@ using UnityEngine;
 
 public class ItemObject : MonoBehaviour
 {
-    private SpriteRenderer sr;
 
     public ItemData itemData;
-    private void Start()
+    private void OnValidate()
     {
-        sr = GetComponent<SpriteRenderer>();
-
-        sr.sprite = itemData.icon;
+        GetComponent<SpriteRenderer>().sprite = itemData.icon;
+        gameObject.name = itemData.name + " Item";
     }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.GetComponent<Character>() != null)
         {
-            Debug.Log("a");
+            Inventory.instance.AddItem(itemData);
             Destroy(gameObject);
         }
     }
