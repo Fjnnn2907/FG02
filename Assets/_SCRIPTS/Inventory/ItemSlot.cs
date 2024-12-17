@@ -29,6 +29,14 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler
         }
     }
 
+    public void CleanSlot()
+    {
+        item = null;
+
+        itemIcon.sprite = null; 
+        itemIcon.color = Color.clear;
+        itemText.text = "";
+    }
     public void OnPointerDown(PointerEventData eventData)
     {
         if(item.itemData.itemType == ItemTpye.Equipment)

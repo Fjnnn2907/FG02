@@ -22,10 +22,11 @@ public class Inventory : MonoBehaviour
     [Header("Inventory UI")]
     [SerializeField] private Transform inventorySlots;
     [SerializeField] private Transform stashSlots;
-
+    [SerializeField] private Transform equipmentSlots;
 
     private ItemSlot[] itemSlot;
     private ItemSlot[] stashSlot;
+    private EquipmentSlot[] equipmentSlot;
     private void Awake()
     {
         if (instance == null)
@@ -47,14 +48,40 @@ public class Inventory : MonoBehaviour
 
         itemSlot = inventorySlots.GetComponentsInChildren<ItemSlot>();
         stashSlot = stashSlots.GetComponentsInChildren<ItemSlot>();
+        equipmentSlot = equipmentSlots.GetComponentsInChildren<EquipmentSlot>();
     }
 
     private void updateSlotUI()
     {
-        for(int i = 0; i < invetory.Count; i++)
+
+        for(int i = 0; i < equipmentSlot.Length; i++)
+        {
+            foreach(var item in equipmentDir)
+            {
+                if(item.Key.equipmentType == equipmentSlot[i].slotType)
+                {
+                    equipmentSlot[i].UpdateSlot(item.Value);
+                }
+            }
+        }
+
+        for (int i = 0; i < itemSlot.Length; i++)
+        {
+            itemSlot[i].CleanSlot();
+        }
+
+        for (int i = 0; i < stashSlot.Length; i++)
+        {
+            stashSlot[i].CleanSlot();
+        }
+
+
+
+        for (int i = 0; i < invetory.Count; i++)
         {
             itemSlot[i].UpdateSlot(invetory[i]);
         }
+
 
         for(int i = 0;i < stash.Count; i++)
         {
@@ -71,20 +98,23 @@ public class Inventory : MonoBehaviour
 
         foreach (var item in equipmentDir)
         {
-            if (item.Key.itemType == newEquipment.itemType)
+            if (item.Key.equipmentType == newEquipment.equipmentType)
             {
                 itemToRemove = item.Key;
             }
         }
 
         if(itemToRemove != null)
+        {
             UnEquipment(itemToRemove);
+            AddItem(itemToRemove);
+        }
 
         equipment.Add(newItem);
         equipmentDir.Add(newEquipment, newItem);
+        RemoveItem(_item);
 
-
-        //updateSlotUI();
+        updateSlotUI();
     }
 
     private void UnEquipment(ItemEquipment itemToRemove)
