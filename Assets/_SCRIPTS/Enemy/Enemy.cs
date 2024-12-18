@@ -30,6 +30,8 @@ public class Enemy : Entity
     #region Compoments
     public EnemyState enemy { get; private set; }
     public EnemyStateMachine stateMachine { get; private set; }
+
+    public ItemDrop itemDrop;
     #endregion
     protected override void Awake()
     {
@@ -37,8 +39,9 @@ public class Enemy : Entity
         stateMachine = new();
     }
     protected override void Start()
-    {
+    {      
         base.Start();
+
         HP = maxHP;
         speedTamp = speed;
     }

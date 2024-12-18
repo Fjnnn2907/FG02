@@ -15,3 +15,4 @@ MonoBehaviour:
   itemType: 0
   itemName: Da Xanh
   icon: {fileID: 21300000, guid: e035eaac493a31944a316569677577a7, type: 3}
+  dropChane: 56.4

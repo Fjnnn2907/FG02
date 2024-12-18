@@ -15,3 +15,4 @@ MonoBehaviour:
   itemType: 0
   itemName: Vang
   icon: {fileID: 21300000, guid: cd479502a7aecd142809641b34385dd9, type: 3}
+  dropChane: 38.9

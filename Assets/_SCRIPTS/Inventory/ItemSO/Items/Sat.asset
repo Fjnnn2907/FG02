@@ -15,3 +15,4 @@ MonoBehaviour:
   itemType: 0
   itemName: Sat
   icon: {fileID: 21300000, guid: 6271f8cfe765ad841a8bb2d37fe44dc9, type: 3}
+  dropChane: 74.6

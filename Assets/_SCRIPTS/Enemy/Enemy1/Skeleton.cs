@@ -47,5 +47,8 @@ public class Skeleton : Enemy
     {
         base.Deah();
         stateMachine.ChangeState(deahState);
+
+        itemDrop.GrenerateDrop();
+        Destroy(gameObject, 1);
     }
 }

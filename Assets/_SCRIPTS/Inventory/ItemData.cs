@@ -14,4 +14,7 @@ public class ItemData : ScriptableObject
     public ItemTpye itemType;
     public string itemName;
     public Sprite icon;
+
+    [Range(0f, 100f)]
+    public float dropChane;
 }
