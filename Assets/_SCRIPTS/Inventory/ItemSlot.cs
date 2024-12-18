@@ -8,7 +8,7 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler
     [SerializeField] private Image itemIcon;
     [SerializeField] private TextMeshProUGUI itemText;
 
-    [SerializeField] private InventoryItem item;
+    [SerializeField] protected InventoryItem item;
 
     public void UpdateSlot(InventoryItem _newItem)
     {
@@ -37,7 +37,7 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler
         itemIcon.color = Color.clear;
         itemText.text = "";
     }
-    public void OnPointerDown(PointerEventData eventData)
+    public virtual void OnPointerDown(PointerEventData eventData)
     {
         if(item.itemData.itemType == ItemTpye.Equipment)
             Inventory.instance.EquipItem(item.itemData);

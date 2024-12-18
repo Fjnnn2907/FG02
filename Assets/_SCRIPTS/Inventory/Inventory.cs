@@ -112,17 +112,20 @@ public class Inventory : MonoBehaviour
 
         equipment.Add(newItem);
         equipmentDir.Add(newEquipment, newItem);
+        newEquipment.AddModifiers();
+
         RemoveItem(_item);
 
         updateSlotUI();
     }
 
-    private void UnEquipment(ItemEquipment itemToRemove)
+    public void UnEquipment(ItemEquipment itemToRemove)
     {
         if (equipmentDir.TryGetValue(itemToRemove, out InventoryItem value))
         {
             equipment.Remove(value);
             equipmentDir.Remove(itemToRemove);
+            itemToRemove.RemoveModifiers();
         }
     }
 
@@ -194,5 +197,40 @@ public class Inventory : MonoBehaviour
 
 
         updateSlotUI();
+    }
+
+    public bool CanCraft(ItemEquipment _itemToCraft,List<InventoryItem> _itemMaterials)
+    {
+        List<InventoryItem> itemMaterialsToRemove = new List<InventoryItem>();
+
+        for (int i = 0; i < _itemMaterials.Count; i++)
+        {
+            if (stashDir.TryGetValue(_itemMaterials[i].itemData, out InventoryItem value))
+            {
+                if(value.stackSize < _itemMaterials[i].stackSize)
+                {
+                    Debug.Log("khong du nguyen lieu");
+                    return false;
+                }
+                else
+                {
+                    itemMaterialsToRemove.Add(value);
+                }
+            }
+            else
+            {
+                Debug.Log("khong du nguyen lieu");
+                return false;
+            }
+        }
+
+        for(int i = 0; i < itemMaterialsToRemove.Count; i++)
+        {
+            RemoveItem(_itemMaterials[i].itemData);
+        }
+        
+        AddItem(_itemToCraft);
+        Debug.Log("Che tao thanh cong" +  _itemToCraft.name);
+        return true;
     }
 }

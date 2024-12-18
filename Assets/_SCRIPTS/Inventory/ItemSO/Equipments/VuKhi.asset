@@ -16,3 +16,18 @@ MonoBehaviour:
   itemName: Kiem
   icon: {fileID: 21300000, guid: 3990398ccd52360498047005f008b184, type: 3}
   equipmentType: 0
+  sucManh: 0
+  nhanhNhen: 0
+  thongMinh: 0
+  sucSong: 0
+  damage: 20
+  tiLeChiMang: 0
+  satThuongChimang: 0
+  MaxHealth: 0
+  giap: 0
+  ne: 0
+  khangAP: 0
+  satThuongLua: 0
+  satThuongBang: 0
+  satThuongAnhSang: 0
+  craftMaterials: []
