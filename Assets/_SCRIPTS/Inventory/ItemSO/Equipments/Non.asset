@@ -32,5 +32,5 @@ MonoBehaviour:
   khangAP: 0
   satThuongLua: 0
   satThuongBang: 0
-  satThuongAnhSang: 0
+  satThuongAnhSang: 5
   craftMaterials: []

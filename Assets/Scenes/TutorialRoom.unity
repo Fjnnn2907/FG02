@@ -10350,7 +10350,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cooldown: 1
-  swordTpye: 2
+  swordTpye: 3
   bouceAmout: 4
   bouceGravity: 1
   bounceSpeed: 10
@@ -10490,7 +10490,7 @@ MonoBehaviour:
   defautJumpFore: 0
   rollSpeed: 10
   defautRollSpeed: 10
-  sword: {fileID: 1419234205748249208, guid: 260938696aee1fe4db1fa9470e5dd8aa, type: 3}
+  sword: {fileID: 0}
   attackMovement:
   - {x: 1.5, y: 0}
   - {x: 3, y: 0}
@@ -10631,7 +10631,7 @@ MonoBehaviour:
     baseValue: 1
     modifiers: 
   satThuongLua:
-    baseValue: 1
+    baseValue: 0
     modifiers: 
   satThuongBang:
     baseValue: 0

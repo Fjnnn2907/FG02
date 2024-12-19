@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class SwordSkillController : MonoBehaviour
@@ -221,6 +222,11 @@ public class SwordSkillController : MonoBehaviour
     {
         character.stats.DoMagicDamage(enemy.GetComponent<StatManager>());
         enemy.StartCoroutine("FreezeTimeFor", freezeTime);
+
+        var itemEqupment = Inventory.instance.GetItemEquipment(EquipmentType.Non);
+
+        if (itemEqupment != null)
+            itemEqupment.ItemEffect(enemy.transform);
     }
 
     private void StuckInto(Collider2D collision)
