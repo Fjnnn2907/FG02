@@ -62,7 +62,7 @@ public class ItemEquipment: ItemData
 
         character.satThuongLua.AddMotdifier(satThuongLua);
         character.satThuongBang.AddMotdifier(satThuongBang);
-        character.satThuongAnhSang.AddMotdifier(satThuongAnhSang);
+        character.satThuongDien.AddMotdifier(satThuongAnhSang);
 
     }
     public void RemoveModifiers()
@@ -85,14 +85,14 @@ public class ItemEquipment: ItemData
 
         character.satThuongLua.RemoveMotdifier(satThuongLua);
         character.satThuongBang.RemoveMotdifier(satThuongBang);
-        character.satThuongAnhSang.RemoveMotdifier(satThuongAnhSang);
+        character.satThuongDien.RemoveMotdifier(satThuongAnhSang);
     }
     
-    public void ItemEffect()
+    public void ItemEffect(Transform _enemyPos)
     {
         foreach(var item in itemEffects)
         {
-            item.ExecuteEffect();
+            item.ExecuteEffect(_enemyPos);
         }
     }
 }

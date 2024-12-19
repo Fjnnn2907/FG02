@@ -10406,7 +10406,7 @@ MonoBehaviour:
   currentCrystal: {fileID: 0}
   crystalDuraction: 3
   canCloneCrytals: 0
-  canExplosive: 0
+  canExplosive: 1
   canMoveToEnemy: 1
   moveSpeed: 5
   canUseMultiCrytal: 0
@@ -10631,13 +10631,13 @@ MonoBehaviour:
     baseValue: 1
     modifiers: 
   satThuongLua:
-    baseValue: 0
+    baseValue: 1
     modifiers: 
   satThuongBang:
     baseValue: 0
     modifiers: 
-  satThuongAnhSang:
-    baseValue: 10
+  satThuongDien:
+    baseValue: 0
     modifiers: 
   isBong: 0
   isDongBang: 0
@@ -16186,7 +16186,7 @@ MonoBehaviour:
   satThuongBang:
     baseValue: 0
     modifiers: 
-  satThuongAnhSang:
+  satThuongDien:
     baseValue: 0
     modifiers: 
   isBong: 0

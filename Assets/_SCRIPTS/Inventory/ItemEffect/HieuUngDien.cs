@@ -2,17 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HieuUngDien : MonoBehaviour
+[CreateAssetMenu(fileName = "new ItemEquipment", menuName = "Data/ItemEffect/Hieu Ung Dien")]
+public class HieuUngDien : ItemEffect
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private GameObject DienPrefab;
+    public override void ExecuteEffect(Transform _enemyPos)
     {
-        
-    }
+        GameObject newObj = Instantiate(DienPrefab, _enemyPos.position,Quaternion.identity);
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Destroy(newObj,1);
     }
 }

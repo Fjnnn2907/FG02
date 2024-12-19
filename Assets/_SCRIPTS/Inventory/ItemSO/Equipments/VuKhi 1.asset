@@ -18,7 +18,7 @@ MonoBehaviour:
   dropChane: 0
   equipmentType: 0
   itemEffects:
-  - {fileID: 11400000, guid: 5e1912239e883284da80ee7f86380426, type: 2}
+  - {fileID: 11400000, guid: 2d60feaef613bd043a748a302a92377e, type: 2}
   sucManh: 0
   nhanhNhen: 0
   thongMinh: 0

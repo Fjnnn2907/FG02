@@ -16,7 +16,10 @@ public class EvenTriggerAnim : MonoBehaviour
             character.stats.DoDamage(targetStat);
 
 
-            Inventory.instance.GetItemEquipment(EquipmentType.Vukhi).ItemEffect();
+            var weaponItem = Inventory.instance.GetItemEquipment(EquipmentType.Vukhi);
+
+            if (weaponItem != null)
+                weaponItem.ItemEffect(targetStat.transform);
         }
     }
     public void CreateSword()

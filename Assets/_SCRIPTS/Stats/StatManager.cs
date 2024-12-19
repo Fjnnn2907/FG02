@@ -26,7 +26,7 @@ public class StatManager : MonoBehaviour
     [Header("Magic Stats")]
     public Stat satThuongLua;
     public Stat satThuongBang;
-    public Stat satThuongAnhSang;
+    public Stat satThuongDien;
 
     public bool isBong;
     public bool isDongBang;
@@ -101,7 +101,7 @@ public class StatManager : MonoBehaviour
     {
         int _satThuongLua = satThuongLua.GetValue();
         int _satThuongBang = satThuongBang.GetValue();
-        int _satThuongSet = satThuongAnhSang.GetValue();
+        int _satThuongSet = satThuongDien.GetValue();
 
         int totalMagicDamage = _satThuongLua + _satThuongBang + _satThuongSet + thongMinh.GetValue();
         totalMagicDamage -= _targetStats.khangAP.GetValue() + (_targetStats.thongMinh.GetValue() * 3);
@@ -183,7 +183,7 @@ public class StatManager : MonoBehaviour
     private void TiaSet(StatManager _targetStats)
     {
         GameObject PreFab = Instantiate(tiaSetPreFab, transform.position, Quaternion.identity);
-        PreFab.GetComponent<TiaSetController>().SetUpTiaSet(satThuongAnhSang.GetValue(), _targetStats);
+        PreFab.GetComponent<TiaSetController>().SetUpTiaSet(satThuongDien.GetValue(), _targetStats);
     }
 
     private bool CanCrit()
@@ -234,7 +234,7 @@ public class StatManager : MonoBehaviour
     public virtual void TakeDamage(int _damege)
     {
         DecreaseHealthBy(_damege);
-        Debug.Log(currentHealth);
+        //Debug.Log(currentHealth);
 
         GetComponent<Entity>().DamageEffect();
 

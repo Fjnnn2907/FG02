@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "new ItemData", menuName = "Data/ItemEffct")]
 public class ItemEffect : ScriptableObject
 {
-    public virtual void ExecuteEffect()
+    public virtual void ExecuteEffect(Transform _enemyPos)
     {
         Debug.Log("a");
     }
