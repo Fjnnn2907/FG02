@@ -14,6 +14,9 @@ public class EvenTriggerAnim : MonoBehaviour
         {
             EnemyStat targetStat = collision.GetComponent<EnemyStat>();
             character.stats.DoDamage(targetStat);
+
+
+            Inventory.instance.GetItemEquipment(EquipmentType.Vukhi).ItemEffect();
         }
     }
     public void CreateSword()

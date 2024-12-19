@@ -18,6 +18,7 @@ public class Inventory : MonoBehaviour
     public List<InventoryItem> stash;
     public Dictionary<ItemData, InventoryItem> stashDir;
 
+    public List<ItemData> startItem = new();
 
     [Header("Inventory UI")]
     [SerializeField] private Transform inventorySlots;
@@ -49,6 +50,11 @@ public class Inventory : MonoBehaviour
         itemSlot = inventorySlots.GetComponentsInChildren<ItemSlot>();
         stashSlot = stashSlots.GetComponentsInChildren<ItemSlot>();
         equipmentSlot = equipmentSlots.GetComponentsInChildren<EquipmentSlot>();
+
+        for (int i = 0; i < startItem.Count; i++)
+        {
+            AddItem(startItem[i]);
+        }
     }
 
     private void updateSlotUI()
@@ -232,5 +238,19 @@ public class Inventory : MonoBehaviour
         AddItem(_itemToCraft);
         Debug.Log("Che tao thanh cong" +  _itemToCraft.name);
         return true;
+    }
+
+    public ItemEquipment GetItemEquipment(EquipmentType _type)
+    {
+        ItemEquipment itemEquiment = null;
+        
+        foreach(var item in equipmentDir)
+        {
+            if(item.Key.equipmentType == _type)
+                itemEquiment = item.Key;
+        }
+
+
+        return itemEquiment;
     }
 }

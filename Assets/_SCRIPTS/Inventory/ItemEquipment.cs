@@ -16,6 +16,8 @@ public class ItemEquipment: ItemData
 {
     public EquipmentType equipmentType;
 
+    public ItemEffect[] itemEffects;
+
     [Header("Major stats")]
     public int sucManh;
     public int nhanhNhen;
@@ -84,5 +86,13 @@ public class ItemEquipment: ItemData
         character.satThuongLua.RemoveMotdifier(satThuongLua);
         character.satThuongBang.RemoveMotdifier(satThuongBang);
         character.satThuongAnhSang.RemoveMotdifier(satThuongAnhSang);
+    }
+    
+    public void ItemEffect()
+    {
+        foreach(var item in itemEffects)
+        {
+            item.ExecuteEffect();
+        }
     }
 }
