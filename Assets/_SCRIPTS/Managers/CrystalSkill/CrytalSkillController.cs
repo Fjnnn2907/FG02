@@ -59,6 +59,12 @@ public class CrytalSkillController : MonoBehaviour
             if(hit.GetComponent<Enemy>() != null)
             {
                 character.stats.DoMagicDamage(hit.GetComponent<StatManager>());
+
+                var itemEqupment = Inventory.instance.GetItemEquipment(EquipmentType.Non);
+
+                if (itemEqupment != null)
+                    itemEqupment.ItemEffect(hit.transform);
+
             }
         }
     }

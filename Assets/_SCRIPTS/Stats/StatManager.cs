@@ -47,8 +47,8 @@ public class StatManager : MonoBehaviour
     public GameObject tiaSetPreFab;
     public int currentHealth;
 
-    public System.Action onHealthChanged; 
-
+    public System.Action onHealthChanged;
+    protected bool isDeah;
     protected virtual void Start()
     {
         satThuongChimang.SetDefaultValue(150);
@@ -238,8 +238,11 @@ public class StatManager : MonoBehaviour
 
         GetComponent<Entity>().DamageEffect();
 
-        if (currentHealth <= 0)
+        if (currentHealth <= 0 && !isDeah)
+        {
             Deah();
+            isDeah = true;
+        }
     }
     protected virtual void DecreaseHealthBy(int _damege)
     {

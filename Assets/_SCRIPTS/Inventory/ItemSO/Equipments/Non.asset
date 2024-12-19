@@ -15,7 +15,10 @@ MonoBehaviour:
   itemType: 1
   itemName: Non
   icon: {fileID: 21300000, guid: 9720aff94cd6c744a8c4b6f0fdde0eb4, type: 3}
+  dropChane: 0
   equipmentType: 1
+  itemEffects:
+  - {fileID: 11400000, guid: 2d60feaef613bd043a748a302a92377e, type: 2}
   sucManh: 0
   nhanhNhen: 0
   thongMinh: 0

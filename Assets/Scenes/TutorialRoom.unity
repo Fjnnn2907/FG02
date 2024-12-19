@@ -13689,6 +13689,7 @@ MonoBehaviour:
   stash: []
   startItem:
   - {fileID: 11400000, guid: 7da344eb630066f46a4a6135516c5218, type: 2}
+  - {fileID: 11400000, guid: cabcd4bb68807324c8b473fcbec0b088, type: 2}
   inventorySlots: {fileID: 887938154}
   stashSlots: {fileID: 39363336}
   equipmentSlots: {fileID: 1566114952}
@@ -16169,7 +16170,7 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   MaxHealth:
-    baseValue: 100
+    baseValue: 10
     modifiers: 
   giap:
     baseValue: 0
