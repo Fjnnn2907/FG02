@@ -10610,7 +10610,7 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   damage:
-    baseValue: 10
+    baseValue: 1
     modifiers: 
   tiLeChiMang:
     baseValue: 0
@@ -13690,6 +13690,8 @@ MonoBehaviour:
   startItem:
   - {fileID: 11400000, guid: 7da344eb630066f46a4a6135516c5218, type: 2}
   - {fileID: 11400000, guid: cabcd4bb68807324c8b473fcbec0b088, type: 2}
+  - {fileID: 11400000, guid: eb21bad03c77ce94a97b57007bcc09ee, type: 2}
+  - {fileID: 11400000, guid: 7d3f4d7d936bc024ca54fd4a5e8b2a97, type: 2}
   inventorySlots: {fileID: 887938154}
   stashSlots: {fileID: 39363336}
   equipmentSlots: {fileID: 1566114952}

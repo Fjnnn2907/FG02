@@ -14,7 +14,7 @@ public class DienController : MonoBehaviour
     {
         if(collision.GetComponent<Enemy>() != null)
         {
-            Debug.Log("a");
+            //Debug.Log("a");
             EnemyStat enemy = collision.gameObject.GetComponent<EnemyStat>();
             
             CharacterStat.DoMagicDamage(enemy);
