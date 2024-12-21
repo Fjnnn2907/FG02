@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class UI : MonoBehaviour
 {
+    public UI_ToolTip toolTip;
+
+
+
     public void switchTo(GameObject _menu)
     {
         for(int i = 0; i < transform.childCount; i++)

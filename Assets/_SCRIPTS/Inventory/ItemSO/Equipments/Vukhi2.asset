@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: Vukhi2
   m_EditorClassIdentifier: 
   itemType: 1
-  itemName: Vukhi2
+  itemName: "Ki\u1EBFn phu\u1ECDng ho\xE0n"
   icon: {fileID: 21300000, guid: fc71481f57ca45840b5d021e6f27588d, type: 3}
   dropChane: 4.8
   equipmentType: 0
   itemEffects:
   - {fileID: 11400000, guid: 8a3c03cfdf23b6f458c5078539ed322f, type: 2}
+  itemCooldown: 0
   sucManh: 0
   nhanhNhen: 0
   thongMinh: 0

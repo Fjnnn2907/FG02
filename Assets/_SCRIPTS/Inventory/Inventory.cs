@@ -144,10 +144,18 @@ public class Inventory : MonoBehaviour
             itemToRemove.RemoveModifiers();
         }
     }
-
+    public bool CanAddItem()
+    {
+        if(invetory.Count >= itemSlot.Length)
+        {
+            Debug.Log("Full Do");
+            return false;
+        }
+        return true;
+    }
     public void AddItem(ItemData _item)
     {
-        if(_item.itemType == ItemTpye.Equipment)
+        if(_item.itemType == ItemTpye.Equipment && CanAddItem())
         {
             AddToInventory(_item);
         }

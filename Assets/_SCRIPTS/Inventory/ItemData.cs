@@ -1,4 +1,4 @@
-
+using System.Text;
 using UnityEngine;
 
 public enum ItemTpye
@@ -17,4 +17,11 @@ public class ItemData : ScriptableObject
 
     [Range(0f, 100f)]
     public float dropChane;
+
+    protected StringBuilder sb = new StringBuilder();
+
+    public virtual string GetDescription()
+    {
+        return "";
+    }
 }

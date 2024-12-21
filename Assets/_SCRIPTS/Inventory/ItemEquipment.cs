@@ -98,4 +98,32 @@ public class ItemEquipment: ItemData
             item.ExecuteEffect(_enemyPos);
         }
     }
+
+    public override string GetDescription()
+    {
+        sb.Length = 0;
+
+        AddItemDescription(damage, "Damge");
+        AddItemDescription(satThuongLua, "sat Thuong Lua");
+        AddItemDescription(satThuongBang, "sat Thuong Bang");
+        AddItemDescription(satThuongAnhSang, "sat Thuong Dien");
+        AddItemDescription(ne, "Ne");
+        AddItemDescription(giap, "Giap");
+        AddItemDescription(MaxHealth, "MaxHP");
+        AddItemDescription(khangAP, "Deff AP");
+        return sb.ToString();
+
+    }
+
+    private void AddItemDescription(int _value, string _name)
+    {
+        if(_value != 0)
+        {
+            if (sb.Length > 0)
+                sb.AppendLine();
+
+            if(_value > 0)
+                sb.Append("+ " + _value + " " + _name ); 
+        }
+    }
 }
