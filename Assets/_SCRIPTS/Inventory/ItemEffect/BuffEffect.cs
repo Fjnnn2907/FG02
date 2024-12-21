@@ -2,11 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum BuffType
-{
-    Dame,
-    Giap,
-}
 
 
 [CreateAssetMenu(fileName = "new ItemEquipment", menuName = "Data/ItemEffect/Buff Effect")]
@@ -21,16 +16,8 @@ public class BuffEffect : ItemEffect
     {
         stats = PlayerManager.instance.character.GetComponent<CharacterStat>();
 
-        stats.BuffStats(buffAmout, buffDuration, StatToModify());
+        stats.BuffStats(buffAmout, buffDuration, stats.StatToModify(type));
     }
 
-    private Stat StatToModify()
-    {
-        if(type == BuffType.Dame)
-            return stats.damage;
-        else if(type == BuffType.Giap)
-            return stats.giap;
-
-        return null;
-    }
+    
 }

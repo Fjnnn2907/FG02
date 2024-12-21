@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 
 
@@ -18,16 +17,19 @@ public class Inventory : MonoBehaviour
     public List<InventoryItem> stash;
     public Dictionary<ItemData, InventoryItem> stashDir;
 
+
     public List<ItemData> startItem = new();
 
     [Header("Inventory UI")]
     [SerializeField] private Transform inventorySlots;
     [SerializeField] private Transform stashSlots;
     [SerializeField] private Transform equipmentSlots;
+    [SerializeField] private Transform statsSlots;
 
     private ItemSlot[] itemSlot;
     private ItemSlot[] stashSlot;
     private EquipmentSlot[] equipmentSlot;
+    private StatUI[] statUI;
 
     [Header("Cooldown")]
     private float lastTimeUsedFlask;
@@ -53,7 +55,7 @@ public class Inventory : MonoBehaviour
         itemSlot = inventorySlots.GetComponentsInChildren<ItemSlot>();
         stashSlot = stashSlots.GetComponentsInChildren<ItemSlot>();
         equipmentSlot = equipmentSlots.GetComponentsInChildren<EquipmentSlot>();
-
+        statUI = statsSlots.GetComponentsInChildren<StatUI>();
         for (int i = 0; i < startItem.Count; i++)
         {
             AddItem(startItem[i]);
@@ -95,6 +97,11 @@ public class Inventory : MonoBehaviour
         for(int i = 0;i < stash.Count; i++)
         {
             stashSlot[i].UpdateSlot(stash[i]);
+        }
+
+        for(int i = 0; i < statUI.Length; i++)
+        {
+            statUI[i].UpdateStatValue();
         }
     }
 

@@ -1,6 +1,18 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+public enum BuffType
+{
+    Dame,
+    STLua,
+    STBang,
+    STDien,
+    Giap,
+    Ne,
+    DeffAP,
+    MaxHP
+}
+
 
 public class StatManager : MonoBehaviour
 {
@@ -285,5 +297,19 @@ public class StatManager : MonoBehaviour
     public int GetMaxHealthValue()
     {
         return MaxHealth.GetValue() + sucSong.GetValue() * 5;
+    }
+
+    public Stat StatToModify(BuffType _type)
+    {
+        if (_type == BuffType.Dame) return damage;
+        else if (_type == BuffType.STLua) return satThuongLua;
+        else if (_type == BuffType.STBang) return satThuongBang;
+        else if(_type == BuffType.STDien) return satThuongDien;
+        else if (_type == BuffType.Giap) return giap;
+        else if(_type == BuffType.Ne) return ne;
+        else if(_type == BuffType.MaxHP) return MaxHealth;
+        else if(_type == BuffType.DeffAP) return khangAP;
+
+        return null;
     }
 }
