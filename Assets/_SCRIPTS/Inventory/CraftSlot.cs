@@ -5,9 +5,17 @@ using UnityEngine.EventSystems;
 
 public class CraftSlot : ItemSlot
 {
-    private void OnEnable()
+    public void SetUpCraftSlot(ItemEquipment _item)
     {
-        UpdateSlot(item);
+        if(_item == null)
+            return;
+
+        item.itemData = _item;
+
+        itemIcon.sprite = item.itemData.icon;
+        itemText.text = item.itemData.itemName;
+
+        itemIcon.enabled = true;
     }
     public override void OnPointerDown(PointerEventData eventData)
     {

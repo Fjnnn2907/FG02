@@ -5,14 +5,14 @@ using UnityEngine.EventSystems;
 
 public class ItemSlot : MonoBehaviour, IPointerDownHandler,IPointerEnterHandler,IPointerExitHandler
 {
-    [SerializeField] private Image itemIcon;
-    [SerializeField] private TextMeshProUGUI itemText;
+    [SerializeField] protected Image itemIcon;
+    [SerializeField] protected TextMeshProUGUI itemText;
 
     [SerializeField] protected InventoryItem item;
 
-    [SerializeField] private UI ui;
+    [SerializeField] protected UI ui;
 
-    private void Start()
+    protected virtual void Start()
     {
         ui = GetComponentInParent<UI>();
     }

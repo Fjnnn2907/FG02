@@ -6,7 +6,27 @@ public class UI : MonoBehaviour
 {
     public UI_ToolTip toolTip;
 
+    [SerializeField] private GameObject character;
+    [SerializeField] private GameObject skilltree;
+    [SerializeField] private GameObject cratf;
+    [SerializeField] private GameObject option;
 
+    private void Start()
+    {
+        switchTo(null);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+            SwithToInput(character);
+        else if(Input.GetKeyDown(KeyCode.T))
+            SwithToInput(skilltree);
+        else if(Input.GetKeyDown(KeyCode.O))
+            SwithToInput(option);
+        else if(Input.GetKeyDown(KeyCode.C))
+            SwithToInput(cratf);
+    }
 
     public void switchTo(GameObject _menu)
     {
@@ -18,4 +38,16 @@ public class UI : MonoBehaviour
         if(_menu != null)
             _menu.SetActive(true);
     }
+
+    public void SwithToInput(GameObject _menu)
+    {
+        if(_menu != null && _menu.activeSelf)
+        {
+            _menu.SetActive(false);
+            return;
+        }
+
+        switchTo(_menu);
+    }
+
 }
