@@ -82,6 +82,9 @@ public class Character : Entity
 
         if (Input.GetKeyDown(KeyCode.Q))
             skill.crytalSkill.CanUseSkill();
+
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+            Inventory.instance.UseFlask();
     }
     private void FixedUpdate()
     {

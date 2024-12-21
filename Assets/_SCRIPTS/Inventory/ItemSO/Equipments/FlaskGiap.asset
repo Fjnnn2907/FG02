@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e67e8c8fa31bd444582a3ad63df46b6d, type: 3}
+  m_Name: FlaskGiap
+  m_EditorClassIdentifier: 
+  itemType: 1
+  itemName: FlaskGiap
+  icon: {fileID: 21300000, guid: c471c08b4d9952c46aa7d931c87f6eab, type: 3}
+  dropChane: 0
+  equipmentType: 4
+  itemEffects:
+  - {fileID: 11400000, guid: 02daf2d05fcc8b6419edd08a66292528, type: 2}
+  itemCooldown: 3
+  sucManh: 0
+  nhanhNhen: 0
+  thongMinh: 0
+  sucSong: 0
+  damage: 0
+  tiLeChiMang: 0
+  satThuongChimang: 0
+  MaxHealth: 0
+  giap: 0
+  ne: 0
+  khangAP: 0
+  satThuongLua: 0
+  satThuongBang: 0
+  satThuongAnhSang: 0
+  craftMaterials: []

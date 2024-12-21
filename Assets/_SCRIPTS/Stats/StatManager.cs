@@ -244,6 +244,30 @@ public class StatManager : MonoBehaviour
             isDeah = true;
         }
     }
+    public virtual void BuffStats(int _modifier, float _duration, Stat _statModify)
+    {
+        StartCoroutine(BuffDuraction(_modifier, _duration, _statModify));
+    }
+
+    private IEnumerator BuffDuraction(int _modifier, float _duration, Stat _statModify)
+    {
+        _statModify.AddMotdifier(_modifier);    
+
+        yield return new WaitForSeconds(_duration);
+
+        _statModify.RemoveMotdifier(_modifier);
+    }
+    public virtual void HoiPhucMau(int amout)
+    {
+        currentHealth += amout;
+
+        if(currentHealth > GetMaxHealthValue())
+            currentHealth = GetMaxHealthValue();
+
+        if (onHealthChanged != null)
+            onHealthChanged();
+    }
+
     protected virtual void DecreaseHealthBy(int _damege)
     {
         currentHealth -= _damege;

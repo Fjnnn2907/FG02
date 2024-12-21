@@ -28,6 +28,9 @@ public class Inventory : MonoBehaviour
     private ItemSlot[] itemSlot;
     private ItemSlot[] stashSlot;
     private EquipmentSlot[] equipmentSlot;
+
+    [Header("Cooldown")]
+    private float lastTimeUsedFlask;
     private void Awake()
     {
         if (instance == null)
@@ -252,5 +255,21 @@ public class Inventory : MonoBehaviour
 
 
         return itemEquiment;
+    }
+
+    public void UseFlask()
+    {
+        ItemEquipment currentFlask = GetItemEquipment(EquipmentType.Flask);
+
+        if(currentFlask == null) 
+            return;
+
+        bool canFlask = Time.time > lastTimeUsedFlask + currentFlask.itemCooldown;
+
+        if (canFlask)
+        {
+            currentFlask.ItemEffect(null);
+            lastTimeUsedFlask = Time.time;
+        }
     }
 }

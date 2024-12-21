@@ -7,7 +7,8 @@ public enum EquipmentType
     Vukhi,
     Non,
     Giap,
-    Quan
+    Quan,
+    Flask
 }
 
 
@@ -17,6 +18,8 @@ public class ItemEquipment: ItemData
     public EquipmentType equipmentType;
 
     public ItemEffect[] itemEffects;
+
+    public float itemCooldown;
 
     [Header("Major stats")]
     public int sucManh;
