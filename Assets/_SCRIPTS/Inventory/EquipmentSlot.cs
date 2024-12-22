@@ -20,5 +20,6 @@ public class EquipmentSlot : ItemSlot
         Inventory.instance.AddItem(item.itemData as ItemEquipment);
         CleanSlot();
 
+        ui.toolTip.HideToolTip();
     }
 }

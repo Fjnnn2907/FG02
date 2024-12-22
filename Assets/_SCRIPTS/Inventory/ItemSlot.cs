@@ -50,6 +50,8 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler,IPointerEnterHandler,
 
         if(item.itemData.itemType == ItemTpye.Equipment)
             Inventory.instance.EquipItem(item.itemData);
+
+        ui.toolTip.HideToolTip();
     }
 
     public void OnPointerEnter(PointerEventData eventData)

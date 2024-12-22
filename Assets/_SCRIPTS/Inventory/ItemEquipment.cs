@@ -8,6 +8,8 @@ public enum EquipmentType
     Non,
     Giap,
     Quan,
+    Nhan,
+    AoChoang,
     Flask
 }
 

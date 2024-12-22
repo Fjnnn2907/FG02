@@ -19,8 +19,13 @@ public class CraftSlot : ItemSlot
     }
     public override void OnPointerDown(PointerEventData eventData)
     {
+        ui.craftWindow.SetUpCraftWindow(item.itemData as ItemEquipment);
+    }
+
+    private void CarftItem()
+    {
         ItemEquipment craftData = item.itemData as ItemEquipment;
 
-        Inventory.instance.CanCraft(craftData,craftData.craftMaterials);
+        Inventory.instance.CanCraft(craftData, craftData.craftMaterials);
     }
 }

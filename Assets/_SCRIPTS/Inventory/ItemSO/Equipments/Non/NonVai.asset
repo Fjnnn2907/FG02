@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e67e8c8fa31bd444582a3ad63df46b6d, type: 3}
-  m_Name: Vukhi2
+  m_Name: NonVai
   m_EditorClassIdentifier: 
   itemType: 1
-  itemName: "Ki\u1EBFn phu\u1ECDng ho\xE0n"
-  icon: {fileID: 21300000, guid: fc71481f57ca45840b5d021e6f27588d, type: 3}
-  dropChane: 4.8
-  equipmentType: 0
+  itemName: "N\xF3n V\u1EA3i"
+  icon: {fileID: 21300000, guid: 2ef3557c262e0d74fb4e5f6c97b37aa9, type: 3}
+  dropChane: 0
+  equipmentType: 1
   itemEffects:
-  - {fileID: 11400000, guid: 8a3c03cfdf23b6f458c5078539ed322f, type: 2}
+  - {fileID: 11400000, guid: 2d60feaef613bd043a748a302a92377e, type: 2}
   itemCooldown: 0
   sucManh: 0
   nhanhNhen: 0
@@ -29,9 +29,9 @@ MonoBehaviour:
   satThuongChimang: 0
   MaxHealth: 0
   giap: 0
-  ne: 0
+  ne: 12
   khangAP: 0
   satThuongLua: 0
-  satThuongBang: 1
-  satThuongAnhSang: 0
+  satThuongBang: 0
+  satThuongAnhSang: 5
   craftMaterials: []

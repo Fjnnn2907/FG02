@@ -9,29 +9,20 @@ public class UICraftList : MonoBehaviour, IPointerDownHandler
     [SerializeField] private GameObject craftPreFab;
 
     [SerializeField] private List<ItemEquipment> craftEquiment;
-    [SerializeField] private List<CraftSlot> craftSlots;
 
     private void Start()
     {
-        CraftSlots();
+        transform.parent.GetChild(0).GetComponent<UICraftList>().SetUpCraftList();
+        SetUpDefaultCartfWindow();
     }
 
-    private void CraftSlots()
-    {
-        for (int i = 0; i < craftSlotParent.childCount; i++)
-        {
-            craftSlots.Add(craftSlotParent.GetChild(i).GetComponent<CraftSlot>());
-        }
-    }
 
     public void SetUpCraftList()
     {
-        for(int i = 0; i < craftSlots.Count; i++)
+        for(int i = 0; i < craftSlotParent.childCount; i++)
         {
-            craftSlots[i].gameObject.SetActive(false);
+            craftSlotParent.GetChild(i).gameObject.SetActive(false);
         }
-
-        craftSlots = new List<CraftSlot>();
 
         for(int i = 0;i < craftEquiment.Count; i++)
         {
@@ -39,6 +30,12 @@ public class UICraftList : MonoBehaviour, IPointerDownHandler
 
             newSlot.GetComponent<CraftSlot>().SetUpCraftSlot(craftEquiment[i]);
         }
+    }
+
+    public void SetUpDefaultCartfWindow()
+    {
+        if (craftEquiment[0] != null)
+            GetComponentInParent<UI>().craftWindow.SetUpCraftWindow(craftEquiment[0]);
     }
 
     public void OnPointerDown(PointerEventData eventData)
