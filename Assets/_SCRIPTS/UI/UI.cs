@@ -12,6 +12,12 @@ public class UI : MonoBehaviour
     [SerializeField] private GameObject skilltree;
     [SerializeField] private GameObject cratf;
     [SerializeField] private GameObject option;
+
+    private void Awake()
+    {
+        switchTo(skilltree);
+    }
+
     private void Start()
     {
         switchTo(null);
