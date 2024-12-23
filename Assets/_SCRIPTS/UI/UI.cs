@@ -6,13 +6,12 @@ public class UI : MonoBehaviour
 {
     public UI_ToolTip toolTip;
     public UICraftWindow craftWindow;
-
+    public UiSkillTreeToolTip toolTipSkillTree;
 
     [SerializeField] private GameObject character;
     [SerializeField] private GameObject skilltree;
     [SerializeField] private GameObject cratf;
     [SerializeField] private GameObject option;
-
     private void Start()
     {
         switchTo(null);
