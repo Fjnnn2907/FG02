@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
@@ -58,7 +58,10 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler,IPointerEnterHandler,
     {
         if(item == null) return;
         ui.toolTip.ShowToolTip(item.itemData as ItemEquipment);
-       
+
+        MoveUIToolTip();
+
+
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -66,4 +69,27 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler,IPointerEnterHandler,
         if (item == null) return;
         ui.toolTip.HideToolTip();
     }
+
+    private void MoveUIToolTip()
+    {
+        Vector2 mousePos = Input.mousePosition;
+
+
+        float xOffsize = 0;
+        float yOffsize = 0;
+
+        if (mousePos.x > 600)
+            xOffsize = 100;
+        else
+            xOffsize = -100;
+
+        if (mousePos.y > 320)
+            yOffsize = 100;
+        else
+            yOffsize = -100;
+
+        ui.toolTip.transform.position = new Vector2(mousePos.x + xOffsize, mousePos.y + yOffsize);
+    }
+
+
 }

@@ -36,7 +36,7 @@ public class CharacterGroundState : CharacterState
             stateMachine.ChangeState(character.changeState);
         }
         // add singleton Skill
-        if (Input.GetKeyDown(KeyCode.LeftShift) && character.IsGroundCheck() && SkillManager.instance.rollSkill.CanUseSkill())
+        if (Input.GetKeyDown(KeyCode.LeftShift) && character.IsGroundCheck() && character.skill.rollSkill.CanUseSkill() && character.skill.rollSkill.canRoll)
             stateMachine.ChangeState(character.rollState);
 
         if (Input.GetKeyDown(KeyCode.I) && character.IsGroundCheck())

@@ -11,24 +11,32 @@ public class UISkillTreeSlot : MonoBehaviour,IPointerEnterHandler,IPointerExitHa
 
     [SerializeField] private string skillName;
     [SerializeField] private string skillDescription;
+    [SerializeField] private int countBuySkill;
+
 
     [SerializeField] private UISkillTreeSlot[] Unlocked;
     [SerializeField] protected UISkillTreeSlot[] Locked;
 
     [SerializeField] private Color lockedColor;
 
-
+    private void Awake()
+    {
+        GetComponentInChildren<Button>().onClick.AddListener(() => UnlockSKillSlot());
+    }
     private void Start()
     {
         skillImage = GetComponent<Image>();
         ui = GetComponentInParent<UI>();
         skillImage.color = lockedColor;
 
-        GetComponentInChildren<Button>().onClick.AddListener(() => UnlockSKillSlot());
     }
 
     public void UnlockSKillSlot()
     {
+
+        if(!PlayerManager.instance.HaveMoney(countBuySkill))
+            return;
+
         for (int i = 0; i < Unlocked.Length; i++)
         {
             if (Unlocked[i].unlock == false)

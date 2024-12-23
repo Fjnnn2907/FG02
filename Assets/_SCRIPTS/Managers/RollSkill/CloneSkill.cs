@@ -7,7 +7,9 @@ public class CloneSkill : Skill
     [Header("Clone")]
     [SerializeField] private GameObject cloneSkill;
     [SerializeField] private float cloneTime = 1.2f;
-    [SerializeField] private bool canAttack;
+    //[SerializeField] private bool canAttack;
+    public bool canAttack;
+
 
     [SerializeField] private bool createCloneOnRollStart;
     [SerializeField] private bool createCloneOnRollOver;
@@ -18,15 +20,5 @@ public class CloneSkill : Skill
 
         newClone.GetComponent<CloneSkillController>().SetUpClone(_clonePositon,cloneTime, canAttack, _offset, FindClosetEnemy(cloneSkill.transform),character);
     }
-    
-    public void CreateCloneOnRollBegun()
-    {
-        if (createCloneOnRollStart)
-            CreateClone(character.transform,Vector2.zero);
-    }
-    public void CreateCloneOnRollOver()
-    {
-        if (createCloneOnRollOver)
-            CreateClone(character.transform, Vector2.zero);
-    }
+     
 }
