@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BackholeSkill : Skill
 {
@@ -12,6 +13,10 @@ public class BackholeSkill : Skill
 
     [SerializeField] private int amoutAttack = 4;
     [SerializeField] private float cloneCooldown =.3f;
+
+    [SerializeField] private UISkillTreeSlot backholeButton;
+    public bool backhole { get; private set; }
+
     public override bool CanUseSkill()
     {
         return base.CanUseSkill();
@@ -19,6 +24,7 @@ public class BackholeSkill : Skill
 
     public override void UseSkill()
     {
+        if (!backhole) return;
         base.UseSkill();
 
         GameObject newBackhole = Instantiate(backholePrefab,character.transform.position,Quaternion.identity);
@@ -31,10 +37,18 @@ public class BackholeSkill : Skill
     protected override void Start()
     {
         base.Start();
+
+        backholeButton.GetComponent<Button>().onClick.AddListener(() => UnlocedBackhole());
     }
 
     protected override void Update()
     {
         base.Update();
+    }
+
+    private void UnlocedBackhole()
+    {
+        if(backholeButton.unlock)
+            backhole = true;
     }
 }

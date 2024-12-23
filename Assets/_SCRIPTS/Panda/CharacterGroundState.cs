@@ -48,7 +48,7 @@ public class CharacterGroundState : CharacterState
         if (Input.GetKeyDown(KeyCode.Mouse1) && HeNoSword() && character.skill.swordSkill.unlocedSowrd)
             stateMachine.ChangeState(character.aimSwordState);
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R) && character.skill.backholiSkill.backhole)
             stateMachine.ChangeState(character.backholeState);
     }
 

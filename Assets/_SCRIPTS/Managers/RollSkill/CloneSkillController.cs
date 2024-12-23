@@ -48,6 +48,7 @@ public class CloneSkillController : MonoBehaviour
         {
             if (collision.GetComponent<Enemy>() == null) return;
 
+            character.stats.DoDamage(collision.GetComponent<StatManager>());
             character.stats.DoMagicDamage(collision.GetComponent<StatManager>());
         }
     }
