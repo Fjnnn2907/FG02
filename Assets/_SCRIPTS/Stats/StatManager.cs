@@ -157,7 +157,8 @@ public class StatManager : MonoBehaviour
 
         if (canThieuRui)
             _targetStats.setUpSatThuongBong(Mathf.RoundToInt(_satThuongLua * .2f));
-        Debug.Log(Mathf.RoundToInt(_satThuongLua * .2f));
+        //Debug.Log(Mathf.RoundToInt(_satThuongLua * .2f));
+        
         _targetStats.SuDungNguyenTo(canThieuRui, canDongBang,canSet, _targetStats); 
 
     }
