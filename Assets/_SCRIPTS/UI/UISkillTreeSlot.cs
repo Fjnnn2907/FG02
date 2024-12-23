@@ -10,6 +10,7 @@ public class UISkillTreeSlot : MonoBehaviour,IPointerEnterHandler,IPointerExitHa
     public bool unlock;
 
     [SerializeField] private string skillName;
+    [TextArea(2,2)]
     [SerializeField] private string skillDescription;
     [SerializeField] private int countBuySkill;
 

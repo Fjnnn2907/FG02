@@ -61,6 +61,7 @@ public class StatManager : MonoBehaviour
 
     public System.Action onHealthChanged;
     protected bool isDeah;
+    private bool isXuyenGiap;
     protected virtual void Start()
     {
         satThuongChimang.SetDefaultValue(150);
@@ -91,6 +92,21 @@ public class StatManager : MonoBehaviour
             satThuongBongTimer = bongCoolDown;
         }
     }
+
+    public void LayXuyenGiap(float _duraction)
+    {
+        StartCoroutine(XuyenGiap(_duraction));
+    }
+
+    private IEnumerator XuyenGiap(float _duraction)
+    {
+        isXuyenGiap = true;
+
+        yield return new WaitForSeconds(_duraction);
+
+        isXuyenGiap = false;
+    }
+
     public virtual void DoDamage(StatManager _targetStats)
     {
         if (CheckTargetAvoidAttack(_targetStats)) return;
@@ -246,6 +262,10 @@ public class StatManager : MonoBehaviour
 
     public virtual void TakeDamage(int _damege)
     {
+
+        if (isXuyenGiap)
+            _damege = Mathf.FloorToInt(_damege * 1.1f);
+
         DecreaseHealthBy(_damege);
         //Debug.Log(currentHealth);
 

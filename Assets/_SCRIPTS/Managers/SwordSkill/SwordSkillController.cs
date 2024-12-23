@@ -220,10 +220,17 @@ public class SwordSkillController : MonoBehaviour
 
     private void SwordSkillDamege(Enemy enemy)
     {
-        character.stats.DoMagicDamage(enemy.GetComponent<StatManager>());
-        enemy.StartCoroutine("FreezeTimeFor", freezeTime);
+        var enemyTarget = enemy.GetComponent<StatManager>();
 
-        var itemEqupment = Inventory.instance.GetItemEquipment(EquipmentType.Non);
+        character.stats.DoMagicDamage(enemyTarget);
+        
+        if(character.skill.swordSkill.timeStop)     
+            enemy.StartCoroutine("FreezeTimeFor", freezeTime);
+
+        if (character.skill.swordSkill.xuyenGiap)
+            enemyTarget.LayXuyenGiap(freezeTime);
+
+            var itemEqupment = Inventory.instance.GetItemEquipment(EquipmentType.Non);
 
         if (itemEqupment != null)
             itemEqupment.ItemEffect(enemy.transform);

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CrytalSkill : Skill
 {
@@ -10,26 +11,48 @@ public class CrytalSkill : Skill
 
     [SerializeField] private float crystalDuraction;
 
+    [Header("Scystal")]
+    [SerializeField] private bool canScystal;
+    [SerializeField] private UISkillTreeSlot canScystalButton;
+
     [Header("Clone Crytals")]
     [SerializeField] private bool canCloneCrytals;
+    [SerializeField] private UISkillTreeSlot canCloneCrytalsButton;
 
     [Header("Explosive")]
     [SerializeField] private bool canExplosive;
+    [SerializeField] private UISkillTreeSlot canExplosiveButton;
 
     [Header("Moving")]
     [SerializeField] private bool canMoveToEnemy;
     [SerializeField] private float moveSpeed;
-
+    [SerializeField] private UISkillTreeSlot canMoveToEnemyButton;
     [Header("Multi Crytal")]
     [SerializeField] private bool canUseMultiCrytal;
     [SerializeField] private int amoutStacks;
     [SerializeField] private float miutiStackCooldown;
+    [SerializeField] private UISkillTreeSlot canUseMultiCrytalButton;
     [SerializeField] private List<GameObject> crystals = new List<GameObject>();
+    
+
+    protected override void Start()
+    {
+        base.Start();
+
+        canScystalButton.GetComponent<Button>().onClick.AddListener(() => UnlocedCanScystal());
+        canExplosiveButton.GetComponent<Button>().onClick.AddListener(() => UnlockedCanExplosive());
+        canCloneCrytalsButton.GetComponent<Button>().onClick.AddListener(() => UnlockedCanCloneCrytals());
+        canMoveToEnemyButton.GetComponent<Button>().onClick.AddListener(() => UnlocedCanMoveToEnemy());
+        canUseMultiCrytalButton.GetComponent<Button>().onClick.AddListener(() => UnlockedCanUseMultiCrytal());  
+    }
     public override void UseSkill()
     {
         base.UseSkill();
 
         if (CanUseMultiCrytal())
+            return;
+
+        if(!canScystal)
             return;
 
         if (currentCrystal == null)
@@ -104,4 +127,34 @@ public class CrytalSkill : Skill
         cooldownTimer = miutiStackCooldown;
         RefillCrystal();
     }
+
+#region Skill Tree
+    private void UnlocedCanScystal()
+    {
+        if(canScystalButton.unlock)
+            canScystal = true;
+    }
+
+    private void UnlockedCanExplosive()
+    {
+        if(canExplosiveButton.unlock)
+            canExplosive = true;
+    }
+    private void UnlockedCanCloneCrytals()
+    {
+        if (canCloneCrytalsButton.unlock)
+            canCloneCrytals = true;
+    }
+    private void UnlocedCanMoveToEnemy()
+    {
+        if(canMoveToEnemyButton.unlock)
+            canMoveToEnemy = true;  
+    }
+
+    private void UnlockedCanUseMultiCrytal()
+    {
+        if(canUseMultiCrytalButton.unlock)
+            canUseMultiCrytal = true;
+    }
+    #endregion
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum SwordTpye
 {
@@ -14,23 +15,34 @@ public class SwordSkill : Skill
     [SerializeField] private int bouceAmout = 4;
     [SerializeField] private float bouceGravity = 1;
     [SerializeField] private float bounceSpeed = 10;
+    [SerializeField] private UISkillTreeSlot bouceButton;
 
     [Header("Perice")]
     [SerializeField] private int periceAmout = 2;
     [SerializeField] private float periceGravity = 1;
+    [SerializeField] private UISkillTreeSlot periceButton;
 
     [Header("Spin")]
     [SerializeField] private float hitCooldown = .35f;
     [SerializeField] private float maxTravelDistace = 7;
     [SerializeField] private float spinDuration = 0.75f;
     [SerializeField] private float spinGravity = 1;
-    
+    [SerializeField] private UISkillTreeSlot spineButton;
+
+    [Header("Passive")]
+    public bool timeStop;
+    [SerializeField] private UISkillTreeSlot timeStopButton;
+    public bool xuyenGiap;
+    [SerializeField] private UISkillTreeSlot xuyenGiapButton;
+
     [Header("Skill")]
     [SerializeField] private GameObject swordPrefab;
     [SerializeField] private Vector2 swordForce = new Vector2(35, 25);
     [SerializeField] private float swordGravity = 0.5f;
     [SerializeField] private float freeTime = 1;
     [SerializeField] private float returnSpeed = 20;
+    public bool unlocedSowrd { get; private set; }
+    [SerializeField] private UISkillTreeSlot swordButton;
 
     private Vector2 finalDir;
 
@@ -49,6 +61,15 @@ public class SwordSkill : Skill
         GenerateDots();
 
         SetGravity();
+
+
+        swordButton.GetComponent<Button>().onClick.AddListener(() => UnlocedSword());
+        timeStopButton.GetComponent<Button>().onClick.AddListener(() => UnlocedStopTime());
+        xuyenGiapButton.GetComponent<Button>().onClick.AddListener(() => XuyenGiap());
+        periceButton.GetComponent<Button>().onClick.AddListener(() => PericeSword());
+        bouceButton.GetComponent<Button>().onClick.AddListener(() => BouceSword());
+        spineButton.GetComponent<Button>().onClick.AddListener(() => SpinSword());
+
     }
 
     private void SetGravity()
@@ -132,6 +153,47 @@ public class SwordSkill : Skill
 
         return pos;
     }
+    #endregion
+
+    #region Unloced SKill Tree
+
+    private void UnlocedSword()
+    {
+        if (swordButton.unlock)
+        {
+            unlocedSowrd = true;
+            swordTpye = SwordTpye.Regular;
+        }
+
+    }
+    private void UnlocedStopTime()
+    {
+        if(timeStopButton.unlock)
+            timeStop = true;
+    }
+
+    private void XuyenGiap()
+    {
+        if(xuyenGiapButton.unlock)
+            xuyenGiap = true;
+    }
+    private void BouceSword()
+    {
+        if (bouceButton.unlock)
+            swordTpye = SwordTpye.Bounce;
+    }
+
+    private void PericeSword()
+    {
+        if (periceButton.unlock)
+            swordTpye = SwordTpye.Pierce;
+    }
+    private void SpinSword()
+    {
+        if (spineButton.unlock)
+            swordTpye = SwordTpye.Spin;
+    }
+
     #endregion
 }
 
