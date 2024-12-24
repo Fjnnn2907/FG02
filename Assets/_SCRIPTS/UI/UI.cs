@@ -12,6 +12,7 @@ public class UI : MonoBehaviour
     [SerializeField] private GameObject skilltree;
     [SerializeField] private GameObject cratf;
     [SerializeField] private GameObject option;
+    [SerializeField] private GameObject inGame;
 
     private void Awake()
     {
@@ -20,7 +21,7 @@ public class UI : MonoBehaviour
 
     private void Start()
     {
-        switchTo(null);
+        switchTo(inGame);
     }
 
     private void Update()
@@ -51,10 +52,20 @@ public class UI : MonoBehaviour
         if(_menu != null && _menu.activeSelf)
         {
             _menu.SetActive(false);
+            CheckInGameUI();
             return;
         }
 
         switchTo(_menu);
     }
 
+    private void CheckInGameUI()
+    {
+        for (int i = 0;i < transform.childCount; i++)
+        {
+            if(transform.GetChild(i).gameObject.activeSelf)
+                return;
+        }
+        switchTo(inGame);
+    }
 }

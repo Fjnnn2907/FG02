@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Skill : MonoBehaviour
 {
-    [SerializeField] protected float cooldown = 5f;
+    public float cooldown = 5f;
     protected float cooldownTimer;
     
     protected Character character;
@@ -26,7 +26,7 @@ public class Skill : MonoBehaviour
             cooldownTimer = cooldown;
             return true;
         }
-        Debug.Log("Skill on colldown");
+        //Debug.Log("Skill on colldown");
         return false;
     }
     public virtual void UseSkill()
