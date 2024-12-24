@@ -30622,11 +30622,20 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cdab36cead6825a4b8e0708205dd406f, type: 2}
   - {fileID: 11400000, guid: 08ad1a1d42ccad948ace71e3c02bd40e, type: 2}
   - {fileID: 11400000, guid: 414187cfbee50ba409c1438ad1dc02d1, type: 2}
+  - {fileID: 11400000, guid: 92011a1ad77c0a84b91926aae0411234, type: 2}
+  - {fileID: 11400000, guid: 10a5e351d48dfec4b9444850b49e7878, type: 2}
+  - {fileID: 11400000, guid: 32f4c48f3596e3740a08e2159df2e10d, type: 2}
+  - {fileID: 11400000, guid: f9f6c2d7f92a90c45b96156a3814d73c, type: 2}
+  - {fileID: 11400000, guid: 3f2a14c9cce91a543890947b49af1729, type: 2}
+  - {fileID: 11400000, guid: 3f2a14c9cce91a543890947b49af1729, type: 2}
+  - {fileID: 11400000, guid: 3f2a14c9cce91a543890947b49af1729, type: 2}
+  - {fileID: 11400000, guid: 3f2a14c9cce91a543890947b49af1729, type: 2}
   inventorySlots: {fileID: 887938154}
   stashSlots: {fileID: 39363336}
   equipmentSlots: {fileID: 1566114952}
   statsSlots: {fileID: 1563402307}
   loadItems: []
+  loadEquipment: []
 --- !u!4 &1577947382
 Transform:
   m_ObjectHideFlags: 0
