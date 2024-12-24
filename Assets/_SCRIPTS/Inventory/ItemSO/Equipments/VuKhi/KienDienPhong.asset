@@ -24,16 +24,16 @@ MonoBehaviour:
   nhanhNhen: 0
   thongMinh: 0
   sucSong: 0
-  damage: 10
+  damage: 100
   tiLeChiMang: 0
   satThuongChimang: 0
-  MaxHealth: 0
+  MaxHealth: 100
   giap: 0
   ne: 0
   khangAP: 0
   satThuongLua: 0
   satThuongBang: 0
-  satThuongAnhSang: 0
+  satThuongAnhSang: 50
   craftMaterials:
   - itemData: {fileID: 11400000, guid: 92011a1ad77c0a84b91926aae0411234, type: 2}
     stackSize: 1

@@ -24,14 +24,14 @@ MonoBehaviour:
   nhanhNhen: 0
   thongMinh: 0
   sucSong: 0
-  damage: 0
-  tiLeChiMang: 0
+  damage: 145
+  tiLeChiMang: 30
   satThuongChimang: 0
-  MaxHealth: 0
+  MaxHealth: 100
   giap: 0
   ne: 0
   khangAP: 0
   satThuongLua: 0
-  satThuongBang: 1
+  satThuongBang: 0
   satThuongAnhSang: 0
   craftMaterials: []

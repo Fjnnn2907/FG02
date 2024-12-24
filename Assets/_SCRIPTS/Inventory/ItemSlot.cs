@@ -78,15 +78,15 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler,IPointerEnterHandler,
         float xOffsize = 0;
         float yOffsize = 0;
 
-        if (mousePos.x > 600)
-            xOffsize = 100;
-        else
+        if (mousePos.x > 960)
             xOffsize = -100;
-
-        if (mousePos.y > 320)
-            yOffsize = 100;
         else
+            xOffsize = 100;
+
+        if (mousePos.y > 540)
             yOffsize = -100;
+        else
+            yOffsize = 100;
 
         ui.toolTip.transform.position = new Vector2(mousePos.x + xOffsize, mousePos.y + yOffsize);
     }

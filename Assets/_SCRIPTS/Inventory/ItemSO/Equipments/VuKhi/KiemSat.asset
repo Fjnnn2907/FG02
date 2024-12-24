@@ -24,8 +24,8 @@ MonoBehaviour:
   nhanhNhen: 0
   thongMinh: 0
   sucSong: 0
-  damage: 0
-  tiLeChiMang: 0
+  damage: 43
+  tiLeChiMang: 5
   satThuongChimang: 0
   MaxHealth: 0
   giap: 0
