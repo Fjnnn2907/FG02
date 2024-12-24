@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CloneSkill : Skill
 {
@@ -10,6 +11,7 @@ public class CloneSkill : Skill
     //[SerializeField] private bool canAttack;
     public bool canAttack;
 
+    [SerializeField] private UISkillTreeSlot cloneButton;
 
     [SerializeField] private bool createCloneOnRollStart;
     [SerializeField] private bool createCloneOnRollOver;
@@ -20,5 +22,21 @@ public class CloneSkill : Skill
 
         newClone.GetComponent<CloneSkillController>().SetUpClone(_clonePositon,cloneTime, canAttack, _offset, FindClosetEnemy(cloneSkill.transform),character);
     }
-     
+
+    protected override void Start()
+    {
+        base.Start();
+
+        cloneButton.GetComponent<Button>().onClick.AddListener(() => CanCloneAttack());
+    }
+    
+    private void CanCloneAttack()
+    {
+        if(cloneButton.unlock)
+            canAttack = true;
+    }
+    protected override void CheckUnlock()
+    {
+        CanCloneAttack();
+    }
 }

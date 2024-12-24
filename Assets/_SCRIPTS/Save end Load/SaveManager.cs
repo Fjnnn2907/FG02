@@ -10,6 +10,7 @@ public class SaveManager : MonoBehaviour
     private List<ISaveManager> saveManagers;
     private FileDataHandler fileDataHandler;
 
+    [SerializeField] private bool isMaHoa;
     [SerializeField] private string fileName;
 
     private void Awake()
@@ -22,7 +23,7 @@ public class SaveManager : MonoBehaviour
 
     private void Start()
     {
-        fileDataHandler = new FileDataHandler(Application.persistentDataPath,fileName);
+        fileDataHandler = new FileDataHandler(Application.persistentDataPath,fileName, isMaHoa);
         
         saveManagers = FindAllSaveGame();
         Debug.Log(Application.persistentDataPath);
@@ -68,5 +69,12 @@ public class SaveManager : MonoBehaviour
         IEnumerable<ISaveManager> saveManagers = FindObjectsOfType<MonoBehaviour>().OfType<ISaveManager>();
 
         return new List<ISaveManager>(saveManagers);
+    }
+
+    [ContextMenu("Delete Data")]
+    private void DeleteData()
+    {
+        fileDataHandler = new FileDataHandler(Application.persistentDataPath, fileName, isMaHoa);
+        fileDataHandler.Delete();
     }
 }

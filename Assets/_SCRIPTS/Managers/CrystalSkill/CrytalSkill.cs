@@ -128,7 +128,16 @@ public class CrytalSkill : Skill
         RefillCrystal();
     }
 
-#region Skill Tree
+    #region Skill Tree
+
+    protected override void CheckUnlock()
+    {
+        UnlocedCanScystal();
+        UnlockedCanExplosive();
+        UnlockedCanCloneCrytals();
+        UnlocedCanMoveToEnemy();
+        UnlockedCanUseMultiCrytal();
+    }
     private void UnlocedCanScystal()
     {
         if(canScystalButton.unlock)

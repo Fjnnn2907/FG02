@@ -51,4 +51,8 @@ public class BackholeSkill : Skill
         if(backholeButton.unlock)
             backhole = true;
     }
+    protected override void CheckUnlock()
+    {
+        UnlocedBackhole();
+    }
 }

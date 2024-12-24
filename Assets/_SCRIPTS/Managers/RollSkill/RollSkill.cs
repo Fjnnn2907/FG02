@@ -25,6 +25,12 @@ public class RollSkill : Skill
         rollSkillTreeSlot.GetComponent<Button>().onClick.AddListener(() => CanRoll());
         roolCanAttackSkillTreeSlot.GetComponent<Button>().onClick.AddListener(() => RollCanAttack());
     }
+    #region Skill Tree
+    protected override void CheckUnlock()
+    {
+        CanRoll();
+        RollCanAttack();
+    }
     private void CanRoll()
     {
         if(rollSkillTreeSlot.unlock)
@@ -33,10 +39,7 @@ public class RollSkill : Skill
     private void RollCanAttack()
     {
         if (roolCanAttackSkillTreeSlot.unlock)
-        {
             rollCanAttack = true;
-            SkillManager.instance.cloneSkill.canAttack = true;
-        }
     }
     public void CloneOnRoll()
     {
@@ -49,4 +52,5 @@ public class RollSkill : Skill
             SkillManager.instance.cloneSkill.CreateClone(character.transform, Vector2.zero);
         
     }
+    #endregion
 }

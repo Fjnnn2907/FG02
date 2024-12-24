@@ -156,7 +156,15 @@ public class SwordSkill : Skill
     #endregion
 
     #region Unloced SKill Tree
-
+    protected override void CheckUnlock()
+    {
+        UnlocedSword();
+        UnlocedStopTime();
+        XuyenGiap();
+        PericeSword();
+        BouceSword();
+        SpinSword();
+    }
     private void UnlocedSword()
     {
         if (swordButton.unlock)

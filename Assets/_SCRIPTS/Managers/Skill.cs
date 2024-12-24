@@ -12,6 +12,8 @@ public class Skill : MonoBehaviour
     protected virtual void Start()
     {
         character = PlayerManager.instance.character;
+
+        CheckUnlock();
     }
     protected virtual void Update()
     {
@@ -33,7 +35,10 @@ public class Skill : MonoBehaviour
     {
         
     }
+    protected virtual void CheckUnlock()
+    {
 
+    }
     protected virtual Transform FindClosetEnemy(Transform _checkTransform)
     {
         Collider2D[] collider = Physics2D.OverlapCircleAll(_checkTransform.position, 25);

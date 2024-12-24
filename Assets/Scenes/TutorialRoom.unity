@@ -7996,6 +7996,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1012d2d5db6e0244b45599198bc8d8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isMaHoa: 1
   fileName: data.phuong
 --- !u!1 &188742020
 GameObject:
@@ -8196,7 +8197,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &204333861
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13189,7 +13190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unlock: 0
-  skillName: 
+  skillName: "Xuy\xEAn Gi\xE1p"
   skillDescription: 
   countBuySkill: 0
   Unlocked:
@@ -14217,7 +14218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unlock: 0
-  skillName: 
+  skillName: "N\xE9m n\u1EA3y "
   skillDescription: 
   countBuySkill: 0
   Unlocked:
@@ -18615,6 +18616,7 @@ MonoBehaviour:
   cloneSkill: {fileID: 7828601297888881210, guid: 304bc05b6b1b35647834f7cd6a065e07, type: 3}
   cloneTime: 1.2
   canAttack: 0
+  cloneButton: {fileID: 311206142}
   createCloneOnRollStart: 0
   createCloneOnRollOver: 0
 --- !u!114 &839125653
@@ -21505,7 +21507,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unlock: 0
-  skillName: 
+  skillName: "\u0110\u1EEBng y\xEAn"
   skillDescription: 
   countBuySkill: 0
   Unlocked:
@@ -24853,7 +24855,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unlock: 0
-  skillName: 
+  skillName: "N\xE9m Xuy\xEAn"
   skillDescription: 
   countBuySkill: 0
   Unlocked:
@@ -28117,7 +28119,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unlock: 0
-  skillName: 
+  skillName: "N\xE9m Xuay"
   skillDescription: 
   countBuySkill: 0
   Unlocked:

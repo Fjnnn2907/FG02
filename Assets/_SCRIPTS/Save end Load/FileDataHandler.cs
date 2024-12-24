@@ -9,10 +9,14 @@ public class FileDataHandler
     public string dataDirPath = "";
     public string dataFileName = "";
 
-    public FileDataHandler(string _dataDirPath, string _dataFileName)
+    private bool encryptData = false;
+    private string codeWord = "fin";
+
+    public FileDataHandler(string _dataDirPath, string _dataFileName, bool _encryptData)
     {
         dataDirPath = _dataDirPath;
         dataFileName = _dataFileName;
+        encryptData = _encryptData;
     }
 
     public void Save(GameData _gameData)
@@ -24,8 +28,11 @@ public class FileDataHandler
             Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
 
             string dataToStore = JsonUtility.ToJson(_gameData, true);
+            
+            if(encryptData)
+                dataToStore = MaHoa(dataToStore);
 
-            using(FileStream stream = new FileStream(fullPath, FileMode.Create))
+            using (FileStream stream = new FileStream(fullPath, FileMode.Create))
             {
                 using (StreamWriter witer = new StreamWriter(stream))
                 {
@@ -61,6 +68,9 @@ public class FileDataHandler
 
                 }
 
+                if(encryptData)
+                    dataToLoad = MaHoa(dataToLoad);
+
                 _gameData = JsonUtility.FromJson<GameData>(dataToLoad);
             }
             catch(Exception e)
@@ -70,5 +80,23 @@ public class FileDataHandler
         }
 
         return _gameData;
+    }
+
+    public void Delete()
+    {
+        string fullPath = Path.Combine(dataDirPath, dataFileName);
+
+        if(File.Exists(fullPath))
+            File.Delete(fullPath);
+    }
+    private string MaHoa(string _data)
+    {
+        string modifiedData = "";
+
+        for(int i = 0; i < _data.Length; i++)
+        {
+            modifiedData += (char)(_data[i] ^ codeWord[i % codeWord.Length]);
+        }
+        return modifiedData;
     }
 }
