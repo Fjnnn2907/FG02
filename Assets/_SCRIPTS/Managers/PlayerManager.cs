@@ -9,18 +9,23 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private int coint;
     private void Awake()
     {
-        if(instance != null)
+        if (instance != null)
             Debug.LogWarning("Erro Singleton" + instance.name);
         else
-        instance = this;
+            instance = this;
     }
 
     public bool HaveMoney(int _coint)
     {
-        if (_coint < 0 || _coint > coint) 
+        if (_coint < 0 || _coint > coint)
             return false;
 
-        coint  -=_coint;
+        coint -= _coint;
         return true;
+    }
+
+    public int GetMoney()
+    {
+        return coint;
     }
 }

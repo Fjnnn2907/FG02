@@ -12,7 +12,7 @@ public class CrytalSkill : Skill
     [SerializeField] private float crystalDuraction;
 
     [Header("Scystal")]
-    [SerializeField] private bool canScystal;
+    public bool canScystal;
     [SerializeField] private UISkillTreeSlot canScystalButton;
 
     [Header("Clone Crytals")]
