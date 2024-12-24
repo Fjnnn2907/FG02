@@ -6,9 +6,12 @@ using UnityEngine;
 public class GameData
 {
     public int money;
+    public SerializableDic<string, int> inventory;
+
 
     public GameData()
     {
         this.money = 0;
+        inventory = new();
     }
 }

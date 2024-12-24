@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 
-public class Inventory : MonoBehaviour
+public class Inventory : MonoBehaviour, ISaveManager
 {
     public static Inventory instance;
 
@@ -33,6 +34,10 @@ public class Inventory : MonoBehaviour
 
     [Header("Cooldown")]
     private float lastTimeUsedFlask;
+
+    [Header("Data Base")]
+    public List<InventoryItem> loadItems;
+
     private void Awake()
     {
         if (instance == null)
@@ -56,6 +61,26 @@ public class Inventory : MonoBehaviour
         stashSlot = stashSlots.GetComponentsInChildren<ItemSlot>();
         equipmentSlot = equipmentSlots.GetComponentsInChildren<EquipmentSlot>();
         statUI = statsSlots.GetComponentsInChildren<StatUI>();
+        
+        AddItemStarting();
+    }
+
+    private void AddItemStarting()
+    {
+        if(loadItems.Count > 0)
+        {
+            foreach (var item in loadItems)
+            {
+                for (var i = 0; i < item.stackSize; i++)
+                {
+                    AddItem(item.itemData);
+                }
+            }
+
+            return;
+        }
+        
+
         for (int i = 0; i < startItem.Count; i++)
         {
             AddItem(startItem[i]);
@@ -286,5 +311,47 @@ public class Inventory : MonoBehaviour
             currentFlask.ItemEffect(null);
             lastTimeUsedFlask = Time.time;
         }
+    }
+
+    public void LoadData(GameData _data)
+    {
+        foreach(var pair in _data.inventory)
+        {
+            foreach(var item in GetItemDataBase())
+            {
+                if(item != null && item.itemiD == pair.Key)
+                {
+                    InventoryItem itemToLoad = new InventoryItem(item);
+                    itemToLoad.stackSize = pair.Value;
+
+                    loadItems.Add(itemToLoad);
+                }
+            }
+        }
+        
+        
+    }
+
+    public void SaveData(ref GameData _data)
+    {
+        _data.inventory.Clear();
+        
+        foreach(var item in inventoryDic)
+        {
+            _data.inventory.Add(item.Key.itemiD, item.Value.stackSize);
+        }
+    }
+    private List<ItemData> GetItemDataBase()
+    {
+        List<ItemData> itemDataBase = new List<ItemData>();
+        string[] assetNames = AssetDatabase.FindAssets("", new[] { "Assets/Data/Equipments" });
+
+        foreach(var asset in assetNames)
+        {
+            var SOpath = AssetDatabase.GUIDToAssetPath(asset);
+            var itemdata = AssetDatabase.LoadAssetAtPath<ItemData>(SOpath);
+            itemDataBase.Add(itemdata);
+        }
+        return itemDataBase;
     }
 }
