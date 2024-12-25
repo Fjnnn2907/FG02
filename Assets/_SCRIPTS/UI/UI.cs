@@ -22,6 +22,8 @@ public class UI : MonoBehaviour
     private void Awake()
     {
         switchTo(skilltree);
+
+        uIDrakScreen.gameObject.SetActive(true);
     }
 
     private void Start()

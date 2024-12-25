@@ -63,6 +63,7 @@ public class Inventory : MonoBehaviour, ISaveManager
         statUI = statsSlots.GetComponentsInChildren<StatUI>();
         
         AddItemStarting();
+
     }
 
     private void AddItemStarting()
