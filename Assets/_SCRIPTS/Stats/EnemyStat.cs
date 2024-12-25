@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 public class EnemyStat : StatManager
@@ -11,10 +12,12 @@ public class EnemyStat : StatManager
 
     [Range(0f, 1f)]
     [SerializeField] private float percantedModifier = .4f;
+
+    public Stat moneyDropAmout;
     protected override void Start()
     {
+        moneyDropAmout.SetDefaultValue(100);
         SetUpModify();
-
         base.Start();
 
         enemy = GetComponent<Enemy>();
@@ -39,6 +42,8 @@ public class EnemyStat : StatManager
         Modify(giap);
         Modify(ne);
         Modify(khangAP);
+
+        Modify(moneyDropAmout);
     }
 
     public void Modify(Stat _stat)
@@ -61,6 +66,8 @@ public class EnemyStat : StatManager
     {
         base.Deah();
 
+
+        PlayerManager.instance.coint += moneyDropAmout.GetValue();
         enemy.Deah();
     }
 }

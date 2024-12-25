@@ -6,7 +6,7 @@ public class PlayerManager : MonoBehaviour,ISaveManager
     public Character character;
 
     [Header("Money")]
-    [SerializeField] private int coint;
+    public int coint;
     private void Awake()
     {
         if (instance != null)

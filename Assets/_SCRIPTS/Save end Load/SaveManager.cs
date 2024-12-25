@@ -66,7 +66,7 @@ public class SaveManager : MonoBehaviour
 
     private List<ISaveManager> FindAllSaveGame()
     {
-        IEnumerable<ISaveManager> saveManagers = FindObjectsOfType<MonoBehaviour>().OfType<ISaveManager>();
+        IEnumerable<ISaveManager> saveManagers = FindObjectsOfType<MonoBehaviour>(true).OfType<ISaveManager>();
 
         return new List<ISaveManager>(saveManagers);
     }

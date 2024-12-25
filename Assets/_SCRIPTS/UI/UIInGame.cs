@@ -19,6 +19,8 @@ public class UIInGame : MonoBehaviour
 
     [Header("Money")]
     [SerializeField] private TextMeshProUGUI moneyText;
+    [SerializeField] private float momeyAmout;
+    [SerializeField] private float speedTomomeyAmout = 1000;
 
     private void Start()
     {
@@ -30,7 +32,15 @@ public class UIInGame : MonoBehaviour
     }
     private void Update()
     {
-        moneyText.text = PlayerManager.instance.GetMoney().ToString("#,#");
+        if (momeyAmout < PlayerManager.instance.GetMoney())
+            momeyAmout += Time.deltaTime * speedTomomeyAmout;
+        else
+            momeyAmout = PlayerManager.instance.GetMoney();
+
+
+        //moneyText.text = PlayerManager.instance.GetMoney().ToString("#,#");
+
+        moneyText.text = ((int)momeyAmout).ToString();
 
         if (Input.GetKeyDown(KeyCode.LeftShift) && skill.rollSkill.canRoll)
             SetCooldown(rollImage);

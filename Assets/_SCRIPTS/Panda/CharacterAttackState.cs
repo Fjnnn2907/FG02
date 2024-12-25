@@ -15,8 +15,7 @@ public class CharacterAttackState : CharacterState
     {
         base.Enter();
         character.rb.drag = 20;
-        
-        SoundManager.instance.PlaySFX("Attack");
+       
 
         if(comboCounter >= 2 || Time.time >= lastimeAttacked + comboWindow)
             comboCounter = 0;

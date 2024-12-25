@@ -10,6 +10,8 @@ public class EvenTriggerAnim : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        AudioManager.instance.PlaySFX(2);
+
         if (collision.CompareTag("Enemy"))
         {
             EnemyStat targetStat = collision.GetComponent<EnemyStat>();
