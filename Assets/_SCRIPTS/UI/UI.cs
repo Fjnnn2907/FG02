@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class UI : MonoBehaviour
 {
+    [SerializeField] private UIDrakScreen uIDrakScreen;
+    [SerializeField] private GameObject endText;
+    [SerializeField] private GameObject restartButton;
+
+    [Space]
     public UI_ToolTip toolTip;
     public UICraftWindow craftWindow;
     public UiSkillTreeToolTip toolTipSkillTree;
@@ -40,7 +45,10 @@ public class UI : MonoBehaviour
     {
         for(int i = 0; i < transform.childCount; i++)
         {
-            transform.GetChild(i).gameObject.SetActive(false);
+            bool faceScreen = transform.GetChild(i).GetComponent<UIDrakScreen>() != null;
+
+            if(!faceScreen)
+                transform.GetChild(i).gameObject.SetActive(false);
         }
 
         if(_menu != null)
@@ -67,5 +75,24 @@ public class UI : MonoBehaviour
                 return;
         }
         switchTo(inGame);
+    }
+    
+    public void SwitchOnEndScreen()
+    {
+        uIDrakScreen.FaceOutDrakScreen();
+        StartCoroutine(EndScreen());
+    }
+    
+    IEnumerator EndScreen()
+    {
+        yield return new WaitForSeconds(1);
+        endText.SetActive(true);
+        yield return new WaitForSeconds(1);
+        restartButton.SetActive(true);
+    }
+
+    public void RestartButton()
+    {
+        GameManager.instance.RestartScene();
     }
 }

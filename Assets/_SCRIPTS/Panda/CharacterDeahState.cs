@@ -13,6 +13,8 @@ public class CharacterDeahState : CharacterState
         base.Enter();
         
         character.SetZeroVelocity();
+
+        GameObject.Find("Canvas").GetComponent<UI>().SwitchOnEndScreen();
     }
 
     public override void Update()

@@ -26,7 +26,7 @@ public class SaveManager : MonoBehaviour
         fileDataHandler = new FileDataHandler(Application.persistentDataPath,fileName, isMaHoa);
         
         saveManagers = FindAllSaveGame();
-        Debug.Log(Application.persistentDataPath);
+        //Debug.Log(Application.persistentDataPath);
         LoadGame();
     }
 
@@ -72,9 +72,16 @@ public class SaveManager : MonoBehaviour
     }
 
     [ContextMenu("Delete Data")]
-    private void DeleteData()
+    public void DeleteData()
     {
         fileDataHandler = new FileDataHandler(Application.persistentDataPath, fileName, isMaHoa);
         fileDataHandler.Delete();
+    }
+    public bool HasNoSaveData()
+    {
+        if(fileDataHandler.Load() != null)
+            return true;
+
+        return false;    
     }
 }
