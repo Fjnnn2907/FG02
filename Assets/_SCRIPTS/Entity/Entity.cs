@@ -62,6 +62,7 @@ public class Entity : MonoBehaviour
         rb.velocity = new Vector2(KnockDir.x * -facing, KnockDir.y);
         yield return new WaitForSeconds(KnockTimer);
         isKnocked = false;
+        SetZeroVelocity();
     }
     #endregion
     public virtual bool IsGroundCheck() => Physics2D.BoxCast(groundCheck.position, boxSize, 0f, Vector2.down, groundCheckDistance, whatIsGround);
