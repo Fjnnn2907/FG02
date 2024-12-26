@@ -5,7 +5,7 @@ using UnityEngine;
 public class Skill : MonoBehaviour
 {
     public float cooldown = 5f;
-    protected float cooldownTimer;
+    public float cooldownTimer;
     
     protected Character character;
 

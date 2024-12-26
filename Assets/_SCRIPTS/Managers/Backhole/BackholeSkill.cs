@@ -27,6 +27,9 @@ public class BackholeSkill : Skill
         if (!backhole) return;
         base.UseSkill();
 
+        AudioManager.instance.PlaySFX(3, transform);
+        AudioManager.instance.PlaySFX(7, transform);    
+        
         GameObject newBackhole = Instantiate(backholePrefab,character.transform.position,Quaternion.identity);
 
         var newScriptBackhole = newBackhole.GetComponent<BackholeSkillController>();

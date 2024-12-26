@@ -13,6 +13,8 @@ public class GameData
 
     public SerializableDic<string, bool> checkPoints;
     public string closestCheckPointID;
+
+    public SerializableDic<string,float> audioSetting;
     public GameData()
     {
         this.money = 0;
@@ -22,5 +24,7 @@ public class GameData
 
         closestCheckPointID = string.Empty;
         checkPoints = new();
+
+        audioSetting = new();
     }
 }

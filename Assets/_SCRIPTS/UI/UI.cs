@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UI : MonoBehaviour
+public class UI : MonoBehaviour,ISaveManager
 {
     [SerializeField] private UIDrakScreen uIDrakScreen;
     [SerializeField] private GameObject endText;
@@ -18,6 +18,8 @@ public class UI : MonoBehaviour
     [SerializeField] private GameObject cratf;
     [SerializeField] private GameObject option;
     [SerializeField] private GameObject inGame;
+
+    [SerializeField] private UIVolume[] volumeSetting;
 
     private void Awake()
     {
@@ -54,7 +56,10 @@ public class UI : MonoBehaviour
         }
 
         if(_menu != null)
+        {
+            AudioManager.instance.PlaySFX(7, null);
             _menu.SetActive(true);
+        }
     }
 
     public void SwithToInput(GameObject _menu)
@@ -96,5 +101,27 @@ public class UI : MonoBehaviour
     public void RestartButton()
     {
         GameManager.instance.RestartScene();
+    }
+
+    public void LoadData(GameData _data)
+    {
+        foreach(var data in _data.audioSetting)
+        {
+            foreach(var audio in volumeSetting)
+            {
+                if(audio.parametr == data.Key)
+                    audio.LoadSlider(data.Value);
+            }
+        }
+    }
+
+    public void SaveData(ref GameData _data)
+    {
+        _data.audioSetting.Clear();
+
+        foreach (var audio in volumeSetting)
+        {
+            _data.audioSetting.Add(audio.parametr, audio.slider.value);
+        }
     }
 }

@@ -6,11 +6,12 @@ public class EvenTriggerAnim : MonoBehaviour
     Character character => GetComponentInParent<Character>();
     public void TriggerAnimation()
     {
+        
         character.AnimationTrigger();
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        AudioManager.instance.PlaySFX(2);
+        AudioManager.instance.PlaySFX(2, null);
 
         if (collision.CompareTag("Enemy"))
         {

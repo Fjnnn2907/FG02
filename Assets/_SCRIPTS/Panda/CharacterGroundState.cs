@@ -49,7 +49,11 @@ public class CharacterGroundState : CharacterState
             stateMachine.ChangeState(character.aimSwordState);
 
         if (Input.GetKeyDown(KeyCode.R) && character.skill.backholiSkill.backhole)
+        {
+            if (character.skill.backholiSkill.cooldownTimer > 0)
+                return;
             stateMachine.ChangeState(character.backholeState);
+        }
     }
 
     private bool HeNoSword()
