@@ -18,7 +18,10 @@ public class EvenTriggerAnim : MonoBehaviour
             EnemyStat targetStat = collision.GetComponent<EnemyStat>();
 
             if(targetStat != null)
+            {
                 character.stats.DoDamage(targetStat);
+                character.stats.DoMagicDamage(targetStat);
+            }
 
             var weaponItem = Inventory.instance.GetItemEquipment(EquipmentType.Vukhi);
 

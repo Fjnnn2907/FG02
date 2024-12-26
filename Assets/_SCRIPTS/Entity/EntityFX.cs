@@ -12,7 +12,12 @@ public class EntityFX : MonoBehaviour
     [Header("Colors")]
     [SerializeField] private Color[] chillColor;
     [SerializeField] private Color[] igniteColor;
-    [SerializeField] private Color[] shockColor; 
+    [SerializeField] private Color[] shockColor;
+
+    [Header("Particle")]
+    [SerializeField] private ParticleSystem bongFx;
+    [SerializeField] private ParticleSystem chillFx;
+    [SerializeField] private ParticleSystem shockFx;
     private void Start()
     {
         sr = GetComponentInChildren<SpriteRenderer>();
@@ -53,6 +58,8 @@ public class EntityFX : MonoBehaviour
     }
     public void IgniteFxFor(float _seconds)
     {
+        bongFx.Play();
+
         InvokeRepeating("IgniteColorFx",0, .3f);
         Invoke("CancelColorChange", _seconds);
     }
@@ -68,6 +75,8 @@ public class EntityFX : MonoBehaviour
     }
     public void ShockFxFor(float _seconds)
     {
+        shockFx.Play();
+
         InvokeRepeating("ShockColorFx", 0, .15f);
         Invoke("CancelColorChange", _seconds);
     }
@@ -83,12 +92,18 @@ public class EntityFX : MonoBehaviour
     }
     public void ChillFxFor(float _seconds)
     {
+        chillFx.Play();
+
         InvokeRepeating("ChillColorFx", 0, .5f);
         Invoke("CancelColorChange", _seconds);
     }
     #endregion
     private void CancelColorChange()
     {
+        bongFx.Stop();
+        chillFx.Stop();
+        shockFx.Stop();
+
         CancelInvoke();
         sr.color = Color.white;
     }

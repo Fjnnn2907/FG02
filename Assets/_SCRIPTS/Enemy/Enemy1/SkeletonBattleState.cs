@@ -16,6 +16,9 @@ public class SkeletonBattleState : EnemyState
         base.Enter();
 
         character = PlayerManager.instance.character.transform;
+
+        if(character.GetComponent<CharacterStat>().isDeah)
+            stateMachine.ChangeState(enemy.moveState);
     }
 
     public override void Exit()
@@ -28,6 +31,8 @@ public class SkeletonBattleState : EnemyState
     public override void Update()
     {
         base.Update();
+
+        
 
         if (enemy.IsPlayerCheck())
         {

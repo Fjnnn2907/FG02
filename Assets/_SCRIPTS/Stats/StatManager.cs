@@ -60,7 +60,7 @@ public class StatManager : MonoBehaviour
     public int currentHealth;
 
     public System.Action onHealthChanged;
-    protected bool isDeah;
+    public bool isDeah;
     private bool isXuyenGiap;
     protected virtual void Start()
     {

@@ -60,6 +60,14 @@ public class UI : MonoBehaviour,ISaveManager
             AudioManager.instance.PlaySFX(7, null);
             _menu.SetActive(true);
         }
+
+        if(GameManager.instance != null)
+        {
+            if(_menu == inGame)
+                GameManager.instance.PasueGame(false);
+            else
+                GameManager.instance.PasueGame(true);
+        }
     }
 
     public void SwithToInput(GameObject _menu)

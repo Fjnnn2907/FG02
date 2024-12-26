@@ -105,7 +105,6 @@ public class UISkillTreeSlot : MonoBehaviour,IPointerEnterHandler,IPointerExitHa
 
     public void SaveData(ref GameData _data)
     {
-        _data.skillTree.Clear();
 
         if (_data.skillTree.TryGetValue(skillName, out bool value))
         {
