@@ -80,6 +80,7 @@ public class Character : Entity
             return;
 
         base.Update();
+        CheckInput();
         stateMachine.currentState.Update();
         ChangeState();
 
@@ -91,7 +92,6 @@ public class Character : Entity
     }
     private void FixedUpdate()
     {
-        CheckInput();
     }
     public override void SlowEntity(float _slowPer, float _slowDuration)
     {

@@ -58,7 +58,7 @@ public class SkeletonBattleState : EnemyState
         else if(character.position.x < enemy.transform.position.x)
             moveDir = -1;
 
-        enemy.SetVelocity(enemy.speed * moveDir,enemy.rb.velocity.y);
+        enemy.SetVelocity(enemy.speed * moveDir,enemy.rb.linearVelocity.y);
     }
     private bool CanAttack()
     {

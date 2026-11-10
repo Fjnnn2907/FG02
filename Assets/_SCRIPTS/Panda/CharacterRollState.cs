@@ -27,10 +27,10 @@ public class CharacterRollState : CharacterState
     {
         base.Update();
 
-        character.SetVelocity(character.rollSpeed * character.facing,character.rb.velocity.y);
+        character.SetVelocity(character.rollSpeed * character.facing,character.rb.linearVelocity.y);
 
         if (character.isVer2)
-            character.SetVelocity(15 * character.facing, character.rb.velocity.y);
+            character.SetVelocity(15 * character.facing, character.rb.linearVelocity.y);
 
         if (startTimer <= 0)
             stateMachine.ChangeState(character.idleState);

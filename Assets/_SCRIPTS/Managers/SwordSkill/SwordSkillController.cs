@@ -47,7 +47,7 @@ public class SwordSkillController : MonoBehaviour
     public void SetUpSword(Vector2 _dir, float _gravity, Character _character, float _freeTime, float _returnSpeed)
     {
         character = _character;
-        rb.velocity = _dir;
+        rb.linearVelocity = _dir;
         rb.gravityScale = _gravity;
         freezeTime = _freeTime;
         returnSpeed = _returnSpeed;
@@ -55,7 +55,7 @@ public class SwordSkillController : MonoBehaviour
         if (pierceAmout <= 0)
             anim.SetBool("Active", true);
 
-        spinDir = Mathf.Clamp(rb.velocity.x, -1f, 1f);
+        spinDir = Mathf.Clamp(rb.linearVelocity.x, -1f, 1f);
     }
     #endregion
 
@@ -97,7 +97,7 @@ public class SwordSkillController : MonoBehaviour
     private void Update()
     {
         if (canRotate)
-            transform.right = rb.velocity;
+            transform.right = rb.linearVelocity;
 
         if (Vector2.Distance(transform.position, character.transform.position) > 30)
             Destroy(gameObject);

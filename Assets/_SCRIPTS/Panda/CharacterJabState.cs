@@ -8,13 +8,13 @@ public class CharacterJabState : CharacterState
     public override void Enter()
     {
         base.Enter();
-        character.rb.drag = 20;
+        character.rb.linearDamping = 20;
     }
 
     public override void Exit()
     {
         base.Exit();
-        character.rb.drag = 0;
+        character.rb.linearDamping = 0;
     }
 
     public override void Update()

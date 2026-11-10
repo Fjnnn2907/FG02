@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Rendering;
 using UnityEngine;
 
 public class ItemObject : MonoBehaviour
@@ -19,7 +18,7 @@ public class ItemObject : MonoBehaviour
     public void SetUpItem(ItemData _itemData, Vector2 _velocity)
     {
         itemData = _itemData;
-        rb.velocity = _velocity;
+        rb.linearVelocity = _velocity;
         SetUpItemObject();
     }
 
@@ -27,7 +26,7 @@ public class ItemObject : MonoBehaviour
     {
         if(!Inventory.instance.CanAddItem() && itemData.itemType == ItemTpye.Equipment)
         {
-            rb.velocity = new Vector2(0, 7);
+            rb.linearVelocity = new Vector2(0, 7);
             return;
         }
 

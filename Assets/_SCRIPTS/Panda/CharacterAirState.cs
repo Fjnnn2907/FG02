@@ -20,7 +20,7 @@ public class CharacterAirState : CharacterState
     {
         base.Update();
 
-        character.SetVelocity(character.xInput * character.speed, character.rb.velocity.y);
+        character.SetVelocity(character.xInput * character.speed, character.rb.linearVelocity.y);
 
         if (character.IsGroundCheck())
             stateMachine.ChangeState(character.idleState);

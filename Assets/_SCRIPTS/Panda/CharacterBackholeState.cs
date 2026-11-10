@@ -35,10 +35,10 @@ public class CharacterBackholeState : CharacterState
     {
         base.Update();
         if (startTimer > 0)
-            character.rb.velocity = new Vector2(0, 8);
+            character.rb.linearVelocity = new Vector2(0, 8);
         if(startTimer < 0)
         {
-            character.rb.velocity = new Vector2(0, -.1f);
+            character.rb.linearVelocity = new Vector2(0, -.1f);
             if (!skillUsed)
             {
                 if(character.skill.backholiSkill.CanUseSkill())

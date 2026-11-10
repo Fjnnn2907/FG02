@@ -11,7 +11,7 @@ public class CharacterJumpState : CharacterState
     {
         base.Enter();
 
-        character.SetAddForce(character.rb.velocity.x, character.jumpFore);
+        character.SetAddForce(character.rb.linearVelocity.x, character.jumpFore);
     }
 
     public override void Exit()
@@ -23,10 +23,10 @@ public class CharacterJumpState : CharacterState
     {
         base.Update();
 
-        character.SetVelocity(character.xInput * character.speed, character.rb.velocity.y);
+        character.SetVelocity(character.xInput * character.speed, character.rb.linearVelocity.y);
 
 
-        if (character.rb.velocity.y <= 0)
+        if (character.rb.linearVelocity.y <= 0)
             stateMachine.ChangeState(character.airState);
 
         if (Input.GetKeyDown(KeyCode.U))

@@ -14,7 +14,7 @@ public class CharacterAttackState : CharacterState
     public override void Enter()
     {
         base.Enter();
-        character.rb.drag = 20;
+        character.rb.linearDamping = 20;
        
 
         if(comboCounter >= 2 || Time.time >= lastimeAttacked + comboWindow)
@@ -23,7 +23,7 @@ public class CharacterAttackState : CharacterState
         character.anim.SetInteger("ComboCounter",comboCounter);
 
         character.SetVelocity(character.attackMovement[comboCounter].x * 
-            character.facing, character.rb.velocity.y);
+            character.facing, character.rb.linearVelocity.y);
 
     }
 
@@ -31,7 +31,7 @@ public class CharacterAttackState : CharacterState
     {
         base.Exit();
 
-        character.rb.drag = 0;
+        character.rb.linearDamping = 0;
         
         comboCounter++;
         lastimeAttacked = Time.time;

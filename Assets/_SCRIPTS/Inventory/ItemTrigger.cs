@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class ItemTrigger : MonoBehaviour
 {
-    [SerializeField] private ItemObject itemObject => GetComponentInParent<ItemObject>();
+    [SerializeField] private ItemObject itemObject;
+
+    private void Start()
+    {
+        itemObject = GetComponentInParent<ItemObject>();
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.GetComponent<Character>() != null)

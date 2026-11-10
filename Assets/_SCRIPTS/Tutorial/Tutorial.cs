@@ -13,14 +13,14 @@ public class Tutorial : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("character"))
+        if (other.CompareTag("Player"))
         {
             tutorialPanel.SetActive(true);
         }
     }
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("character"))
+        if (other.CompareTag("Player"))
         {
             tutorialPanel.SetActive(false);
         }

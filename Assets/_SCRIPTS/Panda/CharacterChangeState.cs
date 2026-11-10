@@ -8,7 +8,7 @@ public class CharacterChangeState : CharacterState
     public override void Enter()
     {
         base.Enter();
-        character.rb.drag = 20;
+        character.rb.linearDamping = 20;
         startTimer = 1.2f;
         character.SetZeroVelocity();
     }
@@ -16,7 +16,7 @@ public class CharacterChangeState : CharacterState
     public override void Exit()
     {
         base.Exit();
-        character.rb.drag = 0;
+        character.rb.linearDamping = 0;
     }
 
     public override void Update()

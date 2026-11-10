@@ -23,7 +23,7 @@ public class CharacterRunState : CharacterGroundState
     {
         base.Update();
 
-        character.SetVelocity(character.speed * character.xInput, character.rb.velocity.y);
+        character.SetVelocity(character.speed * character.xInput, character.rb.linearVelocity.y);
 
         if(character.xInput == 0)
             stateMachine.ChangeState(character.idleState);

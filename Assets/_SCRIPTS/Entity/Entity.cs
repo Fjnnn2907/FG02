@@ -59,7 +59,7 @@ public class Entity : MonoBehaviour
     protected virtual IEnumerator KnockBack()
     {
         isKnocked = true;
-        rb.velocity = new Vector2(KnockDir.x * -facing, KnockDir.y);
+        rb.linearVelocity = new Vector2(KnockDir.x * -facing, KnockDir.y);
         yield return new WaitForSeconds(KnockTimer);
         isKnocked = false;
         SetZeroVelocity();
@@ -75,14 +75,14 @@ public class Entity : MonoBehaviour
     {
         if(isKnocked) return;
 
-        rb.velocity = new Vector2(xVelocity, yVelocity);
+        rb.linearVelocity = new Vector2(xVelocity, yVelocity);
 
         FlipCtrl(xVelocity);
     }
     public virtual void SetZeroVelocity()
     {
         if (isKnocked) return;
-        rb.velocity = new Vector2(0,rb.velocity.y);
+        rb.linearVelocity = new Vector2(0,rb.linearVelocity.y);
     }
     #endregion
     #region Flip

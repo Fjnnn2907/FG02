@@ -14,19 +14,27 @@ public class ItemDrop : MonoBehaviour
 
     public void GrenerateDrop()
     {
+        if (possibleDrop == null || possibleDrop.Length == 0)
+            return;
+
         for(int i = 0; i < possibleDrop.Length; i++)
         {
-            if(Random.Range(0,100) < possibleDrop[i].dropChane)
+            if (possibleDrop[i] != null && Random.Range(0, 100) < possibleDrop[i].dropChane)
             {
                 listDrop.Add(possibleDrop[i]);
             }
         }
 
-        for(int i = 0;i < amoutDrop; i++)
-        {
-            var randomItem = listDrop[Random.Range(0,listDrop.Count -1)];
+        if (listDrop.Count == 0)
+            return;
 
-            listDrop.Remove(randomItem);
+        int dropsToSpawn = Mathf.Min(amoutDrop, listDrop.Count);
+        for(int i = 0; i < dropsToSpawn; i++)
+        {
+            int randomIndex = Random.Range(0, listDrop.Count);
+            var randomItem = listDrop[randomIndex];
+
+            listDrop.RemoveAt(randomIndex);
             DropItem(randomItem);
         }
     }

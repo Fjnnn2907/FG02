@@ -146,29 +146,20 @@ public class StatManager : MonoBehaviour
         bool canDongBang = _satThuongBang > _satThuongLua && _satThuongBang > _satThuongSet;
         bool canSet = _satThuongSet > _satThuongLua && _satThuongSet > _satThuongBang;
 
-        while(!canThieuRui && !canDongBang && !canSet)
+        if (!canThieuRui && !canDongBang && !canSet)
         {
-            if(Random.value < .35f && _satThuongLua > 0)
-            {
-                canThieuRui = true;
-                SuDungNguyenTo(canThieuRui, canDongBang, canSet, _targetStats);
-                return;
-            }
+            List<int> validTypes = new List<int>();
+            if (_satThuongLua > 0) validTypes.Add(0);
+            if (_satThuongBang > 0) validTypes.Add(1);
+            if (_satThuongSet > 0) validTypes.Add(2);
 
-            if (Random.value < .35f && _satThuongBang > 0)
+            if (validTypes.Count > 0 && Random.value < 0.35f)
             {
-                canDongBang = true;
-                SuDungNguyenTo(canThieuRui, canDongBang, canSet, _targetStats);
-                return;
+                int chosen = validTypes[Random.Range(0, validTypes.Count)];
+                if (chosen == 0) canThieuRui = true;
+                else if (chosen == 1) canDongBang = true;
+                else if (chosen == 2) canSet = true;
             }
-
-            if (Random.value < .35f && _satThuongSet > 0)
-            {
-                canSet = true;
-                SuDungNguyenTo(canThieuRui, canDongBang, canSet, _targetStats);
-                return;
-            }
-
         }
 
         if (canThieuRui)

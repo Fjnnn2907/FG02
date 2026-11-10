@@ -39,7 +39,6 @@ public class EnemyStat : StatManager
 
         Modify(MaxHealth);
         Modify(giap);
-        Modify(giap);
         Modify(ne);
         Modify(khangAP);
 

@@ -26,7 +26,7 @@ public class CharacterState
     public virtual void Update()
     {
         startTimer -= Time.deltaTime;
-        character.anim.SetFloat("yVelocity", character.rb.velocity.y);
+        character.anim.SetFloat("yVelocity", character.rb.linearVelocity.y);
     }
 
     public virtual void Exit()

@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 
 
@@ -36,6 +34,7 @@ public class Inventory : MonoBehaviour, ISaveManager
     private float lastTimeUsedFlask;
 
     [Header("Data Base")]
+    public List<ItemData> itemDataBase = new List<ItemData>();
     public List<InventoryItem> loadItems;
     public List<ItemEquipment> loadEquipment;
     private void Awake()
@@ -371,15 +370,14 @@ public class Inventory : MonoBehaviour, ISaveManager
     }
     private List<ItemData> GetItemDataBase()
     {
-        List<ItemData> itemDataBase = new List<ItemData>();
-        string[] assetNames = AssetDatabase.FindAssets("", new[] { "Assets/Data" });
-
-        foreach(var asset in assetNames)
+        if (itemDataBase == null || itemDataBase.Count == 0)
         {
-            var SOpath = AssetDatabase.GUIDToAssetPath(asset);
-            var itemdata = AssetDatabase.LoadAssetAtPath<ItemData>(SOpath);
-            itemDataBase.Add(itemdata);
+            ItemData[] loaded = Resources.LoadAll<ItemData>("");
+            if (loaded != null && loaded.Length > 0)
+            {
+                itemDataBase = new List<ItemData>(loaded);
+            }
         }
-        return itemDataBase;
+        return itemDataBase ?? new List<ItemData>();
     }
 }

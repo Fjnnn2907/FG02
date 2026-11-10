@@ -20,7 +20,7 @@ public class CharacterCatchSwordState : CharacterState
         else if (character.transform.position.x < sword.position.x && character.facing == -1)
             character.Flip();
 
-        character.rb.velocity = new Vector2(3 * -character.facing,character.rb.velocity.y);
+        character.rb.linearVelocity = new Vector2(3 * -character.facing,character.rb.linearVelocity.y);
     }
 
     public override void Exit()

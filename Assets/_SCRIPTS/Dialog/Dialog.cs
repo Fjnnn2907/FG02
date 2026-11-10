@@ -90,14 +90,14 @@ public class Dialog : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("character"))
+        if (collision.CompareTag("Player"))
         {
             isDialoging = true;
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("character"))
+        if (collision.CompareTag("Player"))
         {
             isDialoging = false;
             EndDialog();

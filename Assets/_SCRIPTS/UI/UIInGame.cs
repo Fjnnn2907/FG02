@@ -30,6 +30,11 @@ public class UIInGame : MonoBehaviour
         skill = SkillManager.instance;
 
     }
+    private void OnDestroy()
+    {
+        if (stat != null)
+            stat.onHealthChanged -= UpdateHealth;
+    }
     private void Update()
     {
         if (momeyAmout < PlayerManager.instance.GetMoney())
