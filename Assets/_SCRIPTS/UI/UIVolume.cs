@@ -13,12 +13,20 @@ public class UIVolume : MonoBehaviour
     [SerializeField] private float multipliter;
     public void SiliderValue(float _value)
     {
-        audioMixer.SetFloat(parametr, Mathf.Log10(_value) * multipliter);
+        if (audioMixer == null || string.IsNullOrEmpty(parametr))
+            return;
+
+        float safeVal = Mathf.Clamp(_value, 0.0001f, 1f);
+        float mult = multipliter > 0f ? multipliter : 20f;
+        audioMixer.SetFloat(parametr, Mathf.Log10(safeVal) * mult);
     }
 
     public void LoadSlider(float _value)
     {
-        if(_value >= 0.001f)
-            slider.value = _value;
+        float clamped = Mathf.Clamp(_value, 0.0001f, 1f);
+        if (slider != null)
+            slider.value = clamped;
+
+        SiliderValue(clamped);
     }
 }

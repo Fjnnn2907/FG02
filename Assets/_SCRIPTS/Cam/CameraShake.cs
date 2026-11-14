@@ -16,11 +16,16 @@ public class CameraShake : MonoBehaviour
 
     private void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
         instance = this;
         cinemachineVirtualCamera = GetComponent<CinemachineVirtualCamera>();
 
-        // Lấy Perlin noise component để điều khiển độ rung
-        cam = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        if (cinemachineVirtualCamera != null)
+            cam = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
     }
 
     private void Start()
@@ -42,19 +47,18 @@ public class CameraShake : MonoBehaviour
 
     public void ShakeCamera(float intensity, float timer)
     {
-        // Đặt biên độ và thời gian cho camera rung
         shakeCam = intensity;
         shakeTime = timer;
         this.timer = shakeTime;
 
-        // Bắt đầu rung
-        cam.m_AmplitudeGain = shakeCam;
+        if (cam != null)
+            cam.m_AmplitudeGain = shakeCam;
     }
 
     public void StopCamera()
     {
-        // Ngưng rung bằng cách đặt biên độ về 0
-        cam.m_AmplitudeGain = 0f;
+        if (cam != null)
+            cam.m_AmplitudeGain = 0f;
         timer = 0;
     }
 }

@@ -22,6 +22,9 @@ public class CharacterIdleState : CharacterGroundState
     {
         base.Update();
 
+        if (stateMachine.currentState != this)
+            return;
+
         if (character.xInput != 0)
             stateMachine.ChangeState(character.runState);
     }

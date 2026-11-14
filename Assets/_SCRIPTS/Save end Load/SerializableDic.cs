@@ -23,11 +23,13 @@ public class SerializableDic<Tkey, Tvalue> : Dictionary<Tkey, Tvalue>, ISerializ
     {
         this.Clear();
         if (keys.Count != values.Count)
-            Debug.Log("erro");
+            Debug.LogWarning("SerializableDic keys/values count mismatch.");
 
-        for (int i = 0; i < keys.Count; i++)
+        int count = Mathf.Min(keys.Count, values.Count);
+        for (int i = 0; i < count; i++)
         {
-            this.Add(keys[i], values[i]);
+            if (keys[i] != null && !this.ContainsKey(keys[i]))
+                this.Add(keys[i], values[i]);
         }
     }
 

@@ -9,35 +9,45 @@ public class EntityHeathBar : MonoBehaviour
     private Entity entity;
     private Slider slider;
     private StatManager stat;
-    private void Start()
+    private void Awake()
     {
         entity = GetComponentInParent<Entity>();
         myTransform = GetComponent<RectTransform>();
         slider = GetComponentInChildren<Slider>();
         stat = GetComponentInParent<StatManager>();
-
-        entity.onFliped += FlipUI;
-        stat.onHealthChanged += UpdateHealth;
+    }
+    private void OnEnable()
+    {
+        if (entity != null)
+            entity.onFliped += FlipUI;
+        if (stat != null)
+            stat.onHealthChanged += UpdateHealth;
 
         UpdateHealth();
     }
-    private void Update()
+    private void Start()
     {
         UpdateHealth();
     }
     public void UpdateHealth()
     {
+        if (slider == null || stat == null)
+            return;
+
         slider.maxValue = stat.GetMaxHealthValue();
         slider.value = stat.currentHealth;
     }
 
     public void FlipUI()
     {
-        myTransform.Rotate(0,180,0);
+        if (myTransform != null)
+            myTransform.Rotate(0, 180, 0);
     }
     private void OnDisable()
     {
-        entity.onFliped -= FlipUI;
-        stat.onHealthChanged -= UpdateHealth;
+        if (entity != null)
+            entity.onFliped -= FlipUI;
+        if (stat != null)
+            stat.onHealthChanged -= UpdateHealth;
     }
 }

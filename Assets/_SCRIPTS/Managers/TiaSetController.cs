@@ -10,9 +10,14 @@ public class TiaSetController : MonoBehaviour
 
     private Animator anim;
     private bool trigged;
-    private void Start()
+    private void Awake()
     {
         anim = GetComponentInChildren<Animator>();
+    }
+    private void Start()
+    {
+        if (anim == null)
+            anim = GetComponentInChildren<Animator>();
     }
     public void SetUpTiaSet(int _damage, StatManager _targetStats)
     {
@@ -23,27 +28,39 @@ public class TiaSetController : MonoBehaviour
     {
         if (trigged) return;
 
-        transform.position = Vector2.MoveTowards(transform.position,targetStats.transform.position,speed * Time.deltaTime);
-        transform.right = transform.position - targetStats.transform.position;
-
-        if(Vector2.Distance(transform.position, targetStats.transform.position) < .1f)
+        if (targetStats == null || targetStats.isDeah)
         {
+            Destroy(gameObject);
+            return;
+        }
 
-            anim.transform.localPosition = new Vector2(0, .5f);
-            anim.transform.localRotation = Quaternion.identity;
+        transform.position = Vector2.MoveTowards(transform.position, targetStats.transform.position, speed * Time.deltaTime);
+        Vector2 delta = transform.position - targetStats.transform.position;
+        if (delta.sqrMagnitude > 0.0001f)
+            transform.right = delta;
+
+        if (Vector2.Distance(transform.position, targetStats.transform.position) < .1f)
+        {
+            if (anim != null)
+            {
+                anim.transform.localPosition = new Vector2(0, .5f);
+                anim.transform.localRotation = Quaternion.identity;
+                anim.SetTrigger("Hit");
+            }
 
             transform.localScale = new Vector2(3, 3);
             transform.localRotation = Quaternion.identity;
 
             Invoke("DamgeAndDesTroy", .2f);
             trigged = true;
-            anim.SetTrigger("Hit");
         }
     }
 
     private void DamgeAndDesTroy()
     {
-        targetStats.TakeDamage(damage);
+        if (targetStats != null && !targetStats.isDeah)
+            targetStats.TakeDamage(damage);
+
         Destroy(gameObject, .4f);
     }
 }

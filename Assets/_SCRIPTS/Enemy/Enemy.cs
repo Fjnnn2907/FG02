@@ -16,6 +16,9 @@ public class Enemy : Entity
     public int maxHP;
     private int HP;
     private float speedTamp;
+    private float speedBattleTamp;
+    private bool isFrozen;
+    private float slowMultiplier = 1f;
 
     [Header("Attack")]
     public float attackCoolDown;
@@ -37,36 +40,43 @@ public class Enemy : Entity
     {
         base.Awake();
         stateMachine = new();
+        if (itemDrop == null)
+            itemDrop = GetComponent<ItemDrop>();
     }
     protected override void Start()
-    {      
+    {
         base.Start();
 
         HP = maxHP;
         speedTamp = speed;
+        speedBattleTamp = speedBattle;
     }
     protected override void Update()
     {
         base.Update();
-        stateMachine.currentState.Update();
+        if (stateMachine != null && stateMachine.currentState != null)
+            stateMachine.currentState.Update();
     }
     #region check
-    public bool IsWallCheck() => Physics2D.Raycast(wallCheck.position,
+    public bool IsWallCheck() => wallCheck != null && Physics2D.Raycast(wallCheck.position,
         Vector2.right * facing, wallCheckDistance, whatIsGround);
 
-    public RaycastHit2D IsPlayerCheck() => Physics2D.Raycast(wallCheck.position,
-        Vector2.right * facing, attackDistace, WhatIsPlayer);
+    public RaycastHit2D IsPlayerCheck() => wallCheck != null
+        ? Physics2D.Raycast(wallCheck.position, Vector2.right * facing, attackDistace, WhatIsPlayer)
+        : default;
 
     public void AnimationTrigger() => stateMachine.currentState.AminationTrigger();
     public virtual void OpenCounterAttack()
     {
         canBeStuned = true;
-        counterImage.SetActive(true);
+        if (counterImage != null)
+            counterImage.SetActive(true);
     }
     public virtual void CloseCounterAttack()
     {
         canBeStuned = false;
-        counterImage.SetActive(false);
+        if (counterImage != null)
+            counterImage.SetActive(false);
     }
     public virtual bool CanBeStuned()
     {
@@ -80,27 +90,36 @@ public class Enemy : Entity
     #endregion
     public override void SlowEntity(float _slowPer, float _slowDuration)
     {
-        speed = speed * (1 - _slowPer);
-        anim.speed = anim.speed * (1 - _slowPer);
+        CancelInvoke("ReturnDefautSpeed");
+        slowMultiplier = Mathf.Clamp01(1f - _slowPer);
+        ApplySpeedState();
 
         Invoke("ReturnDefautSpeed", _slowDuration);
     }
     protected override void ReturnDefautSpeed()
     {
         base.ReturnDefautSpeed();
-        speed = speedTamp;
+        slowMultiplier = 1f;
+        ApplySpeedState();
     }
     public virtual void FreezeTime(bool _timeFreeze)
     {
-        if (_timeFreeze)
+        isFrozen = _timeFreeze;
+        ApplySpeedState();
+    }
+    private void ApplySpeedState()
+    {
+        if (isFrozen)
         {
-            anim.speed = 0;
-            speed = 0;  
+            if (anim != null) anim.speed = 0;
+            speed = 0;
+            speedBattle = 0;
         }
         else
         {
-            anim.speed = 1;
-            speed = speedTamp;
+            if (anim != null) anim.speed = slowMultiplier;
+            speed = speedTamp * slowMultiplier;
+            speedBattle = speedBattleTamp * slowMultiplier;
         }
     }
     public virtual IEnumerator FreezeTimeFor(float _seconds)
@@ -112,8 +131,11 @@ public class Enemy : Entity
     public override void OnDrawGizmos()
     {
         base.OnDrawGizmos();
-        Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance * facing, wallCheck.position.y));
-        Gizmos.DrawLine(transform.position, new Vector3(transform.position.x + attackDistace * facing, transform.position.y));
+        if (wallCheck != null)
+        {
+            Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance * facing, wallCheck.position.y));
+            Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + attackDistace * facing, wallCheck.position.y));
+        }
     }
 
 }

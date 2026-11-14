@@ -18,6 +18,8 @@ public class CharacterAimSwordState : CharacterState
     public override void Exit()
     {
         base.Exit();
+        if (character.skill != null && character.skill.swordSkill != null)
+            character.skill.swordSkill.DotsActive(false);
     }
 
     public override void Update()
@@ -25,13 +27,19 @@ public class CharacterAimSwordState : CharacterState
         base.Update();
         character.SetZeroVelocity();
         if (Input.GetKeyUp(KeyCode.Mouse1))
+        {
             stateMachine.ChangeState(character.idleState);
+            return;
+        }
 
-        Vector2 mousePos = Camera.main.ViewportToScreenPoint(Input.mousePosition);
+        if (Camera.main != null)
+        {
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        if (character.transform.position.x > mousePos.x && character.facing == 1)
-            character.Flip();
-        else if(character.transform.position.x < mousePos.x && character.facing == -1)
-            character.Flip();
+            if (character.transform.position.x > mousePos.x && character.facing == 1)
+                character.Flip();
+            else if (character.transform.position.x < mousePos.x && character.facing == -1)
+                character.Flip();
+        }
     }
 }

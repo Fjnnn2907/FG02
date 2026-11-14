@@ -31,22 +31,35 @@ public class Inventory : MonoBehaviour, ISaveManager
     private StatUI[] statUI;
 
     [Header("Cooldown")]
-    private float lastTimeUsedFlask;
+    private float lastTimeUsedFlask = -Mathf.Infinity;
 
     [Header("Data Base")]
     public List<ItemData> itemDataBase = new List<ItemData>();
-    public List<InventoryItem> loadItems;
-    public List<ItemEquipment> loadEquipment;
+    public List<InventoryItem> loadItems = new List<InventoryItem>();
+    public List<ItemEquipment> loadEquipment = new List<ItemEquipment>();
+
+    private bool isInitialized;
+    private bool hasLoadedData;
+
     private void Awake()
     {
         if (instance == null)
+        {
             instance = this;
-        else
+            InitializeCollections();
+        }
+        else if (instance != this)
+        {
             Destroy(gameObject);
+        }
     }
 
-    private void Start()
+    private void InitializeCollections()
     {
+        if (isInitialized)
+            return;
+        isInitialized = true;
+
         invetory = new List<InventoryItem>();
         inventoryDic = new Dictionary<ItemData, InventoryItem>();
 
@@ -56,89 +69,114 @@ public class Inventory : MonoBehaviour, ISaveManager
         equipment = new List<InventoryItem>();
         equipmentDir = new Dictionary<ItemEquipment, InventoryItem>();
 
-        itemSlot = inventorySlots.GetComponentsInChildren<ItemSlot>();
-        stashSlot = stashSlots.GetComponentsInChildren<ItemSlot>();
-        equipmentSlot = equipmentSlots.GetComponentsInChildren<EquipmentSlot>();
-        statUI = statsSlots.GetComponentsInChildren<StatUI>();
-        
-        AddItemStarting();
+        if (inventorySlots != null) itemSlot = inventorySlots.GetComponentsInChildren<ItemSlot>();
+        if (stashSlots != null) stashSlot = stashSlots.GetComponentsInChildren<ItemSlot>();
+        if (equipmentSlots != null) equipmentSlot = equipmentSlots.GetComponentsInChildren<EquipmentSlot>();
+        if (statsSlots != null) statUI = statsSlots.GetComponentsInChildren<StatUI>();
+    }
 
+    private void Start()
+    {
+        InitializeCollections();
+
+        if (!hasLoadedData && SaveManager.instance == null)
+            AddItemStarting();
+        else
+            updateSlotUI();
     }
 
     private void AddItemStarting()
     {
-        foreach(var item in loadEquipment)
+        foreach (var item in loadEquipment)
         {
-            EquipItem(item);
+            if (item != null)
+                EquipItem(item);
         }
 
-
-        if(loadItems.Count > 0)
+        if (loadItems.Count > 0 || loadEquipment.Count > 0)
         {
             foreach (var item in loadItems)
             {
+                if (item == null || item.itemData == null)
+                    continue;
+
                 for (var i = 0; i < item.stackSize; i++)
                 {
                     AddItem(item.itemData);
                 }
             }
 
+            updateSlotUI();
             return;
         }
-        
 
         for (int i = 0; i < startItem.Count; i++)
         {
-            AddItem(startItem[i]);
+            if (startItem[i] != null)
+                AddItem(startItem[i]);
         }
     }
 
     private void updateSlotUI()
     {
-
-        for(int i = 0; i < equipmentSlot.Length; i++)
+        if (equipmentSlot != null)
         {
-            foreach(var item in equipmentDir)
+            for (int i = 0; i < equipmentSlot.Length; i++)
             {
-                if(item.Key.equipmentType == equipmentSlot[i].slotType)
+                equipmentSlot[i].CleanSlot();
+                foreach (var item in equipmentDir)
                 {
-                    equipmentSlot[i].UpdateSlot(item.Value);
+                    if (item.Key.equipmentType == equipmentSlot[i].slotType)
+                    {
+                        equipmentSlot[i].UpdateSlot(item.Value);
+                    }
                 }
             }
         }
 
-        for (int i = 0; i < itemSlot.Length; i++)
+        if (itemSlot != null)
         {
-            itemSlot[i].CleanSlot();
+            for (int i = 0; i < itemSlot.Length; i++)
+            {
+                itemSlot[i].CleanSlot();
+            }
+
+            int invCount = Mathf.Min(invetory.Count, itemSlot.Length);
+            for (int i = 0; i < invCount; i++)
+            {
+                itemSlot[i].UpdateSlot(invetory[i]);
+            }
         }
 
-        for (int i = 0; i < stashSlot.Length; i++)
+        if (stashSlot != null)
         {
-            stashSlot[i].CleanSlot();
+            for (int i = 0; i < stashSlot.Length; i++)
+            {
+                stashSlot[i].CleanSlot();
+            }
+
+            int stCount = Mathf.Min(stash.Count, stashSlot.Length);
+            for (int i = 0; i < stCount; i++)
+            {
+                stashSlot[i].UpdateSlot(stash[i]);
+            }
         }
 
-
-
-        for (int i = 0; i < invetory.Count; i++)
+        if (statUI != null)
         {
-            itemSlot[i].UpdateSlot(invetory[i]);
-        }
-
-
-        for(int i = 0;i < stash.Count; i++)
-        {
-            stashSlot[i].UpdateSlot(stash[i]);
-        }
-
-        for(int i = 0; i < statUI.Length; i++)
-        {
-            statUI[i].UpdateStatValue();
+            for (int i = 0; i < statUI.Length; i++)
+            {
+                statUI[i].UpdateStatValue();
+            }
         }
     }
 
     public void EquipItem(ItemData _item)
     {
         ItemEquipment newEquipment = _item as ItemEquipment;
+        if (newEquipment == null)
+            return;
+
         InventoryItem newItem = new(newEquipment);
 
         ItemEquipment itemToRemove = null;
@@ -151,7 +189,9 @@ public class Inventory : MonoBehaviour, ISaveManager
             }
         }
 
-        if(itemToRemove != null)
+        RemoveItem(_item);
+
+        if (itemToRemove != null)
         {
             UnEquipment(itemToRemove);
             AddItem(itemToRemove);
@@ -161,36 +201,53 @@ public class Inventory : MonoBehaviour, ISaveManager
         equipmentDir.Add(newEquipment, newItem);
         newEquipment.AddModifiers();
 
-        RemoveItem(_item);
-
         updateSlotUI();
     }
 
     public void UnEquipment(ItemEquipment itemToRemove)
     {
-        if (equipmentDir.TryGetValue(itemToRemove, out InventoryItem value))
+        if (itemToRemove != null && equipmentDir.TryGetValue(itemToRemove, out InventoryItem value))
         {
             equipment.Remove(value);
             equipmentDir.Remove(itemToRemove);
             itemToRemove.RemoveModifiers();
+            updateSlotUI();
         }
     }
     public bool CanAddItem()
     {
-        if(invetory.Count >= itemSlot.Length)
+        if (itemSlot != null && invetory.Count >= itemSlot.Length)
         {
-            Debug.Log("Full Do");
             return false;
         }
         return true;
     }
+    public bool CanAddEquipment(ItemData _item)
+    {
+        if (_item == null)
+            return false;
+        if (inventoryDic != null && inventoryDic.ContainsKey(_item))
+            return true;
+        return CanAddItem();
+    }
+    public bool CanAddMaterial(ItemData _item)
+    {
+        if (_item == null)
+            return false;
+        if (stashDir != null && stashDir.ContainsKey(_item))
+            return true;
+        return stashSlot == null || stash.Count < stashSlot.Length;
+    }
     public void AddItem(ItemData _item)
     {
-        if(_item.itemType == ItemTpye.Equipment && CanAddItem())
+        if (_item == null)
+            return;
+
+        if (_item.itemType == ItemTpye.Equipment && CanAddEquipment(_item))
         {
             AddToInventory(_item);
         }
-        else if(_item.itemType == ItemTpye.Metarial)
+        else if (_item.itemType == ItemTpye.Metarial && CanAddMaterial(_item))
         {
             AddToStash(_item);
         }
@@ -228,9 +285,12 @@ public class Inventory : MonoBehaviour, ISaveManager
 
     public void RemoveItem(ItemData _item)
     {
-        if(inventoryDic.TryGetValue(_item,out InventoryItem value))
+        if (_item == null)
+            return;
+
+        if (_item.itemType == ItemTpye.Equipment && inventoryDic.TryGetValue(_item, out InventoryItem value))
         {
-            if(value.stackSize <= 1)
+            if (value.stackSize <= 1)
             {
                 invetory.Remove(value);
                 inventoryDic.Remove(_item);
@@ -238,8 +298,7 @@ public class Inventory : MonoBehaviour, ISaveManager
             else
                 value.RemoveStack();
         }
-
-        if (stashDir.TryGetValue(_item, out InventoryItem stashValue))
+        else if (_item.itemType == ItemTpye.Metarial && stashDir.TryGetValue(_item, out InventoryItem stashValue))
         {
             if (stashValue.stackSize <= 1)
             {
@@ -250,26 +309,31 @@ public class Inventory : MonoBehaviour, ISaveManager
                 stashValue.RemoveStack();
         }
 
-
         updateSlotUI();
     }
 
-    public bool CanCraft(ItemEquipment _itemToCraft,List<InventoryItem> _itemMaterials)
+    public bool CanCraft(ItemEquipment _itemToCraft, List<InventoryItem> _itemMaterials)
     {
-        List<InventoryItem> itemMaterialsToRemove = new List<InventoryItem>();
+        if (_itemToCraft == null || _itemMaterials == null)
+            return false;
+
+        if (!CanAddEquipment(_itemToCraft))
+        {
+            Debug.Log("Tui do da day, khong the che tao");
+            return false;
+        }
 
         for (int i = 0; i < _itemMaterials.Count; i++)
         {
+            if (_itemMaterials[i] == null || _itemMaterials[i].itemData == null)
+                continue;
+
             if (stashDir.TryGetValue(_itemMaterials[i].itemData, out InventoryItem value))
             {
-                if(value.stackSize < _itemMaterials[i].stackSize)
+                if (value.stackSize < _itemMaterials[i].stackSize)
                 {
                     Debug.Log("khong du nguyen lieu");
                     return false;
-                }
-                else
-                {
-                    itemMaterialsToRemove.Add(value);
                 }
             }
             else
@@ -279,26 +343,31 @@ public class Inventory : MonoBehaviour, ISaveManager
             }
         }
 
-        for(int i = 0; i < itemMaterialsToRemove.Count; i++)
+        for (int i = 0; i < _itemMaterials.Count; i++)
         {
-            RemoveItem(_itemMaterials[i].itemData);
+            if (_itemMaterials[i] == null || _itemMaterials[i].itemData == null)
+                continue;
+
+            for (int k = 0; k < _itemMaterials[i].stackSize; k++)
+            {
+                RemoveItem(_itemMaterials[i].itemData);
+            }
         }
-        
+
         AddItem(_itemToCraft);
-        Debug.Log("Che tao thanh cong" +  _itemToCraft.name);
+        Debug.Log("Che tao thanh cong " + _itemToCraft.name);
         return true;
     }
 
     public ItemEquipment GetItemEquipment(EquipmentType _type)
     {
         ItemEquipment itemEquiment = null;
-        
-        foreach(var item in equipmentDir)
+
+        foreach (var item in equipmentDir)
         {
-            if(item.Key.equipmentType == _type)
+            if (item.Key.equipmentType == _type)
                 itemEquiment = item.Key;
         }
-
 
         return itemEquiment;
     }
@@ -307,10 +376,10 @@ public class Inventory : MonoBehaviour, ISaveManager
     {
         ItemEquipment currentFlask = GetItemEquipment(EquipmentType.Flask);
 
-        if(currentFlask == null) 
+        if (currentFlask == null)
             return;
 
-        bool canFlask = Time.time > lastTimeUsedFlask + currentFlask.itemCooldown;
+        bool canFlask = Time.time >= lastTimeUsedFlask + currentFlask.itemCooldown;
 
         if (canFlask)
         {
@@ -321,51 +390,100 @@ public class Inventory : MonoBehaviour, ISaveManager
 
     public void LoadData(GameData _data)
     {
-        foreach(var pair in _data.inventory)
+        InitializeCollections();
+        hasLoadedData = true;
+
+        invetory.Clear();
+        inventoryDic.Clear();
+        stash.Clear();
+        stashDir.Clear();
+
+        List<ItemEquipment> equippedCopy = new List<ItemEquipment>(equipmentDir.Keys);
+        foreach (var eq in equippedCopy)
         {
-            foreach(var item in GetItemDataBase())
+            UnEquipment(eq);
+        }
+
+        loadItems.Clear();
+        loadEquipment.Clear();
+
+        List<ItemData> db = GetItemDataBase();
+
+        foreach (var pair in _data.inventory)
+        {
+            foreach (var item in db)
             {
-                if(item != null && item.itemiD == pair.Key)
+                if (item != null && item.itemiD == pair.Key)
                 {
                     InventoryItem itemToLoad = new InventoryItem(item);
                     itemToLoad.stackSize = pair.Value;
 
                     loadItems.Add(itemToLoad);
+                    break;
                 }
             }
         }
 
-        foreach(var loadItem in _data.equipmentID)
+        foreach (var loadItem in _data.equipmentID)
         {
-            foreach (var item in GetItemDataBase())
+            foreach (var item in db)
             {
-                if(item != null && loadItem == item.itemiD)
+                if (item != null && loadItem == item.itemiD)
                 {
-                    loadEquipment.Add(item as ItemEquipment);
+                    ItemEquipment eq = item as ItemEquipment;
+                    if (eq != null)
+                        loadEquipment.Add(eq);
+                    break;
                 }
             }
         }
-        
-        
+
+        bool hasSavedFile = SaveManager.instance != null && SaveManager.instance.HasSaveData();
+        if (hasSavedFile)
+        {
+            foreach (var item in loadEquipment)
+            {
+                if (item != null)
+                    EquipItem(item);
+            }
+
+            foreach (var item in loadItems)
+            {
+                if (item != null && item.itemData != null)
+                {
+                    for (int i = 0; i < item.stackSize; i++)
+                        AddItem(item.itemData);
+                }
+            }
+            updateSlotUI();
+        }
+        else
+        {
+            AddItemStarting();
+        }
     }
 
     public void SaveData(ref GameData _data)
     {
         _data.inventory.Clear();
-        
-        foreach(var item in inventoryDic)
+        _data.equipmentID.Clear();
+
+        foreach (var item in inventoryDic)
         {
-            _data.inventory.Add(item.Key.itemiD, item.Value.stackSize);
+            if (item.Key != null && !string.IsNullOrEmpty(item.Key.itemiD) && !_data.inventory.ContainsKey(item.Key.itemiD))
+                _data.inventory.Add(item.Key.itemiD, item.Value.stackSize);
         }
 
-        foreach(var item in stashDir)
+        foreach (var item in stashDir)
         {
-            _data.inventory.Add(item.Key.itemiD, item.Value.stackSize);
+            if (item.Key != null && !string.IsNullOrEmpty(item.Key.itemiD) && !_data.inventory.ContainsKey(item.Key.itemiD))
+                _data.inventory.Add(item.Key.itemiD, item.Value.stackSize);
         }
 
-        foreach(var item in equipmentDir)
+        foreach (var item in equipmentDir)
         {
-            _data.equipmentID.Add(item.Key.itemiD);
+            if (item.Key != null && !string.IsNullOrEmpty(item.Key.itemiD))
+                _data.equipmentID.Add(item.Key.itemiD);
         }
     }
     private List<ItemData> GetItemDataBase()

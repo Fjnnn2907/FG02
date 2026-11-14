@@ -53,23 +53,31 @@ public class SwordSkill : Skill
     [SerializeField] private GameObject dotsParent;
 
     private GameObject[] dots;
+    private float defaultSwordGravity;
+
+    protected override bool IsSkillUnlocked() => unlocedSowrd;
 
     protected override void Start()
     {
+        defaultSwordGravity = swordGravity;
         base.Start();
 
         GenerateDots();
 
         SetGravity();
 
-
-        swordButton.GetComponent<Button>().onClick.AddListener(() => UnlocedSword());
-        timeStopButton.GetComponent<Button>().onClick.AddListener(() => UnlocedStopTime());
-        xuyenGiapButton.GetComponent<Button>().onClick.AddListener(() => XuyenGiap());
-        periceButton.GetComponent<Button>().onClick.AddListener(() => PericeSword());
-        bouceButton.GetComponent<Button>().onClick.AddListener(() => BouceSword());
-        spineButton.GetComponent<Button>().onClick.AddListener(() => SpinSword());
-
+        if (swordButton != null)
+            swordButton.GetComponent<Button>()?.onClick.AddListener(() => UnlocedSword());
+        if (timeStopButton != null)
+            timeStopButton.GetComponent<Button>()?.onClick.AddListener(() => UnlocedStopTime());
+        if (xuyenGiapButton != null)
+            xuyenGiapButton.GetComponent<Button>()?.onClick.AddListener(() => XuyenGiap());
+        if (periceButton != null)
+            periceButton.GetComponent<Button>()?.onClick.AddListener(() => PericeSword());
+        if (bouceButton != null)
+            bouceButton.GetComponent<Button>()?.onClick.AddListener(() => BouceSword());
+        if (spineButton != null)
+            spineButton.GetComponent<Button>()?.onClick.AddListener(() => SpinSword());
     }
 
     private void SetGravity()
@@ -80,75 +88,98 @@ public class SwordSkill : Skill
             swordGravity = periceGravity;
         else if (swordTpye == SwordTpye.Spin)
             swordGravity = spinGravity;
-
+        else
+            swordGravity = defaultSwordGravity;
     }
 
     protected override void Update()
     {
+        base.Update();
+
+        if (character == null || dots == null)
+            return;
 
         if (Input.GetKeyUp(KeyCode.Mouse1))
         {
-            finalDir = new Vector2(AnimDirection().normalized.x * swordForce.x,
-                                   AnimDirection().normalized.y * swordForce.y);
+            Vector2 dir = AnimDirection().normalized;
+            finalDir = new Vector2(dir.x * swordForce.x, dir.y * swordForce.y);
         }
 
         if (Input.GetKey(KeyCode.Mouse1))
         {
             for (int i = 0; i < dots.Length; i++)
             {
-                dots[i].transform.position = DotsPosition(i * spaceBeetwenDots);
+                if (dots[i] != null)
+                    dots[i].transform.position = DotsPosition(i * spaceBeetwenDots);
             }
         }
     }
     public void CreateSword()
     {
+        if (swordPrefab == null || character == null)
+            return;
+
         GameObject newSowrd = Instantiate(swordPrefab, character.transform.position, Quaternion.identity);
         var newSowrdScript = newSowrd.GetComponent<SwordSkillController>();
 
-        if (swordTpye == SwordTpye.Bounce)
-            newSowrdScript.SetupBouce(true, bouceAmout, bounceSpeed);
-        else if (swordTpye == SwordTpye.Pierce)
-            newSowrdScript.SetUpPierce(periceAmout);
-        else if (swordTpye == SwordTpye.Spin)
-            newSowrdScript.SetupSpin(true,maxTravelDistace,spinDuration, hitCooldown);
+        if (newSowrdScript != null)
+        {
+            if (swordTpye == SwordTpye.Bounce)
+                newSowrdScript.SetupBouce(true, bouceAmout, bounceSpeed);
+            else if (swordTpye == SwordTpye.Pierce)
+                newSowrdScript.SetUpPierce(periceAmout);
+            else if (swordTpye == SwordTpye.Spin)
+                newSowrdScript.SetupSpin(true, maxTravelDistace, spinDuration, hitCooldown);
 
-        newSowrdScript.SetUpSword(finalDir, swordGravity, character, freeTime, returnSpeed);
+            newSowrdScript.SetUpSword(finalDir, swordGravity, character, freeTime, returnSpeed);
+        }
+
         character.NewSword(newSowrd);
         DotsActive(false);
     }
     #region AnimSword
     public Vector2 AnimDirection()
     {
-        var characterPos = character.transform.position;
-        var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (character == null || Camera.main == null)
+            return Vector2.right;
 
-        var dir = mousePos - characterPos;
+        Vector2 characterPos = character.transform.position;
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        return dir;
+        return mousePos - characterPos;
     }
 
     public void DotsActive(bool _isActive)
     {
+        if (dots == null)
+            return;
+
         for (int i = 0; i < dots.Length; i++)
         {
-            dots[i].SetActive(_isActive);
+            if (dots[i] != null)
+                dots[i].SetActive(_isActive);
         }
     }
 
     private void GenerateDots()
     {
+        if (dotPrefab == null || character == null)
+            return;
+
         dots = new GameObject[munberDots];
+        Transform parent = dotsParent != null ? dotsParent.transform : null;
         for (int i = 0; i < munberDots; i++)
         {
-            dots[i] = Instantiate(dotPrefab, character.transform.position, Quaternion.identity, dotsParent.transform);
+            dots[i] = Instantiate(dotPrefab, character.transform.position, Quaternion.identity, parent);
             dots[i].SetActive(false);
         }
     }
     private Vector2 DotsPosition(float t)
     {
+        Vector2 dir = AnimDirection().normalized;
         Vector2 pos = (Vector2)character.transform.position + new Vector2(
-            AnimDirection().normalized.x * swordForce.x,
-            AnimDirection().normalized.y * swordForce.y)
+            dir.x * swordForce.x,
+            dir.y * swordForce.y)
             * t + .5f * (Physics2D.gravity * swordGravity) * (t * t);
 
         return pos;
@@ -167,39 +198,48 @@ public class SwordSkill : Skill
     }
     private void UnlocedSword()
     {
-        if (swordButton.unlock)
+        if (swordButton != null && swordButton.unlock)
         {
             unlocedSowrd = true;
             swordTpye = SwordTpye.Regular;
+            SetGravity();
         }
-
     }
     private void UnlocedStopTime()
     {
-        if(timeStopButton.unlock)
+        if (timeStopButton != null && timeStopButton.unlock)
             timeStop = true;
     }
 
     private void XuyenGiap()
     {
-        if(xuyenGiapButton.unlock)
+        if (xuyenGiapButton != null && xuyenGiapButton.unlock)
             xuyenGiap = true;
     }
     private void BouceSword()
     {
-        if (bouceButton.unlock)
+        if (bouceButton != null && bouceButton.unlock)
+        {
             swordTpye = SwordTpye.Bounce;
+            SetGravity();
+        }
     }
 
     private void PericeSword()
     {
-        if (periceButton.unlock)
+        if (periceButton != null && periceButton.unlock)
+        {
             swordTpye = SwordTpye.Pierce;
+            SetGravity();
+        }
     }
     private void SpinSword()
     {
-        if (spineButton.unlock)
+        if (spineButton != null && spineButton.unlock)
+        {
             swordTpye = SwordTpye.Spin;
+            SetGravity();
+        }
     }
 
     #endregion

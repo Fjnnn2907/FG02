@@ -25,6 +25,9 @@ public class BackholeSkillController : MonoBehaviour
     private List<Transform> targetEnemy = new();
     private List<GameObject> createHotKey = new();
 
+    private HashSet<Enemy> frozenEnemies = new();
+    private bool isFinishing;
+
     public void SetupBlackhole(float _maxSize, float _growSpeed, float _skrinkSpeed, int _amoutAttack, float _cloneAttackCooldown, float _backholeDuration)
     {
         maxSize = _maxSize;
@@ -42,32 +45,45 @@ public class BackholeSkillController : MonoBehaviour
         if (backholeTimer < 0)
         {
             backholeTimer = Mathf.Infinity;
+            targetEnemy.RemoveAll(t => t == null);
             if (targetEnemy.Count > 0)
                 CloneAttack();
             else
                 FinishBackhole();
         }
 
-        if (Input.GetKeyUp(KeyCode.R))
+        if (Input.GetKeyUp(KeyCode.R) && !canSkrink && !canAttack)
         {
-            CloneAttack();
+            targetEnemy.RemoveAll(t => t == null);
+            if (targetEnemy.Count > 0)
+                CloneAttack();
+            else
+                FinishBackhole();
         }
 
         if (cloneAttackTimer < 0 && canAttack && amoutAttack > 0)
         {
             cloneAttackTimer = cloneAttackCooldown;
+            targetEnemy.RemoveAll(t => t == null);
 
-            int radomIndex = Random.Range(0, targetEnemy.Count);
-            float xOffset;
-            if (Random.Range(0, 100) > 50)
-                xOffset = 2;
-            else
-                xOffset = -2;
-            SkillManager.instance.cloneSkill.CreateClone(targetEnemy[radomIndex], new Vector3(xOffset, 0));
-            amoutAttack--;
-            if (amoutAttack <= 0)
+            if (targetEnemy.Count <= 0)
             {
-                Invoke("FinishBackhole", .5f);
+                amoutAttack = 0;
+                Invoke("FinishBackhole", .2f);
+            }
+            else
+            {
+                int radomIndex = Random.Range(0, targetEnemy.Count);
+                float xOffset = Random.Range(0, 100) > 50 ? 2f : -2f;
+
+                if (SkillManager.instance != null && SkillManager.instance.cloneSkill != null)
+                    SkillManager.instance.cloneSkill.CreateClone(targetEnemy[radomIndex], new Vector3(xOffset, 0));
+
+                amoutAttack--;
+                if (amoutAttack <= 0)
+                {
+                    Invoke("FinishBackhole", .5f);
+                }
             }
         }
 
@@ -76,7 +92,8 @@ public class BackholeSkillController : MonoBehaviour
 
         if (canSkrink)
         {
-            transform.localScale = Vector2.Lerp(transform.localScale, new Vector2(-1, -1), growSpeed * Time.deltaTime);
+            float shrinkRate = skrinkSpeed > 0 ? skrinkSpeed : growSpeed;
+            transform.localScale = Vector2.Lerp(transform.localScale, new Vector2(-1, -1), shrinkRate * Time.deltaTime);
             if (transform.localScale.x <= 0)
                 Destroy(gameObject);
         }
@@ -84,7 +101,7 @@ public class BackholeSkillController : MonoBehaviour
 
     private void CloneAttack()
     {
-        if (targetEnemy.Count <= 0) return;
+        if (targetEnemy.Count <= 0 || canSkrink) return;
         canAttack = true;
         DestroyHotKey();
         canCtrateHotKey = false;
@@ -92,32 +109,46 @@ public class BackholeSkillController : MonoBehaviour
         if (characterCanDisapear)
         {
             characterCanDisapear = false;
-            PlayerManager.instance.character.fx.TanHinh(true);
+            if (PlayerManager.instance != null && PlayerManager.instance.character != null && PlayerManager.instance.character.fx != null)
+                PlayerManager.instance.character.fx.TanHinh(true);
         }
     }
 
     private void FinishBackhole()
     {
+        if (isFinishing) return;
+        isFinishing = true;
+
         DestroyHotKey();
         canSkrink = true;
         canAttack = false;
-        PlayerManager.instance.character.ExitBackholeSkill();
+        if (PlayerManager.instance != null && PlayerManager.instance.character != null)
+            PlayerManager.instance.character.ExitBackholeSkill();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.GetComponent<Enemy>() != null)
+        Enemy enemy = collision.GetComponent<Enemy>();
+        if (enemy != null && !frozenEnemies.Contains(enemy))
         {
-            collision.GetComponent<Enemy>().FreezeTime(true);
+            frozenEnemies.Add(enemy);
+            enemy.FreezeTime(true);
 
             CreateHotKey(collision);
         }
     }
-    private void OnTriggerExit2D(Collider2D collision) => collision.GetComponent<Enemy>()?.FreezeTime(false);
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        Enemy enemy = collision.GetComponent<Enemy>();
+        if (enemy != null && frozenEnemies.Remove(enemy))
+        {
+            enemy.FreezeTime(false);
+        }
+    }
 
     private void CreateHotKey(Collider2D collision)
     {
-        if (keycodeList.Count <= 0)
+        if (keycodeList == null || keycodeList.Count <= 0 || hotKeyPrefab == null)
             return;
 
         if (!canCtrateHotKey) return;
@@ -132,7 +163,8 @@ public class BackholeSkillController : MonoBehaviour
 
         var newScirptHotKey = newObj.GetComponent<BackholeHotKeyControllerGUI>();
 
-        newScirptHotKey.SetupHotKey(keycode, collision.transform, this);
+        if (newScirptHotKey != null)
+            newScirptHotKey.SetupHotKey(keycode, collision.transform, this);
     }
 
     private void DestroyHotKey()
@@ -141,12 +173,15 @@ public class BackholeSkillController : MonoBehaviour
 
         for (int i = 0; i < createHotKey.Count; i++)
         {
-            Destroy(createHotKey[i]);
+            if (createHotKey[i] != null)
+                Destroy(createHotKey[i]);
         }
+        createHotKey.Clear();
     }
 
     public void AddListEnemy(Transform _enemy)
     {
-        targetEnemy.Add(_enemy);
+        if (_enemy != null && !targetEnemy.Contains(_enemy))
+            targetEnemy.Add(_enemy);
     }
 }

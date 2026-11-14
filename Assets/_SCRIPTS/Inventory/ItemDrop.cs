@@ -14,12 +14,14 @@ public class ItemDrop : MonoBehaviour
 
     public void GrenerateDrop()
     {
-        if (possibleDrop == null || possibleDrop.Length == 0)
+        if (possibleDrop == null || possibleDrop.Length == 0 || itemPrefab == null)
             return;
 
-        for(int i = 0; i < possibleDrop.Length; i++)
+        listDrop.Clear();
+
+        for (int i = 0; i < possibleDrop.Length; i++)
         {
-            if (possibleDrop[i] != null && Random.Range(0, 100) < possibleDrop[i].dropChane)
+            if (possibleDrop[i] != null && Random.Range(0f, 100f) < possibleDrop[i].dropChane)
             {
                 listDrop.Add(possibleDrop[i]);
             }
@@ -29,7 +31,7 @@ public class ItemDrop : MonoBehaviour
             return;
 
         int dropsToSpawn = Mathf.Min(amoutDrop, listDrop.Count);
-        for(int i = 0; i < dropsToSpawn; i++)
+        for (int i = 0; i < dropsToSpawn; i++)
         {
             int randomIndex = Random.Range(0, listDrop.Count);
             var randomItem = listDrop[randomIndex];
@@ -41,11 +43,13 @@ public class ItemDrop : MonoBehaviour
 
     public void DropItem(ItemData _item)
     {
-        var newItem = Instantiate(itemPrefab,transform.position,Quaternion.identity);
-        
-        Vector2 randomVelocity = new Vector2(Random.Range(-5,5),Random.Range(10,13));
+        if (_item == null || itemPrefab == null)
+            return;
 
+        var newItem = Instantiate(itemPrefab, transform.position, Quaternion.identity);
 
-        newItem.GetComponent<ItemObject>().SetUpItem(_item, randomVelocity);
+        Vector2 randomVelocity = new Vector2(Random.Range(-5f, 5f), Random.Range(10f, 13f));
+
+        newItem.GetComponent<ItemObject>()?.SetUpItem(_item, randomVelocity);
     }
 }

@@ -16,34 +16,60 @@ public class UICraftWindow : MonoBehaviour
 
     public void SetUpCraftWindow(ItemEquipment _item)
     {
+        if (_item == null || cratfButton == null)
+            return;
+
         cratfButton.onClick.RemoveAllListeners();
 
-        for (int i = 0; i < materialImage.Length; i++)
+        if (materialImage != null)
         {
-            materialImage[i].color =  Color.clear;
-            materialImage[i].GetComponentInChildren<TextMeshProUGUI>().color = Color.clear;
+            for (int i = 0; i < materialImage.Length; i++)
+            {
+                if (materialImage[i] == null) continue;
+                materialImage[i].color = Color.clear;
+                var txt = materialImage[i].GetComponentInChildren<TextMeshProUGUI>();
+                if (txt != null)
+                    txt.color = Color.clear;
+            }
+
+            if (_item.craftMaterials != null)
+            {
+                if (_item.craftMaterials.Count > materialImage.Length)
+                    Debug.LogWarning("Khong du slot UI de chua nguyen lieu");
+
+                int count = Mathf.Min(_item.craftMaterials.Count, materialImage.Length);
+                for (int i = 0; i < count; i++)
+                {
+                    if (_item.craftMaterials[i] == null || _item.craftMaterials[i].itemData == null || materialImage[i] == null)
+                        continue;
+
+                    materialImage[i].sprite = _item.craftMaterials[i].itemData.icon;
+                    materialImage[i].color = Color.white;
+
+                    var materialSlotText = materialImage[i].GetComponentInChildren<TextMeshProUGUI>();
+                    if (materialSlotText != null)
+                    {
+                        materialSlotText.text = _item.craftMaterials[i].stackSize.ToString();
+                        materialSlotText.color = Color.white;
+                    }
+                }
+            }
         }
 
-        for (int i = 0;i < _item.craftMaterials.Count; i++)
+        if (itemIcon != null)
         {
-            if (_item.craftMaterials.Count > materialImage.Length)
-                Debug.Log("Khong du slot UI de chua nguyen lieu");
-
-            materialImage[i].sprite = _item.craftMaterials[i].itemData.icon;
-            materialImage[i].color = Color.white;
-
-            var materialSlotText = materialImage[i].GetComponentInChildren<TextMeshProUGUI>();
-
-            materialSlotText.text = _item.craftMaterials[i].stackSize.ToString();
-            materialSlotText.color = Color.white;
+            itemIcon.color = Color.white;
+            itemIcon.sprite = _item.icon;
         }
+        if (itemName != null)
+            itemName.text = _item.itemName;
+        if (itemDescription != null)
+            itemDescription.text = _item.GetDescription();
 
-        itemIcon.color = Color.white;
-        itemIcon.sprite = _item.icon;
-        itemName.text = _item.itemName;
-        itemDescription.text = _item.GetDescription();
-
-        cratfButton.onClick.AddListener(() => Inventory.instance.CanCraft(_item,_item.craftMaterials));
-
+        cratfButton.onClick.AddListener(() =>
+        {
+            if (Inventory.instance != null)
+                Inventory.instance.CanCraft(_item, _item.craftMaterials);
+        });
     }
 }

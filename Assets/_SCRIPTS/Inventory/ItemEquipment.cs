@@ -49,7 +49,12 @@ public class ItemEquipment: ItemData
     public List<InventoryItem> craftMaterials;
     public void AddModifiers()
     {
+        if (PlayerManager.instance == null || PlayerManager.instance.character == null)
+            return;
+
         var character = PlayerManager.instance.character.GetComponent<CharacterStat>();
+        if (character == null)
+            return;
 
         character.sucManh.AddMotdifier(sucManh);
         character.nhanhNhen.AddMotdifier(nhanhNhen);
@@ -69,10 +74,16 @@ public class ItemEquipment: ItemData
         character.satThuongBang.AddMotdifier(satThuongBang);
         character.satThuongDien.AddMotdifier(satThuongAnhSang);
 
+        character.ClampHealthToMax();
     }
     public void RemoveModifiers()
     {
+        if (PlayerManager.instance == null || PlayerManager.instance.character == null)
+            return;
+
         var character = PlayerManager.instance.character.GetComponent<CharacterStat>();
+        if (character == null)
+            return;
 
         character.sucManh.RemoveMotdifier(sucManh);
         character.nhanhNhen.RemoveMotdifier(nhanhNhen);
@@ -91,13 +102,19 @@ public class ItemEquipment: ItemData
         character.satThuongLua.RemoveMotdifier(satThuongLua);
         character.satThuongBang.RemoveMotdifier(satThuongBang);
         character.satThuongDien.RemoveMotdifier(satThuongAnhSang);
+
+        character.ClampHealthToMax();
     }
-    
+
     public void ItemEffect(Transform _enemyPos)
     {
-        foreach(var item in itemEffects)
+        if (itemEffects == null)
+            return;
+
+        foreach (var item in itemEffects)
         {
-            item.ExecuteEffect(_enemyPos);
+            if (item != null)
+                item.ExecuteEffect(_enemyPos);
         }
     }
 
@@ -105,7 +122,13 @@ public class ItemEquipment: ItemData
     {
         sb.Length = 0;
 
+        AddItemDescription(sucManh, "Suc Manh");
+        AddItemDescription(nhanhNhen, "Nhanh Nhen");
+        AddItemDescription(thongMinh, "Thong Minh");
+        AddItemDescription(sucSong, "Suc Song");
         AddItemDescription(damage, "Damge");
+        AddItemDescription(tiLeChiMang, "Ti Le Chi Mang");
+        AddItemDescription(satThuongChimang, "ST Chi Mang");
         AddItemDescription(satThuongLua, "sat Thuong Lua");
         AddItemDescription(satThuongBang, "sat Thuong Bang");
         AddItemDescription(satThuongAnhSang, "sat Thuong Dien");
@@ -114,18 +137,19 @@ public class ItemEquipment: ItemData
         AddItemDescription(MaxHealth, "MaxHP");
         AddItemDescription(khangAP, "Deff AP");
         return sb.ToString();
-
     }
 
     private void AddItemDescription(int _value, string _name)
     {
-        if(_value != 0)
+        if (_value != 0)
         {
             if (sb.Length > 0)
                 sb.AppendLine();
 
-            if(_value > 0)
-                sb.Append("+ " + _value + " " + _name ); 
+            if (_value > 0)
+                sb.Append("+ " + _value + " " + _name);
+            else
+                sb.Append("- " + Mathf.Abs(_value) + " " + _name);
         }
     }
 }

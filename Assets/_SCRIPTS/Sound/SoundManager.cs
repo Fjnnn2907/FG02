@@ -19,6 +19,11 @@ public class SoundManager : MonoBehaviour
 
     private void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
         instance = this;
     }
     private void Start()
@@ -27,8 +32,11 @@ public class SoundManager : MonoBehaviour
     }
     public void PlayMusic(string name)
     {
-        Sound s = Array.Find(musicSounds, x => x.name == name);
-        if (s == null)
+        if (musicSounds == null || musicSource == null)
+            return;
+
+        Sound s = Array.Find(musicSounds, x => x != null && x.name == name);
+        if (s == null || s.clip == null)
             Debug.Log("Not Sound Music");
         else
         {
@@ -38,30 +46,36 @@ public class SoundManager : MonoBehaviour
     }
     public void PlaySFX(string name)
     {
-        Sound s = Array.Find(fxSounds, x => x.name == name);
-        if(s == null)
+        if (fxSounds == null || fxSource == null)
+            return;
+
+        Sound s = Array.Find(fxSounds, x => x != null && x.name == name);
+        if (s == null || s.clip == null)
             Debug.Log("Not Sound Effect");
         else
         {
-            fxSource.clip = s.clip;
-            fxSource.Play();
+            fxSource.PlayOneShot(s.clip);
         }
     }
 
     public void MuteMusic()
     {
-        musicSource.mute = !musicSource.mute;
+        if (musicSource != null)
+            musicSource.mute = !musicSource.mute;
     }
     public void MuteFX()
     {
-        fxSource.mute = !fxSource.mute;
+        if (fxSource != null)
+            fxSource.mute = !fxSource.mute;
     }
     public void MusicVolume(float volume)
     {
-        musicSource.volume = volume;
+        if (musicSource != null)
+            musicSource.volume = volume;
     }
     public void FXVolume(float volume)
     {
-        fxSource.volume = volume;
+        if (fxSource != null)
+            fxSource.volume = volume;
     }
 }

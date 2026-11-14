@@ -42,7 +42,9 @@ public class Character : Entity
     public GameObject effectVer2;
     #region Ver2
     public bool isVer2 { get; set; } = false;
-    public float ver2Timer { get;set; }
+    public float ver2Timer { get; set; }
+    private bool wasVer2;
+    private float slowMultiplier = 1f;
     #endregion
     protected override void Awake()
     {
@@ -68,26 +70,52 @@ public class Character : Entity
     {
         base.Start();
         skill = SkillManager.instance;
-        stateMachine.StartState(idleState);
 
+        SetupInitStateVer1();
+
+        stateMachine.StartState(idleState);
+    }
+
+    private void SetupInitStateVer1()
+    {
         defautSpeed = speed;
         defautJumpFore = jumpFore;
         defautRollSpeed = rollSpeed;
+        ver2Timer = 10f;
+        isVer2 = false;
+
+        int v1 = anim != null ? anim.GetLayerIndex("Ver1") : -1;
+        int v2 = anim != null ? anim.GetLayerIndex("Ver2") : -1;
+        if (v1 >= 0) anim.SetLayerWeight(v1, 1);
+        if (v2 >= 0) anim.SetLayerWeight(v2, 0);
+        if (effectVer2 != null) effectVer2.SetActive(false);
     }
+
     protected override void Update()
     {
         if (Time.timeScale == 0)
             return;
 
         base.Update();
+
+        if (stats != null && stats.isDeah)
+        {
+            xInput = 0;
+            stateMachine.currentState.Update();
+            return;
+        }
+
+        if (skill == null)
+            skill = SkillManager.instance;
+
         CheckInput();
         stateMachine.currentState.Update();
         ChangeState();
 
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q) && skill != null && skill.crytalSkill != null)
             skill.crytalSkill.CanUseSkill();
 
-        if(Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha1) && Inventory.instance != null)
             Inventory.instance.UseFlask();
     }
     private void FixedUpdate()
@@ -95,27 +123,37 @@ public class Character : Entity
     }
     public override void SlowEntity(float _slowPer, float _slowDuration)
     {
-        speed = speed * (1 - _slowPer);
-        rollSpeed = rollSpeed * (1 - _slowPer);
-        jumpFore = jumpFore * (1 - _slowPer);
-        anim.speed = anim.speed * (1 - _slowPer);
+        CancelInvoke("ReturnDefautSpeed");
+        slowMultiplier = Mathf.Clamp01(1f - _slowPer);
+        ApplyMovementStats();
 
         Invoke("ReturnDefautSpeed", _slowDuration);
     }
     protected override void ReturnDefautSpeed()
     {
         base.ReturnDefautSpeed();
+        slowMultiplier = 1f;
+        ApplyMovementStats();
+    }
+    private void ApplyMovementStats()
+    {
+        float baseSpd = isVer2 ? 7f : defautSpeed;
+        float baseJump = isVer2 ? 900f : defautJumpFore;
+        float baseAnim = isVer2 ? 1.2f : 1f;
 
-        speed = defautSpeed;
-        rollSpeed = defautRollSpeed;
-        jumpFore = defautJumpFore;
+        speed = baseSpd * slowMultiplier;
+        rollSpeed = defautRollSpeed * slowMultiplier;
+        jumpFore = baseJump * slowMultiplier;
+        if (anim != null)
+            anim.speed = baseAnim * slowMultiplier;
     }
     public virtual void AnimationTrigger() => stateMachine.currentState.AminationTrigger();
     public override void Deah()
     {
         base.Deah();
 
-        stateMachine.ChangeState(deahState);
+        if (stateMachine.currentState != deahState)
+            stateMachine.ChangeState(deahState);
     }
     #region Skill
     public void NewSword(GameObject _newSword)
@@ -124,51 +162,63 @@ public class Character : Entity
     }
     public void CleanSword()
     {
-        stateMachine.ChangeState(catchSwordState);
-        Destroy(sword);      
+        if (stats == null || !stats.isDeah)
+            stateMachine.ChangeState(catchSwordState);
+
+        if (sword != null)
+            Destroy(sword);
+        sword = null;
     }
     public void ExitBackholeSkill()
     {
-        stateMachine.ChangeState(airState);
+        if (stats == null || !stats.isDeah)
+            stateMachine.ChangeState(airState);
     }
     #endregion
     #region ChangeStateVer
     public void ChangeVer2()
     {
         isVer2 = true;
+        ver2Timer = 10f;
     }
     private void ChangeState()
     {
         if (isVer2)
         {
-            anim.SetLayerWeight(anim.GetLayerIndex("Ver1"), 0);
-            anim.SetLayerWeight(anim.GetLayerIndex("Ver2"), 1);
-            effectVer2.SetActive(true);
-            Ver2Stat();
+            if (!wasVer2)
+            {
+                wasVer2 = true;
+                int v1 = anim != null ? anim.GetLayerIndex("Ver1") : -1;
+                int v2 = anim != null ? anim.GetLayerIndex("Ver2") : -1;
+                if (v1 >= 0) anim.SetLayerWeight(v1, 0);
+                if (v2 >= 0) anim.SetLayerWeight(v2, 1);
+                if (effectVer2 != null) effectVer2.SetActive(true);
+                Ver2Stat();
+            }
+
             ver2Timer -= Time.deltaTime;
             if (ver2Timer <= 0)
                 isVer2 = false;
         }
-        else
+        else if (wasVer2)
         {
-            ver2Timer = 10;
-            anim.SetLayerWeight(anim.GetLayerIndex("Ver1"), 1);
-            anim.SetLayerWeight(anim.GetLayerIndex("Ver2"), 0);
-            effectVer2.SetActive(false);
+            wasVer2 = false;
+            ver2Timer = 10f;
+            int v1 = anim != null ? anim.GetLayerIndex("Ver1") : -1;
+            int v2 = anim != null ? anim.GetLayerIndex("Ver2") : -1;
+            if (v1 >= 0) anim.SetLayerWeight(v1, 1);
+            if (v2 >= 0) anim.SetLayerWeight(v2, 0);
+            if (effectVer2 != null) effectVer2.SetActive(false);
             Ver1Stat();
         }
     }
     public void Ver2Stat()
     {
-        speed = 7;
-        jumpFore = 900;
-        anim.speed = 1.2f;
+        ApplyMovementStats();
     }
     public void Ver1Stat()
     {
-        //speed = 5;
-        //jumpFore = 700;
-        //anim.speed = 1;
+        ApplyMovementStats();
     }
     #endregion
     #region Input

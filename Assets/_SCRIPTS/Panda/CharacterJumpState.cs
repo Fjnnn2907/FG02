@@ -10,8 +10,9 @@ public class CharacterJumpState : CharacterState
     public override void Enter()
     {
         base.Enter();
+        startTimer = 0.08f;
 
-        character.SetAddForce(character.rb.linearVelocity.x, character.jumpFore);
+        character.SetAddForce(0f, character.jumpFore);
     }
 
     public override void Exit()
@@ -25,12 +26,13 @@ public class CharacterJumpState : CharacterState
 
         character.SetVelocity(character.xInput * character.speed, character.rb.linearVelocity.y);
 
-
-        if (character.rb.linearVelocity.y <= 0)
-            stateMachine.ChangeState(character.airState);
-
         if (Input.GetKeyDown(KeyCode.U))
+        {
             stateMachine.ChangeState(character.jumpSpinState);
-        
+            return;
+        }
+
+        if (startTimer <= 0 && character.rb.linearVelocity.y <= 0)
+            stateMachine.ChangeState(character.airState);
     }
 }

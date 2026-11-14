@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using System.Text;
 using System;
 
 public class FileDataHandler
@@ -84,20 +85,33 @@ public class FileDataHandler
 
     public void Delete()
     {
+        if (string.IsNullOrWhiteSpace(dataFileName))
+            return;
+
         string fullPath = Path.Combine(dataDirPath, dataFileName);
 
-        if(File.Exists(fullPath))
-            File.Delete(fullPath);
+        try
+        {
+            if (File.Exists(fullPath))
+                File.Delete(fullPath);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Khong the xoa data " + e.Message);
+        }
     }
     private string MaHoa(string _data)
     {
-        string modifiedData = "";
+        if (string.IsNullOrEmpty(_data))
+            return string.Empty;
 
-        for(int i = 0; i < _data.Length; i++)
+        StringBuilder sb = new StringBuilder(_data.Length);
+
+        for (int i = 0; i < _data.Length; i++)
         {
-            modifiedData += (char)(_data[i] ^ codeWord[i % codeWord.Length]);
+            sb.Append((char)(_data[i] ^ codeWord[i % codeWord.Length]));
         }
-        return modifiedData;
+        return sb.ToString();
     }
     
 }

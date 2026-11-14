@@ -5,20 +5,29 @@ using UnityEngine;
 public class DienController : MonoBehaviour
 {
     private CharacterStat CharacterStat;
+    private void Awake()
+    {
+        ResolveCharacterStat();
+    }
     private void Start()
     {
-        CharacterStat = PlayerManager.instance.character.GetComponent<CharacterStat>();
+        ResolveCharacterStat();
+    }
+    private void ResolveCharacterStat()
+    {
+        if (CharacterStat == null && PlayerManager.instance != null && PlayerManager.instance.character != null)
+            CharacterStat = PlayerManager.instance.character.GetComponent<CharacterStat>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.GetComponent<Enemy>() != null)
+        if (collision.GetComponent<Enemy>() != null)
         {
-            //Debug.Log("a");
+            ResolveCharacterStat();
             EnemyStat enemy = collision.gameObject.GetComponent<EnemyStat>();
-            
-            CharacterStat.DoMagicDamage(enemy);
 
+            if (CharacterStat != null && enemy != null)
+                CharacterStat.DoMagicDamage(enemy);
         }
     }
 }

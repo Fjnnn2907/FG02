@@ -8,8 +8,17 @@ public class PowerUI : MonoBehaviour
     [SerializeField] private Character character;
     public Image PowerImage;
 
+    private void Start()
+    {
+        if (character == null && PlayerManager.instance != null)
+            character = PlayerManager.instance.character;
+    }
+
     private void Update()
     {
-        PowerImage.fillAmount = Mathf.Clamp01(1 - (character.ver2Timer / 10));
+        if (PowerImage == null || character == null)
+            return;
+
+        PowerImage.fillAmount = character.isVer2 ? Mathf.Clamp01(character.ver2Timer / 10f) : 1f;
     }
 }

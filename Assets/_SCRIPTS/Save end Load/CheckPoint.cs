@@ -7,9 +7,14 @@ public class CheckPoint : MonoBehaviour
     private Animator anim;
     public string checkPointID;
     public bool actived;
-    private void Start()
+    private void Awake()
     {
         anim = GetComponent<Animator>();
+    }
+    private void Start()
+    {
+        if (anim == null)
+            anim = GetComponent<Animator>();
     }
 
     [ContextMenu("Generate ID")]
@@ -19,18 +24,21 @@ public class CheckPoint : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Player"))
+        if (collision.CompareTag("Player"))
         {
             ActiveCheckPoint();
         }
     }
 
-    public void ActiveCheckPoint()
+    public void ActiveCheckPoint(bool silent = false)
     {
-        if (!actived)
+        if (!actived && !silent && AudioManager.instance != null)
             AudioManager.instance.PlaySFX(5, transform);
 
         actived = true;
-        anim.SetBool("isActive", true);
+        if (anim == null)
+            anim = GetComponent<Animator>();
+        if (anim != null)
+            anim.SetBool("isActive", true);
     }
 }

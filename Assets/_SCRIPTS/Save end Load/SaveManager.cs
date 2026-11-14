@@ -15,18 +15,29 @@ public class SaveManager : MonoBehaviour
 
     private void Awake()
     {
-        if(instance != null)
-            Destroy(instance.gameObject);
-        else
-            instance = this;
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
+        EnsureFileDataHandler();
+    }
+
+    private void EnsureFileDataHandler()
+    {
+        if (fileDataHandler == null)
+        {
+            string safeFileName = string.IsNullOrWhiteSpace(fileName) ? "savegame.json" : fileName;
+            fileDataHandler = new FileDataHandler(Application.persistentDataPath, safeFileName, isMaHoa);
+        }
     }
 
     private void Start()
     {
-        fileDataHandler = new FileDataHandler(Application.persistentDataPath,fileName, isMaHoa);
-        
+        EnsureFileDataHandler();
+
         saveManagers = FindAllSaveGame();
-        //Debug.Log(Application.persistentDataPath);
         LoadGame();
     }
 
@@ -37,27 +48,47 @@ public class SaveManager : MonoBehaviour
 
     public void LoadGame()
     {
+        EnsureFileDataHandler();
+        if (saveManagers == null)
+            saveManagers = FindAllSaveGame();
+
         gameData = fileDataHandler.Load();
 
-        if(gameData == null)
+        if (gameData == null)
         {
             NewGame();
         }
 
-        foreach(var saveManager in saveManagers)
+        foreach (var saveManager in saveManagers)
         {
-            saveManager.LoadData(gameData);
+            if (saveManager != null)
+                saveManager.LoadData(gameData);
+        }
+
+        if (SkillManager.instance != null)
+        {
+            SkillManager.instance.rollSkill?.RefreshUnlockState();
+            SkillManager.instance.cloneSkill?.RefreshUnlockState();
+            SkillManager.instance.swordSkill?.RefreshUnlockState();
+            SkillManager.instance.backholiSkill?.RefreshUnlockState();
+            SkillManager.instance.crytalSkill?.RefreshUnlockState();
         }
     }
     public void SaveGame()
     {
-        foreach(ISaveManager saveManager in saveManagers)
+        EnsureFileDataHandler();
+        if (saveManagers == null)
+            saveManagers = FindAllSaveGame();
+        if (gameData == null)
+            NewGame();
+
+        foreach (ISaveManager saveManager in saveManagers)
         {
-            saveManager.SaveData(ref gameData);
+            if (saveManager != null)
+                saveManager.SaveData(ref gameData);
         }
 
         fileDataHandler.Save(gameData);
-
     }
     private void OnApplicationQuit()
     {
@@ -66,22 +97,24 @@ public class SaveManager : MonoBehaviour
 
     private List<ISaveManager> FindAllSaveGame()
     {
-        IEnumerable<ISaveManager> saveManagers = FindObjectsOfType<MonoBehaviour>(true).OfType<ISaveManager>();
+        IEnumerable<ISaveManager> found = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None).OfType<ISaveManager>();
 
-        return new List<ISaveManager>(saveManagers);
+        return new List<ISaveManager>(found);
     }
 
     [ContextMenu("Delete Data")]
     public void DeleteData()
     {
-        fileDataHandler = new FileDataHandler(Application.persistentDataPath, fileName, isMaHoa);
+        EnsureFileDataHandler();
         fileDataHandler.Delete();
+    }
+    public bool HasSaveData()
+    {
+        EnsureFileDataHandler();
+        return fileDataHandler.Load() != null;
     }
     public bool HasNoSaveData()
     {
-        if(fileDataHandler.Load() != null)
-            return true;
-
-        return false;    
+        return HasSaveData();
     }
 }

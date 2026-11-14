@@ -9,23 +9,28 @@ public class CharacterRunState : CharacterGroundState
     {
         base.Enter();
 
-        AudioManager.instance.PlaySFX(14, null);
+        if (AudioManager.instance != null)
+            AudioManager.instance.PlaySFX(14, null);
     }
 
     public override void Exit()
     {
         base.Exit();
 
-        AudioManager.instance.StopSFX(14);
+        if (AudioManager.instance != null)
+            AudioManager.instance.StopSFX(14);
     }
 
     public override void Update()
     {
         base.Update();
 
+        if (stateMachine.currentState != this)
+            return;
+
         character.SetVelocity(character.speed * character.xInput, character.rb.linearVelocity.y);
 
-        if(character.xInput == 0)
+        if (character.xInput == 0)
             stateMachine.ChangeState(character.idleState);
     }
 }

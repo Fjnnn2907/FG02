@@ -9,11 +9,15 @@ public class PlayerManager : MonoBehaviour,ISaveManager
     public int coint;
     private void Awake()
     {
-        if (instance != null)
-            Debug.LogWarning("Erro Singleton" + instance.name);
-        else
-            instance = this;
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
     }
+
+    public bool CanAfford(int _coint) => _coint >= 0 && coint >= _coint;
 
     public bool HaveMoney(int _coint)
     {

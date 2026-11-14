@@ -1,15 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 
 public class TriggerEnemy : MonoBehaviour
 {
     private Enemy enemy;
 
-    void Start()
+    private void Awake()
     {
         enemy = GetComponentInParent<Enemy>();
+    }
+    void Start()
+    {
+        if (enemy == null)
+            enemy = GetComponentInParent<Enemy>();
     }
 
     public void AnimationTrigger()
@@ -25,18 +29,24 @@ public class TriggerEnemy : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (enemy == null || enemy.stats == null || enemy.stats.isDeah)
+            return;
+
         if (collision.CompareTag("Player"))
         {
             CharacterStat targetStat = collision.GetComponent<CharacterStat>();
-            enemy.stats.DoDamage(targetStat);
+            if (targetStat != null)
+                enemy.stats.DoDamage(targetStat);
         }
     }
     protected void OpenCounterAttack()
     {
-        enemy.OpenCounterAttack();
+        if (enemy != null)
+            enemy.OpenCounterAttack();
     }
     protected void CloseCounterAttack()
     {
-        enemy.CloseCounterAttack();
+        if (enemy != null)
+            enemy.CloseCounterAttack();
     }
 }

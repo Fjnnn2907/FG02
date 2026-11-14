@@ -7,6 +7,10 @@ public class CharacterAttackState : CharacterState
     private float lastimeAttacked;
     private int comboWindow = 2;
 
+    private float originalDamping;
+
+    private static readonly int comboCounterHash = Animator.StringToHash("ComboCounter");
+
     public CharacterAttackState(Character character, CharacterStateMachine stateMachine, string animBoolName) : base(character, stateMachine, animBoolName)
     {
     }
@@ -14,25 +18,32 @@ public class CharacterAttackState : CharacterState
     public override void Enter()
     {
         base.Enter();
+        originalDamping = character.rb.linearDamping;
         character.rb.linearDamping = 20;
-       
+        startTimer = 1.5f;
 
-        if(comboCounter >= 2 || Time.time >= lastimeAttacked + comboWindow)
+        int maxCombo = (character.attackMovement != null && character.attackMovement.Length > 0)
+            ? character.attackMovement.Length
+            : 2;
+
+        if (comboCounter >= maxCombo || Time.time >= lastimeAttacked + comboWindow)
             comboCounter = 0;
 
-        character.anim.SetInteger("ComboCounter",comboCounter);
+        character.anim.SetInteger(comboCounterHash, comboCounter);
 
-        character.SetVelocity(character.attackMovement[comboCounter].x * 
-            character.facing, character.rb.linearVelocity.y);
+        float moveX = (character.attackMovement != null && comboCounter < character.attackMovement.Length)
+            ? character.attackMovement[comboCounter].x
+            : 0f;
 
+        character.SetVelocity(moveX * character.facing, character.rb.linearVelocity.y);
     }
 
     public override void Exit()
     {
         base.Exit();
 
-        character.rb.linearDamping = 0;
-        
+        character.rb.linearDamping = originalDamping;
+
         comboCounter++;
         lastimeAttacked = Time.time;
     }
@@ -41,8 +52,7 @@ public class CharacterAttackState : CharacterState
     {
         base.Update();
 
-        if (triggerCall)        
+        if (triggerCall || startTimer <= 0)
             stateMachine.ChangeState(character.idleState);
-        
     }
 }

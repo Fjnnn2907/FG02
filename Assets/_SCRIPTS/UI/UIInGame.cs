@@ -24,11 +24,16 @@ public class UIInGame : MonoBehaviour
 
     private void Start()
     {
+        if (stat == null && PlayerManager.instance != null && PlayerManager.instance.character != null)
+            stat = PlayerManager.instance.character.GetComponent<CharacterStat>();
+
         if (stat != null)
+        {
             stat.onHealthChanged += UpdateHealth;
+            UpdateHealth();
+        }
 
         skill = SkillManager.instance;
-
     }
     private void OnDestroy()
     {
@@ -37,46 +42,44 @@ public class UIInGame : MonoBehaviour
     }
     private void Update()
     {
-        if (momeyAmout < PlayerManager.instance.GetMoney())
-            momeyAmout += Time.deltaTime * speedTomomeyAmout;
-        else
-            momeyAmout = PlayerManager.instance.GetMoney();
+        if (PlayerManager.instance != null && moneyText != null)
+        {
+            int targetMoney = PlayerManager.instance.GetMoney();
+            if (momeyAmout < targetMoney)
+                momeyAmout = Mathf.Min(targetMoney, momeyAmout + Time.deltaTime * speedTomomeyAmout);
+            else
+                momeyAmout = targetMoney;
 
+            moneyText.text = ((int)momeyAmout).ToString();
+        }
 
-        //moneyText.text = PlayerManager.instance.GetMoney().ToString("#,#");
+        if (skill == null)
+            skill = SkillManager.instance;
+        if (skill == null)
+            return;
 
-        moneyText.text = ((int)momeyAmout).ToString();
-
-        if (Input.GetKeyDown(KeyCode.LeftShift) && skill.rollSkill.canRoll)
-            SetCooldown(rollImage);
-        if (Input.GetKeyDown(KeyCode.Q) && skill.crytalSkill.canScystal)
-            SetCooldown(crystalImage);
-        if (Input.GetKeyDown(KeyCode.Mouse1) && skill.swordSkill.unlocedSowrd)
-            SetCooldown(swordImage);
-        if (Input.GetKeyDown(KeyCode.R) && skill.backholiSkill.backhole)
-            SetCooldown(backholeImage);
-        //if(Input.GetKeyDown(KeyCode.Alpha1) && Inventory.instance.GetItemEquipment(EquipmentType.Flask) != null)
-        //    SetCooldown(backholeImage);
-
-        CheckCooldown(rollImage, skill.rollSkill.cooldown);
-        CheckCooldown(crystalImage, skill.crytalSkill.cooldown);
-        CheckCooldown(swordImage, skill.swordSkill.cooldown);
-        CheckCooldown(backholeImage, skill.backholiSkill.cooldown);
+        SyncSkillCooldown(rollImage, skill.rollSkill);
+        SyncSkillCooldown(crystalImage, skill.crytalSkill);
+        SyncSkillCooldown(swordImage, skill.swordSkill);
+        SyncSkillCooldown(backholeImage, skill.backholiSkill);
     }
     private void UpdateHealth()
     {
-        slider.maxValue = stat.MaxHealth.GetValue();
+        if (slider == null || stat == null)
+            return;
+
+        slider.maxValue = stat.GetMaxHealthValue();
         slider.value = stat.currentHealth;
     }
 
-    private void SetCooldown(Image _image)
+    private void SyncSkillCooldown(Image _image, Skill _skill)
     {
-        if(_image.fillAmount <= 0)
-            _image.fillAmount = 1;
-    }
-    private void CheckCooldown(Image _image, float _cooldown)
-    {
-        if(_image.fillAmount > 0)
-            _image.fillAmount -= 1 / _cooldown * Time.deltaTime;
+        if (_image == null || _skill == null)
+            return;
+
+        if (_skill.cooldown > 0f && _skill.cooldownTimer > 0f)
+            _image.fillAmount = Mathf.Clamp01(_skill.cooldownTimer / _skill.cooldown);
+        else
+            _image.fillAmount = 0f;
     }
 }

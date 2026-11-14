@@ -11,29 +11,38 @@ public class Skill : MonoBehaviour
 
     protected virtual void Start()
     {
-        character = PlayerManager.instance.character;
+        if (PlayerManager.instance != null)
+            character = PlayerManager.instance.character;
 
         CheckUnlock();
     }
     protected virtual void Update()
     {
-        cooldownTimer -= Time.deltaTime;
+        if (cooldownTimer > -1f)
+            cooldownTimer -= Time.deltaTime;
     }
+
+    public void RefreshUnlockState() => CheckUnlock();
+
+    protected virtual bool IsSkillUnlocked() => true;
 
     public virtual bool CanUseSkill()
     {
-        if(cooldownTimer < 0)
+        if (!IsSkillUnlocked())
+            return false;
+
+        if (cooldownTimer < 0)
         {
             UseSkill();
             cooldownTimer = cooldown;
             return true;
         }
-        //Debug.Log("Skill on colldown");
         return false;
     }
     public virtual void UseSkill()
     {
-        
+        if (character == null && PlayerManager.instance != null)
+            character = PlayerManager.instance.character;
     }
     protected virtual void CheckUnlock()
     {
@@ -41,6 +50,9 @@ public class Skill : MonoBehaviour
     }
     protected virtual Transform FindClosetEnemy(Transform _checkTransform)
     {
+        if (_checkTransform == null)
+            return null;
+
         Collider2D[] collider = Physics2D.OverlapCircleAll(_checkTransform.position, 25);
 
         Transform targetToEnemy = null;
@@ -48,10 +60,10 @@ public class Skill : MonoBehaviour
         float cloneDistance = Mathf.Infinity;
         foreach (Collider2D hit in collider)
         {
-            if (hit.GetComponent<Enemy>() != null)
+            Enemy enemy = hit.GetComponent<Enemy>();
+            if (enemy != null && (enemy.stats == null || !enemy.stats.isDeah))
             {
                 float distanceToEnemy = Vector2.Distance(_checkTransform.position, hit.transform.position);
-                // ke thu gan nhat
                 if (distanceToEnemy < cloneDistance)
                 {
                     cloneDistance = distanceToEnemy;

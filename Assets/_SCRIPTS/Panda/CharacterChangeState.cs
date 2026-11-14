@@ -1,6 +1,8 @@
 
 public class CharacterChangeState : CharacterState
 {
+    private float originalDamping;
+
     public CharacterChangeState(Character character, CharacterStateMachine stateMachine, string animBoolName) : base(character, stateMachine, animBoolName)
     {
     }
@@ -8,6 +10,7 @@ public class CharacterChangeState : CharacterState
     public override void Enter()
     {
         base.Enter();
+        originalDamping = character.rb.linearDamping;
         character.rb.linearDamping = 20;
         startTimer = 1.2f;
         character.SetZeroVelocity();
@@ -16,7 +19,7 @@ public class CharacterChangeState : CharacterState
     public override void Exit()
     {
         base.Exit();
-        character.rb.linearDamping = 0;
+        character.rb.linearDamping = originalDamping;
     }
 
     public override void Update()

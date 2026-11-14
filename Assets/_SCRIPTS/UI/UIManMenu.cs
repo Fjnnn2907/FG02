@@ -11,7 +11,8 @@ public class UIManMenu : MonoBehaviour
     [SerializeField] private UIDrakScreen uIDrakScreen;
     private void Start()
     {
-        if(!SaveManager.instance.HasNoSaveData())
+        Time.timeScale = 1f;
+        if (SaveManager.instance != null && !SaveManager.instance.HasSaveData() && contiueButton != null)
             contiueButton.SetActive(false);
     }
     public void NextScene()
@@ -21,22 +22,26 @@ public class UIManMenu : MonoBehaviour
 
     public void NewScene()
     {
-        SaveManager.instance.DeleteData();
+        if (SaveManager.instance != null)
+            SaveManager.instance.DeleteData();
         StartCoroutine(LoadSceneEffect(1.5f));
     }
 
     public void ExitGame()
     {
         Debug.Log("Thoat game");
-        //Application.Quit();
+        Application.Quit();
     }
 
     IEnumerator LoadSceneEffect(float _delay)
     {
-        uIDrakScreen.FaceOutDrakScreen();
+        Time.timeScale = 1f;
+        if (uIDrakScreen != null)
+            uIDrakScreen.FaceOutDrakScreen();
 
-        yield return new WaitForSeconds(_delay);
+        yield return new WaitForSecondsRealtime(_delay);
 
-        SceneManager.LoadScene(nextScene);
+        if (!string.IsNullOrEmpty(nextScene))
+            SceneManager.LoadScene(nextScene);
     }
 }

@@ -35,14 +35,18 @@ public class CharacterBackholeState : CharacterState
     {
         base.Update();
         if (startTimer > 0)
+        {
             character.rb.linearVelocity = new Vector2(0, 8);
-        if(startTimer < 0)
+        }
+        else
         {
             character.rb.linearVelocity = new Vector2(0, -.1f);
             if (!skillUsed)
             {
-                if(character.skill.backholiSkill.CanUseSkill())
-                skillUsed = true;
+                if (character.skill != null && character.skill.backholiSkill != null && character.skill.backholiSkill.CanUseSkill())
+                    skillUsed = true;
+                else
+                    stateMachine.ChangeState(character.airState);
             }
         }
     }

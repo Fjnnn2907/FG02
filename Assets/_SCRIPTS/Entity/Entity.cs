@@ -29,15 +29,19 @@ public class Entity : MonoBehaviour
     public System.Action onFliped;
     protected virtual void Awake()
     {
-        
-    }
-    protected virtual void Start()
-    {
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
         fx = GetComponent<EntityFX>();
         sr = GetComponentInChildren<SpriteRenderer>();
         stats = GetComponent<StatManager>();
+    }
+    protected virtual void Start()
+    {
+        if (anim == null) anim = GetComponentInChildren<Animator>();
+        if (rb == null) rb = GetComponent<Rigidbody2D>();
+        if (fx == null) fx = GetComponent<EntityFX>();
+        if (sr == null) sr = GetComponentInChildren<SpriteRenderer>();
+        if (stats == null) stats = GetComponent<StatManager>();
     }
     protected virtual void Update()
     {
@@ -48,27 +52,36 @@ public class Entity : MonoBehaviour
     }
     protected virtual void ReturnDefautSpeed()
     {
-        anim.speed = 1;
+        if (anim != null)
+            anim.speed = 1;
     }
     #region Battle
     public virtual void DamageEffect()
     {
-        fx.StartCoroutine("HitFlashFx");
+        if (fx != null)
+            fx.TriggerHitFlash();
+
+        StopCoroutine("KnockBack");
         StartCoroutine("KnockBack");
     }
     protected virtual IEnumerator KnockBack()
     {
         isKnocked = true;
-        rb.linearVelocity = new Vector2(KnockDir.x * -facing, KnockDir.y);
+        if (rb != null)
+            rb.linearVelocity = new Vector2(KnockDir.x * -facing, KnockDir.y);
         yield return new WaitForSeconds(KnockTimer);
         isKnocked = false;
         SetZeroVelocity();
     }
     #endregion
-    public virtual bool IsGroundCheck() => Physics2D.BoxCast(groundCheck.position, boxSize, 0f, Vector2.down, groundCheckDistance, whatIsGround);
+    public virtual bool IsGroundCheck() => groundCheck != null && Physics2D.BoxCast(groundCheck.position, boxSize, 0f, Vector2.down, groundCheckDistance, whatIsGround);
     public virtual void OnDrawGizmos()
     {
-        Gizmos.DrawWireCube(groundCheck.position + Vector3.down * groundCheckDistance / 2, boxSize);
+        if (groundCheck != null)
+        {
+            Vector3 castSize = new Vector3(boxSize.x, boxSize.y + groundCheckDistance, 0f);
+            Gizmos.DrawWireCube(groundCheck.position + Vector3.down * (groundCheckDistance * 0.5f), castSize);
+        }
     }
     #region Velocity
     public virtual void SetVelocity(float xVelocity, float yVelocity)

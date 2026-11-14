@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum BuffType
@@ -62,19 +63,31 @@ public class StatManager : MonoBehaviour
     public System.Action onHealthChanged;
     public bool isDeah;
     private bool isXuyenGiap;
+    private Coroutine xuyenGiapCoroutine;
+    protected virtual void Awake()
+    {
+        entityFX = GetComponent<EntityFX>();
+    }
     protected virtual void Start()
     {
         satThuongChimang.SetDefaultValue(150);
         currentHealth = GetMaxHealthValue();
-        entityFX = GetComponent<EntityFX>();
+        if (entityFX == null)
+            entityFX = GetComponent<EntityFX>();
+        onHealthChanged?.Invoke();
     }
     protected virtual void Update()
     {
-        bongTimer -= Time.deltaTime;
-        satThuongBongTimer -= Time.deltaTime;
-        bangTimer -= Time.deltaTime;
-        socDienTimer -= Time.deltaTime;
-        thoiGianSetRoi -= Time.deltaTime;
+        if (bongTimer > -1f)
+            bongTimer -= Time.deltaTime;
+        if (satThuongBongTimer > -1f)
+            satThuongBongTimer -= Time.deltaTime;
+        if (bangTimer > -1f)
+            bangTimer -= Time.deltaTime;
+        if (socDienTimer > -1f)
+            socDienTimer -= Time.deltaTime;
+        if (thoiGianSetRoi > -1f)
+            thoiGianSetRoi -= Time.deltaTime;
 
         if (bongTimer < 0)
             isBong = false;
@@ -85,17 +98,25 @@ public class StatManager : MonoBehaviour
         if (socDienTimer < 0)
             isSocDien = false;
 
-        if (satThuongBongTimer < 0 && isBong)
+        if (satThuongBongTimer < 0 && isBong && !isDeah)
         {
-            Debug.Log("thieu rui");
             DecreaseHealthBy(satThuongBong);
             satThuongBongTimer = bongCoolDown;
+
+            if (currentHealth <= 0 && !isDeah)
+            {
+                isDeah = true;
+                Deah();
+            }
         }
     }
 
     public void LayXuyenGiap(float _duraction)
     {
-        StartCoroutine(XuyenGiap(_duraction));
+        if (xuyenGiapCoroutine != null)
+            StopCoroutine(xuyenGiapCoroutine);
+
+        xuyenGiapCoroutine = StartCoroutine(XuyenGiap(_duraction));
     }
 
     private IEnumerator XuyenGiap(float _duraction)
@@ -105,41 +126,47 @@ public class StatManager : MonoBehaviour
         yield return new WaitForSeconds(_duraction);
 
         isXuyenGiap = false;
+        xuyenGiapCoroutine = null;
     }
 
     public virtual void DoDamage(StatManager _targetStats)
     {
+        if (_targetStats == null || _targetStats.isDeah)
+            return;
+
         if (CheckTargetAvoidAttack(_targetStats)) return;
 
         int totalDamage = damage.GetValue() + sucManh.GetValue();
 
         if (CanCrit())
         {
-            Debug.Log("Crit hit" + _targetStats.gameObject.name);
             totalDamage = CritDamege(totalDamage);
         }
-
 
         totalDamage = CheckTargerArmor(_targetStats, totalDamage);
 
         _targetStats.TakeDamage(totalDamage);
-        //DoMagicDamage(_targetStats);
     }
     public virtual void DoMagicDamage(StatManager _targetStats)
     {
+        if (_targetStats == null || _targetStats.isDeah)
+            return;
+
         int _satThuongLua = satThuongLua.GetValue();
         int _satThuongBang = satThuongBang.GetValue();
         int _satThuongSet = satThuongDien.GetValue();
+
+        if (_satThuongLua <= 0 && _satThuongBang <= 0 && _satThuongSet <= 0 && thongMinh.GetValue() <= 0)
+            return;
 
         int totalMagicDamage = _satThuongLua + _satThuongBang + _satThuongSet + thongMinh.GetValue();
         totalMagicDamage -= _targetStats.khangAP.GetValue() + (_targetStats.thongMinh.GetValue() * 3);
         totalMagicDamage = Mathf.Clamp(totalMagicDamage, 0, int.MaxValue);
 
-        _targetStats.TakeDamage(totalMagicDamage);
-        Debug.Log(totalMagicDamage);
+        if (totalMagicDamage > 0)
+            _targetStats.TakeDamage(totalMagicDamage);
 
-
-        if(Mathf.Max(_satThuongLua,_satThuongBang,_satThuongSet) <= 0)
+        if (Mathf.Max(_satThuongLua, _satThuongBang, _satThuongSet) <= 0 || _targetStats.isDeah)
             return;
 
         bool canThieuRui = _satThuongLua > _satThuongBang && _satThuongLua > _satThuongSet;
@@ -163,31 +190,37 @@ public class StatManager : MonoBehaviour
         }
 
         if (canThieuRui)
-            _targetStats.setUpSatThuongBong(Mathf.RoundToInt(_satThuongLua * .2f));
-        //Debug.Log(Mathf.RoundToInt(_satThuongLua * .2f));
-        
-        _targetStats.SuDungNguyenTo(canThieuRui, canDongBang,canSet, _targetStats); 
+            _targetStats.setUpSatThuongBong(Mathf.Max(1, Mathf.RoundToInt(_satThuongLua * .2f)));
 
+        if (canSet && tiaSetPreFab != null)
+            TiaSet(_targetStats);
+
+        _targetStats.SuDungNguyenTo(canThieuRui, canDongBang, canSet, _targetStats);
     }
     public void SuDungNguyenTo(bool _isBong, bool _isDongBang, bool _isSocDien, StatManager _targetStats)
     {
-        if (isBong || isDongBang || isSocDien)
+        if (isDeah || isBong || isDongBang || isSocDien)
             return;
 
         if (_isBong)
         {
             isBong = true;
             bongTimer = 2;
-            
-            entityFX.IgniteFxFor(2);
+
+            if (entityFX != null)
+                entityFX.IgniteFxFor(2);
         }
         if (_isDongBang)
         {
             isDongBang = true;
             bangTimer = 2;
 
-            GetComponent<Entity>().SlowEntity(.2f,2);
-            entityFX.ChillFxFor(2);
+            Entity entity = GetComponent<Entity>();
+            if (entity != null)
+                entity.SlowEntity(.2f, 2);
+
+            if (entityFX != null)
+                entityFX.ChillFxFor(2);
         }
 
         if (_isSocDien)
@@ -195,41 +228,50 @@ public class StatManager : MonoBehaviour
             isSocDien = true;
             socDienTimer = 2;
 
-            entityFX.ShockFxFor(2);
+            if (entityFX != null)
+                entityFX.ShockFxFor(2);
         }
-
     }
 
     private void TiaSet(StatManager _targetStats)
     {
+        if (tiaSetPreFab == null || _targetStats == null)
+            return;
+
         GameObject PreFab = Instantiate(tiaSetPreFab, transform.position, Quaternion.identity);
-        PreFab.GetComponent<TiaSetController>().SetUpTiaSet(satThuongDien.GetValue(), _targetStats);
+        TiaSetController ctrl = PreFab.GetComponent<TiaSetController>();
+        if (ctrl != null)
+            ctrl.SetUpTiaSet(Mathf.Max(1, satThuongDien.GetValue()), _targetStats);
     }
 
     private bool CanCrit()
     {
         int totalTileChiMang = tiLeChiMang.GetValue() + nhanhNhen.GetValue();
 
-        if(Random.Range(0,100) <= totalTileChiMang) 
+        if (Random.Range(0, 100) < totalTileChiMang)
             return true;
 
         return false;
     }
     private int CritDamege(int _damage)
     {
-        float totalSatThuongChiMang = (satThuongChimang.GetValue() + nhanhNhen.GetValue()) * .1f;
+        float totalSatThuongChiMang = (satThuongChimang.GetValue() + sucManh.GetValue()) * .01f;
 
-        float critDamage = _damage + totalSatThuongChiMang;
+        float critDamage = _damage * totalSatThuongChiMang;
 
         return Mathf.RoundToInt(critDamage);
     }
     private int CheckTargerArmor(StatManager _targetStats, int totalDamage)
     {
-        if(_targetStats.isDongBang)
-            totalDamage -= Mathf.RoundToInt(_targetStats.giap.GetValue() * .8f);
-        else
-            totalDamage -= _targetStats.giap.GetValue();
+        float effectiveArmor = _targetStats.giap.GetValue();
 
+        if (_targetStats.isDongBang)
+            effectiveArmor *= .8f;
+
+        if (_targetStats.isXuyenGiap)
+            effectiveArmor *= .5f;
+
+        totalDamage -= Mathf.RoundToInt(effectiveArmor);
         totalDamage = Mathf.Clamp(totalDamage, 0, int.MaxValue);
         return totalDamage;
     }
@@ -242,10 +284,11 @@ public class StatManager : MonoBehaviour
         if (isSocDien)
             totalNe += 20;
 
+        if (_targetStats.isSocDien)
+            totalNe = Mathf.Max(0, totalNe - 20);
 
         if (Random.Range(0, 100) < totalNe)
         {
-            Debug.Log("Ne" + _targetStats.gameObject.name);
             return true;
         }
         return false;
@@ -253,33 +296,49 @@ public class StatManager : MonoBehaviour
 
     public virtual void TakeDamage(int _damege)
     {
+        if (isDeah)
+            return;
 
         if (isXuyenGiap)
             _damege = Mathf.FloorToInt(_damege * 1.1f);
 
         DecreaseHealthBy(_damege);
-        //Debug.Log(currentHealth);
 
-        GetComponent<Entity>().DamageEffect();
+        Entity entity = GetComponent<Entity>();
+        if (entity != null && _damege > 0)
+            entity.DamageEffect();
 
         if (currentHealth <= 0 && !isDeah)
         {
-            Deah();
             isDeah = true;
+            Deah();
         }
     }
     public virtual void BuffStats(int _modifier, float _duration, Stat _statModify)
     {
+        if (_statModify == null || _modifier == 0)
+            return;
+
         StartCoroutine(BuffDuraction(_modifier, _duration, _statModify));
     }
 
     private IEnumerator BuffDuraction(int _modifier, float _duration, Stat _statModify)
     {
-        _statModify.AddMotdifier(_modifier);    
+        _statModify.AddMotdifier(_modifier);
+        ClampHealthToMax();
 
         yield return new WaitForSeconds(_duration);
 
         _statModify.RemoveMotdifier(_modifier);
+        ClampHealthToMax();
+    }
+    public void ClampHealthToMax()
+    {
+        int maxHp = GetMaxHealthValue();
+        if (currentHealth > maxHp)
+            currentHealth = maxHp;
+
+        onHealthChanged?.Invoke();
     }
     public virtual void HoiPhucMau(int amout)
     {

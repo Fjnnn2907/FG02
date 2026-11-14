@@ -9,28 +9,55 @@ public class ItemObject : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Vector2 velocity;
 
+    private bool isPickedUp;
+
+    private void Start()
+    {
+        if (itemData != null)
+            SetUpItemObject();
+    }
+
     private void SetUpItemObject()
     {
-        GetComponent<SpriteRenderer>().sprite = itemData.icon;
+        if (itemData == null)
+            return;
+
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        if (sr != null)
+            sr.sprite = itemData.icon;
         gameObject.name = itemData.name + " Item";
     }
 
     public void SetUpItem(ItemData _itemData, Vector2 _velocity)
     {
         itemData = _itemData;
-        rb.linearVelocity = _velocity;
+        if (rb != null)
+            rb.linearVelocity = _velocity;
         SetUpItemObject();
     }
 
     public void ItemPickUp()
     {
-        if(!Inventory.instance.CanAddItem() && itemData.itemType == ItemTpye.Equipment)
+        if (isPickedUp || itemData == null || Inventory.instance == null)
+            return;
+
+        if (itemData.itemType == ItemTpye.Equipment && !Inventory.instance.CanAddEquipment(itemData))
         {
-            rb.linearVelocity = new Vector2(0, 7);
+            if (rb != null)
+                rb.linearVelocity = new Vector2(0, 7);
+            return;
+        }
+        if (itemData.itemType == ItemTpye.Metarial && !Inventory.instance.CanAddMaterial(itemData))
+        {
+            if (rb != null)
+                rb.linearVelocity = new Vector2(0, 7);
             return;
         }
 
-        AudioManager.instance.PlaySFX(18, transform);
+        isPickedUp = true;
+
+        if (AudioManager.instance != null)
+            AudioManager.instance.PlaySFX(18, transform);
 
         Inventory.instance.AddItem(itemData);
         Destroy(gameObject);

@@ -17,6 +17,8 @@ public class BackholeSkill : Skill
     [SerializeField] private UISkillTreeSlot backholeButton;
     public bool backhole { get; private set; }
 
+    protected override bool IsSkillUnlocked() => backhole;
+
     public override bool CanUseSkill()
     {
         return base.CanUseSkill();
@@ -27,21 +29,33 @@ public class BackholeSkill : Skill
         if (!backhole) return;
         base.UseSkill();
 
-        AudioManager.instance.PlaySFX(3, transform);
-        AudioManager.instance.PlaySFX(7, transform);    
-        
-        GameObject newBackhole = Instantiate(backholePrefab,character.transform.position,Quaternion.identity);
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.PlaySFX(3, transform);
+            AudioManager.instance.PlaySFX(7, transform);
+        }
+
+        if (backholePrefab == null || character == null)
+            return;
+
+        GameObject newBackhole = Instantiate(backholePrefab, character.transform.position, Quaternion.identity);
 
         var newScriptBackhole = newBackhole.GetComponent<BackholeSkillController>();
 
-        newScriptBackhole.SetupBlackhole(maxSize,growSpeed,shirnkSpeed,amoutAttack,cloneCooldown, backholeDuration);
+        if (newScriptBackhole != null)
+            newScriptBackhole.SetupBlackhole(maxSize, growSpeed, shirnkSpeed, amoutAttack, cloneCooldown, backholeDuration);
     }
 
     protected override void Start()
     {
         base.Start();
 
-        backholeButton.GetComponent<Button>().onClick.AddListener(() => UnlocedBackhole());
+        if (backholeButton != null)
+        {
+            Button btn = backholeButton.GetComponent<Button>();
+            if (btn != null)
+                btn.onClick.AddListener(() => UnlocedBackhole());
+        }
     }
 
     protected override void Update()
@@ -51,7 +65,7 @@ public class BackholeSkill : Skill
 
     private void UnlocedBackhole()
     {
-        if(backholeButton.unlock)
+        if (backholeButton != null && backholeButton.unlock)
             backhole = true;
     }
     protected override void CheckUnlock()

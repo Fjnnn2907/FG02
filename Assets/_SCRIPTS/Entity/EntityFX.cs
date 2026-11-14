@@ -18,31 +18,66 @@ public class EntityFX : MonoBehaviour
     [SerializeField] private ParticleSystem bongFx;
     [SerializeField] private ParticleSystem chillFx;
     [SerializeField] private ParticleSystem shockFx;
-    private void Start()
+
+    private bool isInvisible;
+    private Coroutine hitFlashCoroutine;
+
+    private void Awake()
     {
         sr = GetComponentInChildren<SpriteRenderer>();
-        OriginalMaterial = sr.material;
+        if (sr != null)
+            OriginalMaterial = sr.sharedMaterial;
+    }
+    private void Start()
+    {
+        if (sr == null)
+            sr = GetComponentInChildren<SpriteRenderer>();
+        if (sr != null && OriginalMaterial == null)
+            OriginalMaterial = sr.sharedMaterial;
+    }
+    public void TriggerHitFlash()
+    {
+        if (sr == null || !isActiveAndEnabled)
+            return;
+
+        if (hitFlashCoroutine != null)
+            StopCoroutine(hitFlashCoroutine);
+
+        hitFlashCoroutine = StartCoroutine(HitFlashFx());
     }
     private IEnumerator HitFlashFx()
     {
-        sr.material = HitMaterial;
-        Color currentColor = sr.color;
-        sr.color = Color.white;
-        
+        if (sr == null)
+            yield break;
+
+        if (HitMaterial != null)
+            sr.material = HitMaterial;
+
+        if (!isInvisible)
+            sr.color = Color.white;
+
         yield return new WaitForSeconds(.2f);
-        
-        sr.color = currentColor;
-        sr.material = OriginalMaterial;
+
+        if (sr != null)
+        {
+            sr.material = OriginalMaterial;
+            sr.color = isInvisible ? Color.clear : Color.white;
+        }
+        hitFlashCoroutine = null;
     }
     public void TanHinh(bool _isTanHinh)
     {
-        if (_isTanHinh)
-            sr.color = Color.clear;
-        else
-            sr.color = Color.white;
+        isInvisible = _isTanHinh;
+        if (sr == null)
+            return;
+
+        sr.color = _isTanHinh ? Color.clear : Color.white;
     }
     private void RedColorBlink()
     {
+        if (sr == null || isInvisible)
+            return;
+
         if (sr.color != Color.white)
             sr.color = Color.white;
         else
@@ -51,6 +86,9 @@ public class EntityFX : MonoBehaviour
     #region Ignite Color
     private void IgniteColorFx()
     {
+        if (sr == null || isInvisible || igniteColor == null || igniteColor.Length < 2)
+            return;
+
         if (sr.color != igniteColor[0])
             sr.color = igniteColor[0];
         else
@@ -58,9 +96,10 @@ public class EntityFX : MonoBehaviour
     }
     public void IgniteFxFor(float _seconds)
     {
-        bongFx.Play();
+        if (bongFx != null)
+            bongFx.Play();
 
-        InvokeRepeating("IgniteColorFx",0, .3f);
+        InvokeRepeating("IgniteColorFx", 0, .3f);
         Invoke("CancelColorChange", _seconds);
     }
     #endregion
@@ -68,6 +107,9 @@ public class EntityFX : MonoBehaviour
     #region Shock Color
     private void ShockColorFx()
     {
+        if (sr == null || isInvisible || shockColor == null || shockColor.Length < 2)
+            return;
+
         if (sr.color != shockColor[0])
             sr.color = shockColor[0];
         else
@@ -75,7 +117,8 @@ public class EntityFX : MonoBehaviour
     }
     public void ShockFxFor(float _seconds)
     {
-        shockFx.Play();
+        if (shockFx != null)
+            shockFx.Play();
 
         InvokeRepeating("ShockColorFx", 0, .15f);
         Invoke("CancelColorChange", _seconds);
@@ -85,6 +128,9 @@ public class EntityFX : MonoBehaviour
     #region Chill Color
     private void ChillColorFx()
     {
+        if (sr == null || isInvisible || chillColor == null || chillColor.Length < 2)
+            return;
+
         if (sr.color != chillColor[0])
             sr.color = chillColor[0];
         else
@@ -92,7 +138,8 @@ public class EntityFX : MonoBehaviour
     }
     public void ChillFxFor(float _seconds)
     {
-        chillFx.Play();
+        if (chillFx != null)
+            chillFx.Play();
 
         InvokeRepeating("ChillColorFx", 0, .5f);
         Invoke("CancelColorChange", _seconds);
@@ -100,11 +147,12 @@ public class EntityFX : MonoBehaviour
     #endregion
     private void CancelColorChange()
     {
-        bongFx.Stop();
-        chillFx.Stop();
-        shockFx.Stop();
+        if (bongFx != null) bongFx.Stop();
+        if (chillFx != null) chillFx.Stop();
+        if (shockFx != null) shockFx.Stop();
 
         CancelInvoke();
-        sr.color = Color.white;
+        if (sr != null)
+            sr.color = isInvisible ? Color.clear : Color.white;
     }
 }

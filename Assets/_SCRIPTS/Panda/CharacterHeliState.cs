@@ -8,8 +8,10 @@ public class CharacterHeliState : CharacterState
     public override void Enter()
     {
         base.Enter();
+        startTimer = 1.5f;
 
-        CameraShake.instance.ShakeCamera(.5f, .2f);
+        if (CameraShake.instance != null)
+            CameraShake.instance.ShakeCamera(.5f, .2f);
     }
 
     public override void Exit()
@@ -21,9 +23,7 @@ public class CharacterHeliState : CharacterState
     {
         base.Update();
 
-        if (triggerCall)
+        if (triggerCall || startTimer <= 0)
             stateMachine.ChangeState(character.idleState);
-
-
     }
 }

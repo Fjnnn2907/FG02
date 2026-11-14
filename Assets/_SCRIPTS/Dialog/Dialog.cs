@@ -6,13 +6,16 @@ using TMPro;
 
 public class Dialog : MonoBehaviour
 {
-    private bool talkBefore = false; 
-    private int currentIndex = 0;   
+    private static readonly HashSet<Dialog> activeZones = new HashSet<Dialog>();
+    public static bool AnyPlayerInDialogZone => activeZones.Count > 0;
+
+    private bool talkBefore = false;
+    private int currentIndex = 0;
     public string TitleName;
-    
+
     public GameObject dialogBox;
-    public TextMeshProUGUI TitleText; 
-    public TextMeshProUGUI contantText; 
+    public TextMeshProUGUI TitleText;
+    public TextMeshProUGUI contantText;
     public bool isDialoging = false;
 
     [TextArea(3, 10)]
@@ -20,6 +23,12 @@ public class Dialog : MonoBehaviour
 
     [TextArea(3, 10)]
     public string[] repeatDialog;
+
+    private void OnDisable()
+    {
+        activeZones.Remove(this);
+        isDialoging = false;
+    }
 
     private void Update()
     {
@@ -37,55 +46,61 @@ public class Dialog : MonoBehaviour
         }
     }
 
+    private string[] GetActiveLines()
+    {
+        if (!talkBefore)
+            return firstDialog;
+
+        if (repeatDialog != null && repeatDialog.Length > 0)
+            return repeatDialog;
+
+        return firstDialog;
+    }
+
     private void StartDialog()
     {
+        string[] lines = GetActiveLines();
+        if (lines == null || lines.Length == 0)
+            return;
+
         dialogBox.SetActive(true);
         currentIndex = 0;
-        TitleText.text = TitleName;
-        if (!talkBefore)
-        {
-            contantText.text = firstDialog[currentIndex];
-        }
-        else
-        {
-            contantText.text = repeatDialog[currentIndex];
-        }
+        if (TitleText != null)
+            TitleText.text = TitleName;
+        if (contantText != null)
+            contantText.text = lines[currentIndex];
     }
 
     private void DisplayNextLine()
     {
-        TitleText.text = TitleName;
+        if (TitleText != null)
+            TitleText.text = TitleName;
 
-        if (!talkBefore)
+        string[] lines = GetActiveLines();
+        if (lines == null || lines.Length == 0)
         {
-            currentIndex++;
-            if (currentIndex < firstDialog.Length)
-            {
-                contantText.text = firstDialog[currentIndex];
-            }
-            else
-            {
-                EndDialog();
-                talkBefore = true; 
-            }
+            EndDialog();
+            return;
+        }
+
+        currentIndex++;
+        if (currentIndex < lines.Length)
+        {
+            if (contantText != null)
+                contantText.text = lines[currentIndex];
         }
         else
         {
-            currentIndex++;
-            if (currentIndex < repeatDialog.Length)
-            {
-                contantText.text = repeatDialog[currentIndex];
-            }
-            else
-            {
-                EndDialog();
-            }
+            if (!talkBefore)
+                talkBefore = true;
+            EndDialog();
         }
     }
 
     private void EndDialog()
     {
-        dialogBox.gameObject.SetActive(false);
+        if (dialogBox != null)
+            dialogBox.gameObject.SetActive(false);
         currentIndex = 0;
     }
     private void OnTriggerEnter2D(Collider2D collision)
@@ -93,6 +108,7 @@ public class Dialog : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             isDialoging = true;
+            activeZones.Add(this);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -100,6 +116,7 @@ public class Dialog : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             isDialoging = false;
+            activeZones.Remove(this);
             EndDialog();
         }
     }

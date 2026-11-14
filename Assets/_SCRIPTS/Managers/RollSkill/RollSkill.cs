@@ -18,12 +18,16 @@ public class RollSkill : Skill
 
     }
 
+    protected override bool IsSkillUnlocked() => canRoll;
+
     protected override void Start()
     {
         base.Start();
 
-        rollSkillTreeSlot.GetComponent<Button>().onClick.AddListener(() => CanRoll());
-        roolCanAttackSkillTreeSlot.GetComponent<Button>().onClick.AddListener(() => RollCanAttack());
+        if (rollSkillTreeSlot != null)
+            rollSkillTreeSlot.GetComponent<Button>()?.onClick.AddListener(() => CanRoll());
+        if (roolCanAttackSkillTreeSlot != null)
+            roolCanAttackSkillTreeSlot.GetComponent<Button>()?.onClick.AddListener(() => RollCanAttack());
     }
     #region Skill Tree
     protected override void CheckUnlock()
@@ -33,24 +37,21 @@ public class RollSkill : Skill
     }
     private void CanRoll()
     {
-        if(rollSkillTreeSlot.unlock)
+        if (rollSkillTreeSlot != null && rollSkillTreeSlot.unlock)
             canRoll = true;
     }
     private void RollCanAttack()
     {
-        if (roolCanAttackSkillTreeSlot.unlock)
+        if (roolCanAttackSkillTreeSlot != null && roolCanAttackSkillTreeSlot.unlock)
             rollCanAttack = true;
     }
     public void CloneOnRoll()
     {
-        //if (canRoll)
-        //    SkillManager.instance.cloneSkill.CreateClone(character.transform, Vector2.zero);
     }
     public void CreateCloneOnRollOver()
     {
-        if (rollCanAttack)            
+        if (rollCanAttack && SkillManager.instance != null && SkillManager.instance.cloneSkill != null && character != null)
             SkillManager.instance.cloneSkill.CreateClone(character.transform, Vector2.zero);
-        
     }
     #endregion
 }

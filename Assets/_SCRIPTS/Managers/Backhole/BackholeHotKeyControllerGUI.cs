@@ -20,14 +20,17 @@ public class BackholeHotKeyControllerGUI : MonoBehaviour
         keyCode = _newKeyCode;
         hotkeyText.text = _newKeyCode.ToString();
     }
+    private bool used;
     private void Update()
     {
-        if (Input.GetKeyDown(keyCode))
+        if (!used && Input.GetKeyDown(keyCode))
         {
-            backhole.AddListEnemy(myTarget);
+            used = true;
+            if (backhole != null)
+                backhole.AddListEnemy(myTarget);
 
-            hotkeyText.color = Color.clear;
-            sr.color = Color.clear;
+            if (hotkeyText != null) hotkeyText.color = Color.clear;
+            if (sr != null) sr.color = Color.clear;
         }
     }
 

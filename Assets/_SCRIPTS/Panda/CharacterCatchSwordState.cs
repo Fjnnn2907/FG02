@@ -11,16 +11,19 @@ public class CharacterCatchSwordState : CharacterState
     public override void Enter()
     {
         base.Enter();
+        startTimer = 1f;
 
-        sword = character.sword.transform;
+        if (character.sword != null)
+        {
+            sword = character.sword.transform;
 
-        if (character.transform.position.x > sword.position.x && character.facing == 1)
-            
-            character.Flip();
-        else if (character.transform.position.x < sword.position.x && character.facing == -1)
-            character.Flip();
+            if (character.transform.position.x > sword.position.x && character.facing == 1)
+                character.Flip();
+            else if (character.transform.position.x < sword.position.x && character.facing == -1)
+                character.Flip();
+        }
 
-        character.rb.linearVelocity = new Vector2(3 * -character.facing,character.rb.linearVelocity.y);
+        character.rb.linearVelocity = new Vector2(3 * -character.facing, character.rb.linearVelocity.y);
     }
 
     public override void Exit()
@@ -32,7 +35,7 @@ public class CharacterCatchSwordState : CharacterState
     {
         base.Update();
 
-        if(triggerCall)
-            stateMachine.ChangeState(character.idleState);
+        if (triggerCall || startTimer <= 0)
+            stateMachine.ChangeState(character.IsGroundCheck() ? character.idleState : character.airState);
     }
 }

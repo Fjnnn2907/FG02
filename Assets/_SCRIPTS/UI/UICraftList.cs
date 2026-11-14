@@ -12,30 +12,39 @@ public class UICraftList : MonoBehaviour, IPointerDownHandler
 
     private void Start()
     {
-        transform.parent.GetChild(0).GetComponent<UICraftList>().SetUpCraftList();
-        SetUpDefaultCartfWindow();
+        if (transform.GetSiblingIndex() == 0)
+        {
+            SetUpCraftList();
+            SetUpDefaultCartfWindow();
+        }
     }
-
 
     public void SetUpCraftList()
     {
-        for(int i = 0; i < craftSlotParent.childCount; i++)
+        if (craftSlotParent == null || craftPreFab == null || craftEquiment == null)
+            return;
+
+        for (int i = craftSlotParent.childCount - 1; i >= 0; i--)
         {
-            craftSlotParent.GetChild(i).gameObject.SetActive(false);
+            Destroy(craftSlotParent.GetChild(i).gameObject);
         }
 
-        for(int i = 0;i < craftEquiment.Count; i++)
+        for (int i = 0; i < craftEquiment.Count; i++)
         {
             GameObject newSlot = Instantiate(craftPreFab, craftSlotParent);
 
-            newSlot.GetComponent<CraftSlot>().SetUpCraftSlot(craftEquiment[i]);
+            newSlot.GetComponent<CraftSlot>()?.SetUpCraftSlot(craftEquiment[i]);
         }
     }
 
     public void SetUpDefaultCartfWindow()
     {
-        if (craftEquiment[0] != null)
-            GetComponentInParent<UI>().craftWindow.SetUpCraftWindow(craftEquiment[0]);
+        if (craftEquiment != null && craftEquiment.Count > 0 && craftEquiment[0] != null)
+        {
+            UI parentUi = GetComponentInParent<UI>();
+            if (parentUi != null && parentUi.craftWindow != null)
+                parentUi.craftWindow.SetUpCraftWindow(craftEquiment[0]);
+        }
     }
 
     public void OnPointerDown(PointerEventData eventData)

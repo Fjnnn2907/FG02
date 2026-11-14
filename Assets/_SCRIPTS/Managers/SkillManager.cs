@@ -13,18 +13,26 @@ public class SkillManager : MonoBehaviour
     #region Singleton
     private void Awake()
     {
-        if(instance != null)
-            Debug.LogWarning("Erro Singleton" + instance.name);
-        else
-            instance = this;
-    }
-    #endregion
-    private void Start()
-    {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
+
         rollSkill = GetComponent<RollSkill>();
         cloneSkill = GetComponent<CloneSkill>();
         swordSkill = GetComponent<SwordSkill>();
         backholiSkill = GetComponent<BackholeSkill>();
         crytalSkill = GetComponent<CrytalSkill>();
+    }
+    #endregion
+    private void Start()
+    {
+        if (rollSkill == null) rollSkill = GetComponent<RollSkill>();
+        if (cloneSkill == null) cloneSkill = GetComponent<CloneSkill>();
+        if (swordSkill == null) swordSkill = GetComponent<SwordSkill>();
+        if (backholiSkill == null) backholiSkill = GetComponent<BackholeSkill>();
+        if (crytalSkill == null) crytalSkill = GetComponent<CrytalSkill>();
     }
 }

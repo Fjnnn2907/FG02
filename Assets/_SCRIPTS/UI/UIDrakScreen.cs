@@ -6,17 +6,28 @@ public class UIDrakScreen : MonoBehaviour
 {
     private Animator anim;
 
-    private void Start()
+    private void Awake()
     {
         anim = GetComponent<Animator>();
+    }
+    private void Start()
+    {
+        if (anim == null)
+            anim = GetComponent<Animator>();
     }
 
     public void FaceInDrakScreen()
     {
-        anim.SetTrigger("faceIn");
+        if (anim == null)
+            anim = GetComponent<Animator>();
+        if (anim != null)
+            anim.SetTrigger("faceIn");
     }
     public void FaceOutDrakScreen()
     {
-        anim.SetTrigger("faceOut");
+        if (anim == null)
+            anim = GetComponent<Animator>();
+        if (anim != null)
+            anim.SetTrigger("faceOut");
     }
 }

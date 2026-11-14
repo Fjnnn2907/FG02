@@ -22,95 +22,112 @@ public class UISkillTreeSlot : MonoBehaviour,IPointerEnterHandler,IPointerExitHa
 
     private void Awake()
     {
-        GetComponentInChildren<Button>().onClick.AddListener(() => UnlockSKillSlot());
+        skillImage = GetComponent<Image>();
+        ui = GetComponentInParent<UI>();
+        Button btn = GetComponentInChildren<Button>();
+        if (btn != null)
+            btn.onClick.AddListener(() => UnlockSKillSlot());
     }
     private void Start()
     {
-        skillImage = GetComponent<Image>();
-        ui = GetComponentInParent<UI>();
-        skillImage.color = lockedColor;
+        if (skillImage == null)
+            skillImage = GetComponent<Image>();
+        if (ui == null)
+            ui = GetComponentInParent<UI>();
 
-        if(unlock)
-            skillImage.color = Color.white;
+        UpdateSlotVisual();
+    }
 
+    private void UpdateSlotVisual()
+    {
+        if (skillImage != null)
+            skillImage.color = unlock ? Color.white : lockedColor;
     }
 
     public void UnlockSKillSlot()
     {
-
-        if(!PlayerManager.instance.HaveMoney(countBuySkill))
+        if (unlock)
             return;
 
-        for (int i = 0; i < Unlocked.Length; i++)
+        if (PlayerManager.instance == null || !PlayerManager.instance.CanAfford(countBuySkill))
+            return;
+
+        if (Unlocked != null)
         {
-            if (Unlocked[i].unlock == false)
+            for (int i = 0; i < Unlocked.Length; i++)
             {
-                Debug.Log("mo cong skill");
-                return;
+                if (Unlocked[i] != null && Unlocked[i].unlock == false)
+                {
+                    Debug.Log("mo cong skill");
+                    return;
+                }
             }
         }
 
-        for (int i = 0;i < Locked.Length; i++)
+        if (Locked != null)
         {
-            if (Locked[i].unlock == true)
+            for (int i = 0; i < Locked.Length; i++)
             {
-                Debug.Log("khong the cong skill");
-                return;
+                if (Locked[i] != null && Locked[i].unlock == true)
+                {
+                    Debug.Log("khong the cong skill");
+                    return;
+                }
             }
         }
+
+        if (!PlayerManager.instance.HaveMoney(countBuySkill))
+            return;
 
         unlock = true;
-        skillImage.color = Color.white;
+        UpdateSlotVisual();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        ui.toolTipSkillTree.ShowToolTip(skillName, skillDescription);
-
-        //MoiveUIToolTip();
+        if (ui == null)
+            ui = GetComponentInParent<UI>();
+        if (ui != null && ui.toolTipSkillTree != null)
+            ui.toolTipSkillTree.ShowToolTip(skillName, skillDescription);
     }
 
     private void MoiveUIToolTip()
     {
         Vector2 mousePos = Input.mousePosition;
 
-        float xOffsize = 0;
-        float yOffsize = 0;
+        float xOffsize = mousePos.x > Screen.width * 0.5f ? -150f : 150f;
+        float yOffsize = mousePos.y > Screen.height * 0.5f ? -150f : 150f;
 
-        if (mousePos.x > 600)
-            xOffsize = 150;
-        else
-            xOffsize = -150;
-
-        if (mousePos.y > 350)
-            yOffsize = 150;
-        else
-            yOffsize = -150;
-
-        ui.toolTipSkillTree.transform.position = new Vector2(mousePos.x + xOffsize, mousePos.y + yOffsize);
+        if (ui != null && ui.toolTipSkillTree != null)
+            ui.toolTipSkillTree.transform.position = new Vector2(mousePos.x + xOffsize, mousePos.y + yOffsize);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        ui.toolTipSkillTree.HideToolTip();
+        if (ui == null)
+            ui = GetComponentInParent<UI>();
+        if (ui != null && ui.toolTipSkillTree != null)
+            ui.toolTipSkillTree.HideToolTip();
     }
 
     public void LoadData(GameData _data)
     {
-        if(_data.skillTree.TryGetValue(skillName,out bool value))
+        if (!string.IsNullOrEmpty(skillName) && _data.skillTree.TryGetValue(skillName, out bool value))
         {
             unlock = value;
         }
+        UpdateSlotVisual();
     }
 
     public void SaveData(ref GameData _data)
     {
+        if (string.IsNullOrEmpty(skillName))
+            return;
 
-        if (_data.skillTree.TryGetValue(skillName, out bool value))
+        if (_data.skillTree.ContainsKey(skillName))
         {
             _data.skillTree.Remove(skillName);
-            _data.skillTree.Add(skillName, value);
-
+            _data.skillTree.Add(skillName, unlock);
         }
         else
             _data.skillTree.Add(skillName, unlock);

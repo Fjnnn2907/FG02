@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 
 public class CloneSkillController : MonoBehaviour
 {
@@ -19,20 +18,21 @@ public class CloneSkillController : MonoBehaviour
     private void Update()
     {
         cloneTimer -= Time.deltaTime;
-        if(cloneTimer <= 0)
+        if (cloneTimer <= 0 && sr != null)
         {
-            sr.color = new Color(1,1,1,sr.color.a -(Time.deltaTime) * aColorSpeed);
+            sr.color = new Color(1, 1, 1, sr.color.a - Time.deltaTime * aColorSpeed);
             if (sr.color.a <= 0)
                 Destroy(gameObject);
-
-            //TODO: Pool
         }
     }
-    public void SetUpClone(Transform _newTransform, float _cloneTime,bool _canAttack, Vector3 _offset,Transform _closetEnemy, Character _character)
+    public void SetUpClone(Transform _newTransform, float _cloneTime, bool _canAttack, Vector3 _offset, Transform _closetEnemy, Character _character)
     {
-        if(_canAttack)
-            anim.SetInteger("CloneSkillNumber",Random.Range(1,3));
-        transform.position = _newTransform.position + _offset;
+        if (_newTransform != null)
+            transform.position = _newTransform.position + _offset;
+
+        if (_canAttack && anim != null)
+            anim.SetInteger("CloneSkillNumber", Random.Range(1, 4));
+
         cloneTimer = _cloneTime;
         character = _character;
         targetToEnemy = _closetEnemy;
@@ -44,12 +44,15 @@ public class CloneSkillController : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Enemy"))
+        Enemy enemy = collision.GetComponent<Enemy>();
+        if (enemy != null && character != null && character.stats != null)
         {
-            if (collision.GetComponent<Enemy>() == null) return;
-
-            character.stats.DoDamage(collision.GetComponent<StatManager>());
-            character.stats.DoMagicDamage(collision.GetComponent<StatManager>());
+            StatManager enemyStats = collision.GetComponent<StatManager>();
+            if (enemyStats != null)
+            {
+                character.stats.DoDamage(enemyStats);
+                character.stats.DoMagicDamage(enemyStats);
+            }
         }
     }
     private void FaceCloneTargetEnemy()

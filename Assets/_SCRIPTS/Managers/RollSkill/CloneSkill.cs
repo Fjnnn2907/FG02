@@ -18,21 +18,25 @@ public class CloneSkill : Skill
     // conect to CharacterRollState
     public void CreateClone(Transform _clonePositon, Vector3 _offset)
     {
-        GameObject newClone = Instantiate(cloneSkill);
+        if (cloneSkill == null || _clonePositon == null)
+            return;
 
-        newClone.GetComponent<CloneSkillController>().SetUpClone(_clonePositon,cloneTime, canAttack, _offset, FindClosetEnemy(cloneSkill.transform),character);
+        GameObject newClone = Instantiate(cloneSkill, _clonePositon.position + _offset, Quaternion.identity);
+
+        newClone.GetComponent<CloneSkillController>()?.SetUpClone(_clonePositon, cloneTime, canAttack, _offset, FindClosetEnemy(newClone.transform), character);
     }
 
     protected override void Start()
     {
         base.Start();
 
-        cloneButton.GetComponent<Button>().onClick.AddListener(() => CanCloneAttack());
+        if (cloneButton != null)
+            cloneButton.GetComponent<Button>()?.onClick.AddListener(() => CanCloneAttack());
     }
-    
+
     private void CanCloneAttack()
     {
-        if(cloneButton.unlock)
+        if (cloneButton != null && cloneButton.unlock)
             canAttack = true;
     }
     protected override void CheckUnlock()

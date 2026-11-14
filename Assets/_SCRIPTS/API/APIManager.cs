@@ -9,58 +9,82 @@ public class APIManager : MonoBehaviour
 {
     public TMP_InputField userName;
     public TMP_InputField password;
+    [SerializeField] private string apiUrl = "https://localhost:5295/api/LoginAccount";
     public static Model model;
+
+    private bool isLoggingIn;
+
     public void CheckLogin()
     {
-        var user = userName.text;
-        var pass = password.text;
+        if (isLoggingIn || userName == null || password == null)
+            return;
 
-        var account = new Account
+        var user = userName.text != null ? userName.text.Trim() : "";
+        var pass = password.text ?? "";
+
+        if (string.IsNullOrEmpty(user) || string.IsNullOrEmpty(pass))
+        {
+            Debug.LogWarning("Vui long nhap day du tai khoan va mat khau.");
+            return;
+        }
+
+        var loginPayload = new LoginRequest
         {
             email = user,
             password = pass
         };
-        // ep chuoi
-        //var json = JsonConvert.SerializeObject(account);
-        var json = JsonUtility.ToJson(account);
-        //Debug.Log(json);
 
+        var json = JsonUtility.ToJson(loginPayload);
         StartCoroutine(LoginAccount(json));
     }
 
     IEnumerator LoginAccount(string json)
     {
-        var url = "http://localhost:5295/api/LoginAccount";
+        isLoggingIn = true;
+        var url = string.IsNullOrWhiteSpace(apiUrl) ? "https://localhost:5295/api/LoginAccount" : apiUrl;
 
-        var request = new UnityWebRequest(url, "POST");
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-        request.SetRequestHeader("Content-Type", "application/json");
-        yield return request.SendWebRequest();
+        using (var request = new UnityWebRequest(url, "POST"))
+        using (var uploadHandler = new UploadHandlerRaw(bodyRaw))
+        using (var downloadHandler = new DownloadHandlerBuffer())
+        {
+            request.uploadHandler = uploadHandler;
+            request.downloadHandler = downloadHandler;
+            request.SetRequestHeader("Content-Type", "application/json");
+            request.timeout = 15;
 
-        if (request.result == UnityWebRequest.Result.ConnectionError ||
-            request.result == UnityWebRequest.Result.ProtocolError)
-        {
-            //Debug.Log(request.error);
-            Debug.Log("Ðãng nh?p th?t b?i");
-        }
-        else
-        {
-            var text = request.downloadHandler.text;
-            //Debug.Log(text);
-            model = JsonUtility.FromJson<Model>(text);
-            if (model.status)
+            yield return request.SendWebRequest();
+
+            if (request.result != UnityWebRequest.Result.Success)
             {
-                Debug.Log(model.data.name);
-                Debug.Log("Dang nhap thanh cong");
-                SceneManager.LoadScene(0);
+                Debug.LogWarning("Dang nhap that bai: " + request.error);
             }
             else
             {
-                Debug.Log("Ðãng nh?p th?t b?i");
+                var text = request.downloadHandler != null ? request.downloadHandler.text : "";
+                Model parsed = !string.IsNullOrWhiteSpace(text) ? JsonUtility.FromJson<Model>(text) : null;
 
+                if (parsed != null && parsed.status)
+                {
+                    if (parsed.data != null)
+                    {
+                        parsed.data.password = null;
+                        parsed.data.newPassword = null;
+                        Debug.Log(parsed.data.name);
+                    }
+
+                    model = parsed;
+                    Debug.Log("Dang nhap thanh cong");
+                    Time.timeScale = 1f;
+                    SceneManager.LoadScene(0);
+                }
+                else
+                {
+                    Debug.LogWarning("Dang nhap that bai");
+                }
             }
         }
+
+        isLoggingIn = false;
     }
 }

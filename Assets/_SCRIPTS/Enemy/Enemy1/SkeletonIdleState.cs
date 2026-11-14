@@ -5,6 +5,7 @@ public class SkeletonIdleState : EnemyState
     Skeleton enemy;
 
     Transform character;
+    CharacterStat playerStat;
     public SkeletonIdleState(Enemy enemyBase, Skeleton enemy, EnemyStateMachine stateMachine, string isBoolName) : base(enemyBase, stateMachine, isBoolName)
     {
         this.enemy = enemy;
@@ -14,17 +15,21 @@ public class SkeletonIdleState : EnemyState
     {
         base.Enter();
 
-        startTimer = Random.Range(1, 3);
-       
+        startTimer = Random.Range(1f, 3f);
 
-        character = PlayerManager.instance.character.transform;
+        if (PlayerManager.instance != null && PlayerManager.instance.character != null)
+        {
+            character = PlayerManager.instance.character.transform;
+            playerStat = PlayerManager.instance.character.GetComponent<CharacterStat>();
+        }
     }
 
     public override void Exit()
     {
         base.Exit();
 
-        AudioManager.instance.PlaySFX(24,enemy.transform);
+        if (AudioManager.instance != null)
+            AudioManager.instance.PlaySFX(24, enemy.transform);
     }
 
     public override void Update()
@@ -33,10 +38,18 @@ public class SkeletonIdleState : EnemyState
 
         enemy.SetZeroVelocity();
 
-        if (startTimer <= 0)
-            enemy.stateMachine.ChangeState(enemy.moveState);         
+        if (character != null)
+        {
+            bool playerAlive = playerStat == null || !playerStat.isDeah;
 
-        if (enemy.IsPlayerCheck() || Vector2.Distance(enemy.transform.position, character.position) < 2)
-            enemy.stateMachine.ChangeState(enemy.battleState);
+            if (playerAlive && (enemy.IsPlayerCheck() || Vector2.Distance(enemy.transform.position, character.position) < 2))
+            {
+                enemy.stateMachine.ChangeState(enemy.battleState);
+                return;
+            }
+        }
+
+        if (startTimer <= 0)
+            enemy.stateMachine.ChangeState(enemy.moveState);
     }
 }

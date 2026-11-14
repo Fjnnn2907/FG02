@@ -6,23 +6,28 @@ using UnityEngine;
 public class CharacterStat : StatManager
 {
     private Character character;
+    protected override void Awake()
+    {
+        base.Awake();
+        character = GetComponent<Character>();
+    }
     protected override void Start()
     {
         base.Start();
 
-        character = GetComponent<Character>();
+        if (character == null)
+            character = GetComponent<Character>();
     }
 
     public override void TakeDamage(int _damege)
     {
         base.TakeDamage(_damege);
-
-        character.DamageEffect();
     }
     protected override void Deah()
     {
         base.Deah();
 
-        character.Deah();   
+        if (character != null)
+            character.Deah();
     }
 }

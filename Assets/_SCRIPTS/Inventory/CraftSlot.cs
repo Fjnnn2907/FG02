@@ -7,25 +7,29 @@ public class CraftSlot : ItemSlot
 {
     public void SetUpCraftSlot(ItemEquipment _item)
     {
-        if(_item == null)
+        if (_item == null)
             return;
 
-        item.itemData = _item;
+        if (item == null)
+            item = new InventoryItem(_item);
+        else
+            item.itemData = _item;
 
-        itemIcon.sprite = item.itemData.icon;
-        itemText.text = item.itemData.itemName;
-
-        itemIcon.enabled = true;
+        if (itemIcon != null)
+        {
+            itemIcon.sprite = item.itemData.icon;
+            itemIcon.color = Color.white;
+            itemIcon.enabled = true;
+        }
+        if (itemText != null)
+            itemText.text = item.itemData.itemName;
     }
     public override void OnPointerDown(PointerEventData eventData)
     {
-        ui.craftWindow.SetUpCraftWindow(item.itemData as ItemEquipment);
-    }
+        if (ui == null)
+            ui = GetComponentInParent<UI>();
 
-    private void CarftItem()
-    {
-        ItemEquipment craftData = item.itemData as ItemEquipment;
-
-        Inventory.instance.CanCraft(craftData, craftData.craftMaterials);
+        if (ui != null && ui.craftWindow != null && item != null)
+            ui.craftWindow.SetUpCraftWindow(item.itemData as ItemEquipment);
     }
 }

@@ -12,27 +12,26 @@ public class CharacterRollState : CharacterState
         base.Enter();
         startTimer = .286f;
 
-        character.skill.rollSkill.CloneOnRoll();
-        character.skill.rollSkill.CreateCloneOnRollOver();
+        if (character.skill != null && character.skill.rollSkill != null)
+            character.skill.rollSkill.CloneOnRoll();
     }
 
     public override void Exit()
     {
         base.Exit();
 
-        //character.skill.cloneSkill.CreateCloneOnRollOver();
+        if (character.skill != null && character.skill.rollSkill != null)
+            character.skill.rollSkill.CreateCloneOnRollOver();
     }
 
     public override void Update()
     {
         base.Update();
 
-        character.SetVelocity(character.rollSpeed * character.facing,character.rb.linearVelocity.y);
-
-        if (character.isVer2)
-            character.SetVelocity(15 * character.facing, character.rb.linearVelocity.y);
+        float currentRollSpeed = character.isVer2 ? character.rollSpeed * 1.5f : character.rollSpeed;
+        character.SetVelocity(currentRollSpeed * character.facing, character.rb.linearVelocity.y);
 
         if (startTimer <= 0)
-            stateMachine.ChangeState(character.idleState);
+            stateMachine.ChangeState(character.IsGroundCheck() ? character.idleState : character.airState);
     }
 }

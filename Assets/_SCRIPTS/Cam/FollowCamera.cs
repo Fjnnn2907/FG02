@@ -12,13 +12,9 @@ public class FollowCamera : MonoBehaviour
     {
         if (target != null)
         {
-            // Tính toán vị trí mong muốn của camera
             Vector3 desiredPosition = target.position + offset;
-
-            // Nội suy từ vị trí hiện tại đến vị trí mong muốn, giúp camera di chuyển mượt mà
-            Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
-
-            // Gán vị trí của camera thành vị trí đã nội suy
+            float t = 1f - Mathf.Pow(1f - Mathf.Clamp01(smoothSpeed), Time.deltaTime * 60f);
+            Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, t);
             transform.position = smoothedPosition;
         }
     }

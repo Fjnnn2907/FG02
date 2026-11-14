@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using static UnityEditor.Progress;
 
 public class EquipmentSlot : ItemSlot
 {
@@ -13,13 +12,18 @@ public class EquipmentSlot : ItemSlot
     }
     public override void OnPointerDown(PointerEventData eventData)
     {
-        if(item == null || item.itemData == null) 
+        if (item == null || item.itemData == null || Inventory.instance == null)
             return;
 
-        Inventory.instance.UnEquipment(item.itemData as ItemEquipment);
-        Inventory.instance.AddItem(item.itemData as ItemEquipment);
+        ItemEquipment equip = item.itemData as ItemEquipment;
+        if (equip == null || !Inventory.instance.CanAddEquipment(equip))
+            return;
+
+        Inventory.instance.UnEquipment(equip);
+        Inventory.instance.AddItem(equip);
         CleanSlot();
 
-        ui.toolTip.HideToolTip();
+        if (ui != null && ui.toolTip != null)
+            ui.toolTip.HideToolTip();
     }
 }

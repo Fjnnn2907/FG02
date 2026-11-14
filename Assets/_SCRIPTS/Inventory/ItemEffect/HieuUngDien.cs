@@ -8,8 +8,18 @@ public class HieuUngDien : ItemEffect
     [SerializeField] private GameObject DienPrefab;
     public override void ExecuteEffect(Transform _enemyPos)
     {
-        GameObject newObj = Instantiate(DienPrefab, _enemyPos.position,Quaternion.identity);
+        if (DienPrefab == null)
+            return;
 
-        Destroy(newObj,1);
+        Transform target = _enemyPos;
+        if (target == null && PlayerManager.instance != null && PlayerManager.instance.character != null)
+            target = PlayerManager.instance.character.transform;
+
+        if (target == null)
+            return;
+
+        GameObject newObj = Instantiate(DienPrefab, target.position, Quaternion.identity);
+
+        Destroy(newObj, 1);
     }
 }
