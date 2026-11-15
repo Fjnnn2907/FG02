@@ -20,6 +20,8 @@ public class SkeletonMoveState : EnemyState
             character = PlayerManager.instance.character.transform;
             playerStat = PlayerManager.instance.character.GetComponent<CharacterStat>();
         }
+
+        startTimer = Random.Range(5, 10);
     }
 
     public override void Exit()
@@ -47,8 +49,11 @@ public class SkeletonMoveState : EnemyState
 
         if (enemy.IsWallCheck() || !enemy.IsGroundCheck())
         {
-            enemy.Flip();
+            enemy.SetZeroVelocity();
             enemy.stateMachine.ChangeState(enemy.idleState);
         }
+
+        if (startTimer <= 0)
+            stateMachine.ChangeState(enemy.idleState);
     }
 }

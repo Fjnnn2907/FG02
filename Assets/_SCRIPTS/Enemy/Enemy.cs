@@ -128,6 +128,12 @@ public class Enemy : Entity
         yield return new WaitForSeconds(_seconds);
         FreezeTime(false);
     }
+
+    public virtual bool GetRandom(int value)
+    {
+        var randomMunber = Random.Range(0, 100);
+        return randomMunber > value;
+    }
     public override void OnDrawGizmos()
     {
         base.OnDrawGizmos();

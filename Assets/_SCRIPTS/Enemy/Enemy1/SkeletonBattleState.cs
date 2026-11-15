@@ -77,7 +77,6 @@ public class SkeletonBattleState : EnemyState
                     return;
                 }
 
-                // Trong thời gian hồi chiêu và character ở trong tầm đánh: đứng yên (xVelocity = 0 -> Idle)
                 enemy.SetZeroVelocity();
                 return;
             }
@@ -91,7 +90,6 @@ public class SkeletonBattleState : EnemyState
             }
         }
 
-        // Khi character rời tầm đánh: di chuyển đuổi theo (xVelocity != 0 -> Move)
         if (distanceToPlayer > 0.2f)
             moveDir = deltaX > 0 ? 1 : -1;
         else

@@ -50,6 +50,16 @@ public class SkeletonIdleState : EnemyState
         }
 
         if (startTimer <= 0)
+        {           
+            if (enemy.IsWallCheck() || !enemy.IsGroundCheck())
+                enemy.Flip();
+            else
+            {
+                if (enemy.GetRandom(Random.Range(0, 100)))
+                    enemy.Flip();
+            }
+
             enemy.stateMachine.ChangeState(enemy.moveState);
+        }
     }
 }
